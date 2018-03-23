@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "test",
-    "build": "webpack"
+    "build": "webpack",
+    "server": "webpack-dev-server"
   },
   "author": "Megan Gaebler",
   "license": "ISC",
@@ -20,6 +21,7 @@
     "awesome-typescript-loader": "^4.0.1",
     "source-map-loader": "^0.2.3",
     "typescript": "^2.7.2",
-    "webpack-cli": "^2.0.13"
+    "webpack-cli": "^2.0.13",
+    "webpack-dev-server": "^3.1.1"
   }
 }
