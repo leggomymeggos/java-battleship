@@ -6,4 +6,12 @@ export class Board extends React.Component {
             Hey bro I'm the board bro
         </div>;
     }
+
+    private renderTile() {
+        return <div className="batttleship-tile" />
+    }
+
+    private renderGrid() {
+        return
+    }
 }
