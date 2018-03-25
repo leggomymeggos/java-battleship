@@ -7,6 +7,6 @@ export interface IHelloProps {
 
 export class Hello extends React.Component<IHelloProps, {}> {
     render() {
-        return <h1>Hello from {this.props.compiler} and {this.props.framework}!</h1>;
+        return <h1 className="hello-text">Hello from {this.props.compiler} and {this.props.framework}!</h1>;
     }
 }
