@@ -2,9 +2,12 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import './styles/main.scss';
 
-import { Hello } from "./components/Hello";
+import {BrowserRouter} from "react-router-dom";
+import {Main} from "./components/Main";
 
 ReactDOM.render(
-    <Hello compiler="TypeScript" framework="React" />,
+    <BrowserRouter>
+        <Main/>
+    </BrowserRouter>,
     document.getElementById("root")
 );
