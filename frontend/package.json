@@ -9,11 +9,16 @@
     "start": "webpack-dev-server"
   },
   "jest": {
-    "moduleFileExtensions": ["ts", "tsx", "js"],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
     "transform": {
-      "^.+\\.(ts|tsx)$": "./test-preprocessor.js"
+      "^.+\\.tsx?$": "ts-jest"
     },
-    "testMatch": ["**/__tests__/*.+(ts|tsx|js)"]
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "setupTestFrameworkScriptFile": "./setupTests.ts"
   },
   "author": "Megan Gaebler",
   "license": "ISC",
@@ -28,7 +33,10 @@
     "webpack": "^4.2.0"
   },
   "devDependencies": {
+    "@types/enzyme": "^3.1.9",
+    "@types/enzyme-adapter-react-16": "^1.0.2",
     "@types/jest": "^22.2.2",
+    "@types/react-test-renderer": "^16.0.1",
     "awesome-typescript-loader": "^5.0.0-0",
     "babel-jest": "^22.4.3",
     "css-loader": "^0.28.11",
@@ -36,9 +44,11 @@
     "enzyme-adapter-react-16": "^1.1.1",
     "jest": "^22.4.3",
     "node-sass": "^4.7.2",
+    "react-test-renderer": "^16.2.0",
     "sass-loader": "^6.0.7",
     "source-map-loader": "^0.2.3",
     "style-loader": "^0.20.3",
+    "ts-jest": "^22.4.2",
     "typescript": "^2.7.2",
     "webpack-cli": "^2.0.13",
     "webpack-dev-server": "^3.1.1"
