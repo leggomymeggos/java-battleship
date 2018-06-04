@@ -1,13 +1,17 @@
 import * as React from "react";
 import {Route} from "react-router";
-import {Board} from "./board/Board";
+import {createStore, applyMiddleware} from "redux";
+import Board from "./board/Board";
+import {rootReducer} from "./rootReducer";
+import thunk from "redux-thunk";
+import {Provider} from "react-redux";
+
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 export class Main extends React.Component {
     public render() {
-        return <div>
-            <div>
+        return <Provider store={store}>
                 <Route path="/" component={Board}/>
-            </div>
-        </div>;
+        </Provider>;
     }
 }

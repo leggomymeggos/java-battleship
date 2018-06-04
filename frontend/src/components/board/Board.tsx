@@ -1,4 +1,7 @@
 import * as React from "react";
+import {connect, Dispatch} from "react-redux";
+import {bindActionCreators} from "redux";
+import boardActions from "./boardActions";
 
 export interface IBoardPropsFromActions {
     actions: {
@@ -59,3 +62,19 @@ export class Board extends React.Component<BoardProps> {
         </div>
     }
 }
+
+export const mapDispatchToProps = (dispatch: Dispatch<{}>): IBoardPropsFromActions => {
+    return {
+        actions: bindActionCreators({
+            ...boardActions
+        }, dispatch)
+    }
+};
+
+export const mapStateToProps = (state: {boardState: {coordinates: any[][]}}): IBoardPropsFromStore => {
+    return {
+        coordinates: state.boardState.coordinates
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Board);

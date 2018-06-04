@@ -1,6 +1,10 @@
+jest.mock("../boardActions");
+
 import {shallow} from "enzyme";
 import * as React from "react";
-import {Board, BoardProps} from "../Board";
+import {Board, BoardProps, mapDispatchToProps, mapStateToProps} from "../Board";
+import {getInitialBoard} from "../boardActions";
+import {BoardState} from "../boardReducer";
 
 describe("Board", () => {
     let defaultProps: BoardProps;
@@ -65,5 +69,28 @@ describe("Board", () => {
         shallow(<Board {...defaultProps}/>);
 
         expect(mockActions.getInitialBoard).toHaveBeenCalled();
+    });
+});
+
+describe("mapDispatchToProps", () => {
+    it("maps getInitialBoard action", () => {
+        const dispatch = jest.fn();
+        const props = mapDispatchToProps(dispatch);
+
+        props.actions.getInitialBoard();
+
+        expect(getInitialBoard).toHaveBeenCalled()
+    });
+});
+
+describe("mapStateToProps", () => {
+    it("maps coordinates", () => {
+        const boardState: BoardState = {
+            coordinates: [[1], [2]]
+        };
+        const props = mapStateToProps({
+            boardState
+        });
+        expect(props.coordinates).toEqual([[1], [2]]);
     });
 });
