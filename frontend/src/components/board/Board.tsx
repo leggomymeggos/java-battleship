@@ -17,49 +17,58 @@ export type BoardProps = IBoardPropsFromActions & IBoardPropsFromStore;
 
 export class Board extends React.Component<BoardProps> {
     private alphabet = [...Array(26)]
-        .map((q, w) => String.fromCharCode(w + 97));
+        .map((_, index) => String.fromCharCode(index + 97));
 
     public componentWillMount() {
         this.props.actions.getInitialBoard();
     }
 
     public render() {
-        return <div>
-            {this.renderRowLabels()}
+        return <table className="board__grid">
+            <tbody>
             {this.renderColumnLabels()}
             {this.renderGrid()}
-        </div>
-    }
-
-    private renderRowLabels() {
-        return <div className="board__labels--row">{
-            this.props.coordinates
-                .map((it, index) => {
-                    return <div className="board__label" key={index}>
-                        {index + 1}
-                    </div>;
-                })
-        }</div>;
+            </tbody>
+        </table>
     }
 
     private renderColumnLabels() {
-        return <div className="board__labels--column">
+        return <tr>
+            <th/>
             {this.props.coordinates[0].map((_, index) => {
-                return <div key={index}>
+                return <th className="board__label--column" key={Board.getKey()}>
                     {this.alphabet[index].toUpperCase()}
-                </div>
+                </th>
             })}
-        </div>;
+        </tr>;
     }
 
     private renderGrid() {
-        return <div className="board__grid">
-            {this.props.coordinates
-                .reduce((a, b) => a.concat(b), [])
-                .map((_, index) => {
-                    return <div className="board__tile" key={index}/>
+        return this.props.coordinates.map((value, index) => {
+            return <tr key={Board.getKey()}>
+                <th className="board__label--row">{index + 1}</th>
+                {value.map((x) => {
+                    return <td key={Board.getKey()} className={Board.classNameForCoordinate(x, index)}/>
                 })}
-        </div>
+            </tr>
+        });
+    }
+
+    private static classNameForCoordinate(columnNumber: number, rowNumber: number): string {
+        let className = "board__tile";
+
+        let bothEven = columnNumber % 2 == 0 && rowNumber % 2 == 0;
+        let bothOdd = columnNumber % 2 != 0 && rowNumber % 2 != 0;
+
+        if (bothEven || bothOdd) {
+            className += " rotated"
+        }
+
+        return className;
+    }
+
+    private static getKey() {
+        return Math.random() * Math.random()
     }
 }
 
@@ -71,9 +80,9 @@ export const mapDispatchToProps = (dispatch: Dispatch<{}>): IBoardPropsFromActio
     }
 };
 
-export const mapStateToProps = (state: {boardState: {coordinates: any[][]}}): IBoardPropsFromStore => {
+export const mapStateToProps = (state: { boardReducer: { coordinates: any[][] } }): IBoardPropsFromStore => {
     return {
-        coordinates: state.boardState.coordinates
+        coordinates: state.boardReducer.coordinates
     }
 };
 

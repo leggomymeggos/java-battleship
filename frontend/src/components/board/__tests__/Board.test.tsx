@@ -27,7 +27,7 @@ describe("Board", () => {
     });
 
     it("has a tile for each coordinate", () => {
-        const props  = {
+        const props = {
             ...defaultProps,
             coordinates: [[1, 2], [3, 4]],
         };
@@ -39,36 +39,57 @@ describe("Board", () => {
     });
 
     it("has coordinate row labels", () => {
-        const props  = {
+        const props = {
             ...defaultProps,
             coordinates: [[1, 2], [3, 4], [5, 6]],
         };
         const subject = shallow(<Board {...props} />);
 
-        const rowLabels = subject.find(".board__labels--row");
+        const rowLabels = subject.find(".board__label--row").map((item) => {
+            return item.text();
+        });
 
-        expect(rowLabels.text()).toContain("1");
-        expect(rowLabels.text()).toContain("2");
-        expect(rowLabels.text()).toContain("3");
+        expect(rowLabels).toContain("1");
+        expect(rowLabels).toContain("2");
+        expect(rowLabels).toContain("3");
     });
 
     it("has coordinate column labels", () => {
-        const props  = {
+        const props = {
             ...defaultProps,
             coordinates: [[1, 2], [3, 4], [5, 6]],
         };
         const subject = shallow(<Board {...props} />);
 
-        const columnLabels = subject.find(".board__labels--column");
+        const columnLabels = subject.find(".board__label--column").map((item) => {
+            return item.text();
+        });
 
-        expect(columnLabels.text()).toContain("A");
-        expect(columnLabels.text()).toContain("B");
+        expect(columnLabels).toContain("A");
+        expect(columnLabels).toContain("B");
     });
 
     it("gets a new board from the backend", () => {
         shallow(<Board {...defaultProps}/>);
 
         expect(mockActions.getInitialBoard).toHaveBeenCalled();
+    });
+
+    it("adds 'rotated' to every other square", () => {
+        const props = {
+            ...defaultProps,
+            coordinates: [[1, 2], [3, 4], [5, 6]],
+        };
+        const subject = shallow(<Board {...props} />);
+
+        const tiles = subject.find(".board__tile");
+        const classNames = tiles.map((item) => item.props().className);
+
+        expect(classNames).toEqual([
+            "board__tile", "board__tile rotated",
+            "board__tile rotated", "board__tile",
+            "board__tile", "board__tile rotated"
+        ]);
     });
 });
 
@@ -85,11 +106,11 @@ describe("mapDispatchToProps", () => {
 
 describe("mapStateToProps", () => {
     it("maps coordinates", () => {
-        const boardState: BoardState = {
+        const boardReducer: BoardState = {
             coordinates: [[1], [2]]
         };
         const props = mapStateToProps({
-            boardState
+            boardReducer
         });
         expect(props.coordinates).toEqual([[1], [2]]);
     });

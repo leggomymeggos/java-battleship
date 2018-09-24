@@ -10,9 +10,22 @@ export const initialState: BoardState = {
 };
 
 const boardReducer = handleActions({
-   [BoardActions.GET_INITIAL_BOARD]: (state: BoardState) => {
-       return {...state, coordinates: [[1, 2, 3], [1, 2, 3], [1, 2, 3]]}
-   }
+    [BoardActions.GET_INITIAL_BOARD]: (state: BoardState) => {
+        return {
+            ...state, coordinates: [
+                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+            ]
+        }
+    }
 }, initialState);
 
 export default boardReducer;
