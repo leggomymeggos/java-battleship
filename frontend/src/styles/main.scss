@@ -1,3 +1,5 @@
+@import 'patternfills';
+
 table {
   table-layout: fixed;
   border-spacing: 0;
@@ -13,18 +15,26 @@ table {
     overflow: hidden;
 
     &::before {
+      @extend .diagonal-stripe-6-ocean-blue;
       content: "";
       position: absolute;
-      background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPScjNDhiYmY5Jy8+CiAgPHBhdGggZD0nTS0xLDEgbDIsLTIKICAgICAgICAgICBNMCwxMCBsMTAsLTEwCiAgICAgICAgICAgTTksMTEgbDIsLTInIHN0cm9rZT0nI2ZmZicgc3Ryb2tlLXdpZHRoPScxJy8+Cjwvc3ZnPg==") 0 0 repeat;
       width: 100%;
       height: 100%;
       z-index: -1;
       top: 0;
       left: 0;
+
+      &:hover {
+        @extend .diagonal-stripe-6-ocean-hover
+      }
     }
 
     &.rotated::before {
       transform: rotate(90deg);
+
+      &:hover {
+        @extend .diagonal-stripe-6-ocean-hover
+      }
     }
   }
 }
