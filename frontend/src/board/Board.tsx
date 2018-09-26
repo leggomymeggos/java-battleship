@@ -8,6 +8,7 @@ import {hitIndicator, missIndicator} from "../domain/tileIndicators";
 export interface IBoardPropsFromActions {
     actions: {
         getInitialBoard: any;
+        tileHit: any;
     };
 }
 
@@ -56,7 +57,11 @@ export class Board extends React.Component<BoardProps> {
         return <div className={"board__grid"}>{
             this.props.coordinates.map((value, rowIndex) => {
                 return value.map((tile, columnIndex) => {
-                    return <div key={Board.getKey()} className={Board.classNameForCoordinate(tile, columnIndex, rowIndex)}>
+                    return <div key={Board.getKey()}
+                                className={Board.classNameForCoordinate(columnIndex, rowIndex)}
+                                onClick={() => {
+                                    this.props.actions.tileHit(columnIndex, rowIndex)
+                                }}>
                         {Board.tileIndicator(tile)}
                     </div>
                 })
@@ -64,7 +69,7 @@ export class Board extends React.Component<BoardProps> {
         }</div>;
     }
 
-    private static classNameForCoordinate(tile: Tile, columnNumber: number, rowNumber: number): string {
+    private static classNameForCoordinate(columnNumber: number, rowNumber: number): string {
         let className = "board__tile";
 
         let bothEven = columnNumber % 2 == 0 && rowNumber % 2 == 0;
@@ -72,10 +77,6 @@ export class Board extends React.Component<BoardProps> {
 
         if (bothEven || bothOdd) {
             className += " rotated";
-        }
-
-        if (tile.hit) {
-            className += " clicked";
         }
 
         return className;

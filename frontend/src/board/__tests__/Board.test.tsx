@@ -13,7 +13,8 @@ describe("Board", () => {
 
     beforeEach(() => {
         mockActions = {
-            getInitialBoard: jest.fn()
+            getInitialBoard: jest.fn(),
+            tileHit: jest.fn()
         };
         defaultProps = {
             coordinates: [[]],
@@ -127,6 +128,20 @@ describe("Board", () => {
             const hitTiles = subject.find(".aimed--hit");
 
             expect(hitTiles.length).toEqual(1);
+        });
+    });
+
+    describe("clicking tile", () => {
+        it("calls 'tileHit' action with tile coordinates", () => {
+            const props = {
+                ...defaultProps,
+                coordinates: [[new Tile(), new Tile()], [new Tile(), new Tile()], [new Tile(), new Tile()]],
+            };
+            const subject = shallow(<Board {...props} />);
+
+            subject.find(".board__tile").get(3).props.onClick();
+
+            expect(mockActions.tileHit).toBeCalledWith(1, 1);
         });
     });
 });
