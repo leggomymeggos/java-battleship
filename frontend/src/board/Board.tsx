@@ -2,6 +2,8 @@ import * as React from "react";
 import {connect, Dispatch} from "react-redux";
 import {bindActionCreators} from "redux";
 import boardActions from "./boardActions";
+import {Tile} from "../domain/Tile";
+import {hitIndicator, missIndicator} from "../domain/tileIndicators";
 
 export interface IBoardPropsFromActions {
     actions: {
@@ -24,47 +26,73 @@ export class Board extends React.Component<BoardProps> {
     }
 
     public render() {
-        return <table className="board__grid">
-            <tbody>
+        return <div>
             {this.renderColumnLabels()}
+            {this.renderRowLabels()}
             {this.renderGrid()}
-            </tbody>
-        </table>
+        </div>
+
     }
 
     private renderColumnLabels() {
-        return <tr>
-            <th/>
-            {this.props.coordinates[0].map((_, index) => {
-                return <th className="board__label--column" key={Board.getKey()}>
+        return <div>{
+            this.props.coordinates[0].map((_, index) => {
+                return <div className="board__label--column" key={Board.getKey()}>
                     {this.alphabet[index].toUpperCase()}
-                </th>
-            })}
-        </tr>;
+                </div>
+            })
+        }</div>;
     }
 
-    private renderGrid() {
-        return this.props.coordinates.map((value, index) => {
-            return <tr key={Board.getKey()}>
-                <th className="board__label--row">{index + 1}</th>
-                {value.map((x) => {
-                    return <td key={Board.getKey()} className={Board.classNameForCoordinate(x, index)}/>
-                })}
-            </tr>
+    private renderRowLabels() {
+        return this.props.coordinates.map((value, rowIndex) => {
+            return <div key={Board.getKey()}>
+                <div className="board__label--row">{rowIndex + 1}</div>
+            </div>
         });
     }
 
-    private static classNameForCoordinate(columnNumber: number, rowNumber: number): string {
+    private renderGrid() {
+        return <div className={"board__grid"}>{
+            this.props.coordinates.map((value, rowIndex) => {
+                return value.map((tile, columnIndex) => {
+                    return <div key={Board.getKey()} className={Board.classNameForCoordinate(tile, columnIndex, rowIndex)}>
+                        {Board.tileIndicator(tile)}
+                    </div>
+                })
+            })
+        }</div>;
+    }
+
+    private static classNameForCoordinate(tile: Tile, columnNumber: number, rowNumber: number): string {
         let className = "board__tile";
 
         let bothEven = columnNumber % 2 == 0 && rowNumber % 2 == 0;
         let bothOdd = columnNumber % 2 != 0 && rowNumber % 2 != 0;
 
         if (bothEven || bothOdd) {
-            className += " rotated"
+            className += " rotated";
+        }
+
+        if (tile.hit) {
+            className += " clicked";
         }
 
         return className;
+    }
+
+    private static tileIndicator(tile: Tile) {
+        if (tile.hit && tile.shipId !== null) {
+            return <span className="aimed--hit">
+                {hitIndicator()}
+            </span>
+        } else if (tile.hit) {
+            return <span className="aimed--miss">
+                {missIndicator()}
+            </span>
+        } else {
+            return null;
+        }
     }
 
     private static getKey() {

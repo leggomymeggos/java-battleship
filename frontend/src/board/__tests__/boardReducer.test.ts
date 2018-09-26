@@ -1,5 +1,6 @@
 import boardReducer, {initialState} from "../boardReducer";
 import {BoardActions} from "../boardActions";
+import {Tile} from "../../domain/Tile";
 
 describe("board reducer", () => {
     it("has an initial state", () => {
@@ -12,16 +13,16 @@ describe("board reducer", () => {
         const state = boardReducer(initialState, {type: BoardActions.GET_INITIAL_BOARD});
 
         expect(state.coordinates).toEqual([
-            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+            [new Tile(1), new Tile(), new Tile(), new Tile(2), new Tile(2), new Tile(2), new Tile(2), new Tile(), new Tile(), new Tile()],
+            [new Tile(1), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile()],
+            [new Tile(1), new Tile(), new Tile(3), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile()],
+            [new Tile(1), new Tile(), new Tile(3), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile()],
+            [new Tile(1), new Tile(), new Tile(3), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile()],
+            [new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile()],
+            [new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile()],
+            [new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile()],
+            [new Tile(), new Tile(), new Tile(4), new Tile(4), new Tile(4), new Tile(), new Tile(), new Tile(), new Tile(), new Tile()],
+            [new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(5), new Tile(5)],
         ]);
     });
 });

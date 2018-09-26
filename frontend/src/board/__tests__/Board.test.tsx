@@ -5,6 +5,7 @@ import * as React from "react";
 import {Board, BoardProps, mapDispatchToProps, mapStateToProps} from "../Board";
 import {getInitialBoard} from "../boardActions";
 import {BoardState} from "../boardReducer";
+import {Tile} from "../../domain/Tile";
 
 describe("Board", () => {
     let defaultProps: BoardProps;
@@ -29,7 +30,7 @@ describe("Board", () => {
     it("has a tile for each coordinate", () => {
         const props = {
             ...defaultProps,
-            coordinates: [[1, 2], [3, 4]],
+            coordinates: [[new Tile(), new Tile()], [new Tile(), new Tile()]],
         };
         const subject = shallow(<Board {...props} />);
 
@@ -41,7 +42,7 @@ describe("Board", () => {
     it("has coordinate row labels", () => {
         const props = {
             ...defaultProps,
-            coordinates: [[1, 2], [3, 4], [5, 6]],
+            coordinates: [[new Tile(), new Tile()], [new Tile(), new Tile()], [new Tile(), new Tile()]],
         };
         const subject = shallow(<Board {...props} />);
 
@@ -57,7 +58,7 @@ describe("Board", () => {
     it("has coordinate column labels", () => {
         const props = {
             ...defaultProps,
-            coordinates: [[1, 2], [3, 4], [5, 6]],
+            coordinates: [[new Tile(), new Tile()], [new Tile(), new Tile()], [new Tile(), new Tile()]],
         };
         const subject = shallow(<Board {...props} />);
 
@@ -75,21 +76,58 @@ describe("Board", () => {
         expect(mockActions.getInitialBoard).toHaveBeenCalled();
     });
 
-    it("adds 'rotated' to every other square", () => {
-        const props = {
-            ...defaultProps,
-            coordinates: [[1, 2], [3, 4], [5, 6]],
-        };
-        const subject = shallow(<Board {...props} />);
+    describe("tiles styling", () => {
+        it("adds 'rotated' to every other square", () => {
+            const props = {
+                ...defaultProps,
+                coordinates: [[new Tile(), new Tile()], [new Tile(), new Tile()], [new Tile(), new Tile()]],
+            };
+            const subject = shallow(<Board {...props} />);
 
-        const tiles = subject.find(".board__tile");
-        const classNames = tiles.map((item) => item.props().className);
+            const tiles = subject.find(".board__tile");
+            const classNames = tiles.map((item) => item.props().className);
 
-        expect(classNames).toEqual([
-            "board__tile", "board__tile rotated",
-            "board__tile rotated", "board__tile",
-            "board__tile", "board__tile rotated"
-        ]);
+            expect(classNames).toEqual([
+                "board__tile rotated", "board__tile",
+                "board__tile", "board__tile rotated",
+                "board__tile rotated", "board__tile"
+            ]);
+        });
+
+        it("adds 'aimed--miss' if a tile with no ship was hit", () => {
+            let shotAtTile = new Tile();
+            shotAtTile.hit = true;
+            shotAtTile.shipId = null;
+
+            const props = {
+                ...defaultProps,
+                coordinates: [[shotAtTile, new Tile()]]
+            };
+            const subject = shallow(<Board {...props} />);
+
+            const missedTiles = subject.find(".aimed--miss");
+            expect(missedTiles.length).toEqual(1);
+            const hitTiles = subject.find(".aimed--hit");
+            expect(hitTiles.length).toEqual(0);
+        });
+
+        it("adds 'aimed--hit' if a tile with a ship was hit", () => {
+            let shotAtTile = new Tile();
+            shotAtTile.hit = true;
+            shotAtTile.shipId = 1;
+
+            const props = {
+                ...defaultProps,
+                coordinates: [[shotAtTile, new Tile()]]
+            };
+            const subject = shallow(<Board {...props} />);
+
+            const missedTiles = subject.find(".aimed--miss");
+            expect(missedTiles.length).toEqual(0);
+            const hitTiles = subject.find(".aimed--hit");
+
+            expect(hitTiles.length).toEqual(1);
+        });
     });
 });
 
@@ -107,11 +145,11 @@ describe("mapDispatchToProps", () => {
 describe("mapStateToProps", () => {
     it("maps coordinates", () => {
         const boardReducer: BoardState = {
-            coordinates: [[1], [2]]
+            coordinates: [[new Tile()], [new Tile()]]
         };
         const props = mapStateToProps({
             boardReducer
         });
-        expect(props.coordinates).toEqual([[1], [2]]);
+        expect(props.coordinates).toEqual([[new Tile()], [new Tile()]]);
     });
 });
