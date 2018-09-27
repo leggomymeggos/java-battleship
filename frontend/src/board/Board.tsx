@@ -27,30 +27,33 @@ export class Board extends React.Component<BoardProps> {
     }
 
     public render() {
-        return <div>
+        return <div className="board">
             {this.renderColumnLabels()}
-            {this.renderRowLabels()}
-            {this.renderGrid()}
+            <div className="board__grid-and-row-labels-container">
+                {this.renderRowLabels()}
+                {this.renderGrid()}
+            </div>
         </div>
 
     }
 
     private renderColumnLabels() {
-        return <div>{
-            this.props.coordinates[0].map((_, index) => {
-                return <div className="board__label--column" key={Board.getKey()}>
+        return <div className="board__labels column">
+            <div className="board__label column"/>
+            {this.props.coordinates[0].map((_, index) => {
+                return <div className="board__label column" key={Board.getKey()}>
                     {this.alphabet[index].toUpperCase()}
                 </div>
             })
-        }</div>;
+            }</div>;
     }
 
     private renderRowLabels() {
-        return this.props.coordinates.map((value, rowIndex) => {
-            return <div key={Board.getKey()}>
-                <div className="board__label--row">{rowIndex + 1}</div>
-            </div>
-        });
+        return <div key={Board.getKey()} className="board__labels row">{
+            this.props.coordinates.map((value, rowIndex) => {
+                return <div key={Board.getKey()} className="board__label row">{rowIndex + 1}</div>
+            })
+        }</div>;
     }
 
     private renderGrid() {
@@ -76,7 +79,9 @@ export class Board extends React.Component<BoardProps> {
         let bothOdd = columnNumber % 2 != 0 && rowNumber % 2 != 0;
 
         if (bothEven || bothOdd) {
-            className += " rotated";
+            className += " rotated _155-reverse"
+        } else {
+            className += " rotated _62"
         }
 
         return className;
@@ -86,11 +91,11 @@ export class Board extends React.Component<BoardProps> {
         if (tile.hit && tile.shipId !== null) {
             return <span className="aimed--hit">
                 {hitIndicator()}
-            </span>
+                </span>
         } else if (tile.hit) {
             return <span className="aimed--miss">
                 {missIndicator()}
-            </span>
+                </span>
         } else {
             return null;
         }
