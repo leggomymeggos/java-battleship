@@ -13,12 +13,7 @@ export class Coordinates {
 export const getInitialBoard =
     createAction(BoardActions.GET_INITIAL_BOARD);
 
-export const tileHit = createAction(BoardActions.TILE_HIT, (xCoordinate: number, yCoordinate: number) => {
-    return {
-        xCoordinate,
-        yCoordinate
-    }
-});
+export const tileHit = createAction(BoardActions.TILE_HIT, (coordinates: Coordinates) => coordinates);
 
 export default {
     getInitialBoard,

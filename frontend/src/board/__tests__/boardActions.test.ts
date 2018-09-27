@@ -11,7 +11,10 @@ describe("getInitialBoard", () => {
 
 describe("tileHit", () => {
     it("returns TILE_HIT action", () => {
-        expect(tileHit(1, 2)).toEqual({
+        expect(tileHit({
+            xCoordinate: 1,
+            yCoordinate: 2
+        })).toEqual({
             type: BoardActions.TILE_HIT,
             payload: {
                 xCoordinate: 1,

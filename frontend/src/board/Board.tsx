@@ -2,8 +2,7 @@ import * as React from "react";
 import {connect, Dispatch} from "react-redux";
 import {bindActionCreators} from "redux";
 import boardActions from "./boardActions";
-import {Tile} from "../domain/Tile";
-import {hitIndicator, missIndicator} from "../domain/tileIndicators";
+import BoardTile from "./tile/BoardTile";
 
 export interface IBoardPropsFromActions {
     actions: {
@@ -60,45 +59,13 @@ export class Board extends React.Component<BoardProps> {
         return <div className={"board__grid"}>{
             this.props.coordinates.map((value, rowIndex) => {
                 return value.map((tile, columnIndex) => {
-                    return <div key={Board.getKey()}
-                                className={Board.classNameForCoordinate(columnIndex, rowIndex)}
-                                onClick={() => {
-                                    this.props.actions.tileHit(columnIndex, rowIndex)
-                                }}>
-                        {Board.tileIndicator(tile)}
-                    </div>
+                    return <BoardTile key={Board.getKey()}
+                                      tile={tile}
+                                      coordinates={{xCoordinate: columnIndex, yCoordinate: rowIndex}}
+                    />
                 })
             })
         }</div>;
-    }
-
-    private static classNameForCoordinate(columnNumber: number, rowNumber: number): string {
-        let className = "board__tile";
-
-        let bothEven = columnNumber % 2 == 0 && rowNumber % 2 == 0;
-        let bothOdd = columnNumber % 2 != 0 && rowNumber % 2 != 0;
-
-        if (bothEven || bothOdd) {
-            className += " rotated _155-reverse"
-        } else {
-            className += " rotated _62"
-        }
-
-        return className;
-    }
-
-    private static tileIndicator(tile: Tile) {
-        if (tile.hit && tile.shipId !== null) {
-            return <span className="aimed--hit">
-                {hitIndicator()}
-                </span>
-        } else if (tile.hit) {
-            return <span className="aimed--miss">
-                {missIndicator()}
-                </span>
-        } else {
-            return null;
-        }
     }
 
     private static getKey() {

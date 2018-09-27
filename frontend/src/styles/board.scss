@@ -2,8 +2,8 @@ $board-dimension: 1000px;
 $tile-dimension: 100px;
 
 .board {
-  width: 1120px;
-  height: 1120px;
+  width: 1112px;
+  height: 1112px;
   margin: 0 auto;
 }
 
@@ -37,14 +37,15 @@ $tile-dimension: 100px;
 }
 
 .board__grid {
-  width: $board-dimension + 20px;
-  height: $board-dimension;
+  width: $board-dimension + 10px;
+  height: $board-dimension + 10px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  border: 1px solid #0a6ea8;
 
   .board__tile {
-    border: 1px solid black;
+    border: 0.5px solid #0a6ea8;
     position: relative;
     overflow: hidden;
     width: $tile-dimension;

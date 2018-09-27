@@ -13,8 +13,7 @@ describe("Board", () => {
 
     beforeEach(() => {
         mockActions = {
-            getInitialBoard: jest.fn(),
-            tileHit: jest.fn()
+            getInitialBoard: jest.fn()
         };
         defaultProps = {
             coordinates: [[]],
@@ -28,14 +27,15 @@ describe("Board", () => {
         expect(subject.find(".board__grid").exists()).toBeTruthy();
     });
 
-    it("has a tile for each coordinate", () => {
+    it("renders each tile", () => {
+        let tile = new Tile();
         const props = {
             ...defaultProps,
-            coordinates: [[new Tile(), new Tile()], [new Tile(), new Tile()]],
+            coordinates: [[tile, tile], [tile, tile]],
         };
         const subject = shallow(<Board {...props} />);
 
-        const tiles = subject.find(".board__tile");
+        const tiles = subject.find("Connect(BoardTile)");
 
         expect(tiles).toHaveLength(4);
     });
@@ -47,7 +47,7 @@ describe("Board", () => {
         };
         const subject = shallow(<Board {...props} />);
 
-        const rowLabels = subject.find(".board__label--row").map((item) => {
+        const rowLabels = subject.find(".board__label.row").map((item) => {
             return item.text();
         });
 
@@ -63,7 +63,7 @@ describe("Board", () => {
         };
         const subject = shallow(<Board {...props} />);
 
-        const columnLabels = subject.find(".board__label--column").map((item) => {
+        const columnLabels = subject.find(".board__label.column").map((item) => {
             return item.text();
         });
 
@@ -75,74 +75,6 @@ describe("Board", () => {
         shallow(<Board {...defaultProps}/>);
 
         expect(mockActions.getInitialBoard).toHaveBeenCalled();
-    });
-
-    describe("tiles styling", () => {
-        it("adds 'rotated' to every other square", () => {
-            const props = {
-                ...defaultProps,
-                coordinates: [[new Tile(), new Tile()], [new Tile(), new Tile()], [new Tile(), new Tile()]],
-            };
-            const subject = shallow(<Board {...props} />);
-
-            const tiles = subject.find(".board__tile");
-            const classNames = tiles.map((item) => item.props().className);
-
-            expect(classNames).toEqual([
-                "board__tile rotated", "board__tile",
-                "board__tile", "board__tile rotated",
-                "board__tile rotated", "board__tile"
-            ]);
-        });
-
-        it("adds 'aimed--miss' if a tile with no ship was hit", () => {
-            let shotAtTile = new Tile();
-            shotAtTile.hit = true;
-            shotAtTile.shipId = null;
-
-            const props = {
-                ...defaultProps,
-                coordinates: [[shotAtTile, new Tile()]]
-            };
-            const subject = shallow(<Board {...props} />);
-
-            const missedTiles = subject.find(".aimed--miss");
-            expect(missedTiles.length).toEqual(1);
-            const hitTiles = subject.find(".aimed--hit");
-            expect(hitTiles.length).toEqual(0);
-        });
-
-        it("adds 'aimed--hit' if a tile with a ship was hit", () => {
-            let shotAtTile = new Tile();
-            shotAtTile.hit = true;
-            shotAtTile.shipId = 1;
-
-            const props = {
-                ...defaultProps,
-                coordinates: [[shotAtTile, new Tile()]]
-            };
-            const subject = shallow(<Board {...props} />);
-
-            const missedTiles = subject.find(".aimed--miss");
-            expect(missedTiles.length).toEqual(0);
-            const hitTiles = subject.find(".aimed--hit");
-
-            expect(hitTiles.length).toEqual(1);
-        });
-    });
-
-    describe("clicking tile", () => {
-        it("calls 'tileHit' action with tile coordinates", () => {
-            const props = {
-                ...defaultProps,
-                coordinates: [[new Tile(), new Tile()], [new Tile(), new Tile()], [new Tile(), new Tile()]],
-            };
-            const subject = shallow(<Board {...props} />);
-
-            subject.find(".board__tile").get(3).props.onClick();
-
-            expect(mockActions.tileHit).toBeCalledWith(1, 1);
-        });
     });
 });
 
