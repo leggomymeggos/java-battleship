@@ -1,8 +1,19 @@
+const webpack = require('webpack');
+const path = require('path');
+
 module.exports = {
     entry: "./src/index.tsx",
     output: {
         filename: "bundle.js",
         path: __dirname + "/dist"
+    },
+
+    devServer: {
+        publicPath: '/dist/',
+        contentBase: path.resolve(__dirname, "./"),
+        watchContentBase: true,
+        compress: true,
+        port: 8080
     },
 
     // Enable sourcemaps for debugging webpack's output.
@@ -12,6 +23,10 @@ module.exports = {
         // Add '.ts' and '.tsx' as resolvable extensions.
         extensions: [".ts", ".tsx", ".js", ".json", ".scss", ".css"]
     },
+
+    plugins: [
+        new webpack.HotModuleReplacementPlugin()
+    ],
 
     module: {
         rules: [
