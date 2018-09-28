@@ -1,7 +1,8 @@
 import {Action, handleActions} from "redux-actions";
-import {BoardActions, Coordinates} from "./boardActions";
+import {BoardActions} from "./boardActions";
 import {Tile} from "../domain/Tile";
 import * as _ from "lodash";
+import {GameActions} from "../game/gameActions";
 
 export type BoardState = {
     coordinates: Tile[][];
@@ -12,23 +13,12 @@ export const initialState: BoardState = {
 };
 
 const boardReducer = handleActions({
-    [BoardActions.GET_INITIAL_BOARD]: (state: BoardState) => {
+    [GameActions.NEW_GAME_CREATED]: (state: BoardState, action: Action<any>) => {
         return {
-            ...state, coordinates: [
-                [new Tile(1), new Tile(), new Tile(), new Tile(2), new Tile(2), new Tile(2), new Tile(2), new Tile(), new Tile(), new Tile()],
-                [new Tile(1), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile()],
-                [new Tile(1), new Tile(), new Tile(3), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile()],
-                [new Tile(1), new Tile(), new Tile(3), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile()],
-                [new Tile(1), new Tile(), new Tile(3), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile()],
-                [new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile()],
-                [new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile()],
-                [new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile()],
-                [new Tile(), new Tile(), new Tile(4), new Tile(4), new Tile(4), new Tile(), new Tile(), new Tile(), new Tile(), new Tile()],
-                [new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(5), new Tile(5)],
-            ]
+            ...state, coordinates: action.payload
         }
     },
-    [BoardActions.TILE_HIT]: (state: BoardState, action: Action<Coordinates>) => {
+    [BoardActions.TILE_HIT]: (state: BoardState, action: Action<any>) => {
         const coordinates = _.cloneDeep(state.coordinates);
         const hitTile = coordinates[action.payload.yCoordinate][action.payload.xCoordinate];
         hitTile.hit = true;
@@ -38,7 +28,7 @@ const boardReducer = handleActions({
             ...state,
             coordinates
         };
-    }
+    },
 }, initialState);
 
 export default boardReducer;

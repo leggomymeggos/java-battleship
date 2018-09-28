@@ -1,6 +1,7 @@
 import boardReducer, {initialState} from "../boardReducer";
 import {BoardActions} from "../boardActions";
 import {Tile} from "../../domain/Tile";
+import {GameActions} from "../../game/gameActions";
 
 describe("board reducer", () => {
     it("has an initial state", () => {
@@ -9,21 +10,10 @@ describe("board reducer", () => {
         });
     });
 
-    it("handles GET_INITIAL_BOARD action", () => {
-        const state = boardReducer(initialState, {type: BoardActions.GET_INITIAL_BOARD});
+    it("handles NEW_GAME_CREATED action", () => {
+        const state = boardReducer(initialState, {type: GameActions.NEW_GAME_CREATED, payload: [[new Tile()], [new Tile()]]});
 
-        expect(state.coordinates).toEqual([
-            [new Tile(1), new Tile(), new Tile(), new Tile(2), new Tile(2), new Tile(2), new Tile(2), new Tile(), new Tile(), new Tile()],
-            [new Tile(1), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile()],
-            [new Tile(1), new Tile(), new Tile(3), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile()],
-            [new Tile(1), new Tile(), new Tile(3), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile()],
-            [new Tile(1), new Tile(), new Tile(3), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile()],
-            [new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile()],
-            [new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile()],
-            [new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile()],
-            [new Tile(), new Tile(), new Tile(4), new Tile(4), new Tile(4), new Tile(), new Tile(), new Tile(), new Tile(), new Tile()],
-            [new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(5), new Tile(5)],
-        ]);
+        expect(state.coordinates).toEqual([[new Tile()], [new Tile()]]);
     });
 
     it("updates the hit tile", () => {
