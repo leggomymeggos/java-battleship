@@ -4,8 +4,8 @@ import {newGameCreated} from "./gameActions";
 
 export function* fetchGame(): any {
     try {
-        const board = yield call(GameApi.newGame);
-        yield put(newGameCreated(board));
+        const game = yield call(GameApi.newGame);
+        yield put(newGameCreated(game.board));
     } catch (e) {
         console.error(e)
     }

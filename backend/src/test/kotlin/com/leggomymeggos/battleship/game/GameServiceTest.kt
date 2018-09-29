@@ -29,12 +29,18 @@ class GameServiceTest {
     }
 
     @Test
-    fun `new returns a board`() {
-        val expectedBoard = Board(listOf(listOf(Tile())))
-        whenever(boardService.initBoard()).thenReturn(expectedBoard)
+    fun `new gets a board`() {
+        gameService.new()
 
-        val board = gameService.new()
+        verify(boardService).initBoard()
+    }
 
-        assertThat(board).isEqualTo(expectedBoard)
+    @Test
+    fun `new returns a game`() {
+        val board = Board(listOf(listOf(Tile())))
+        whenever(boardService.initBoard()).thenReturn(board)
+
+        val game = gameService.new()
+        assertThat(game.board).isEqualTo(board)
     }
 }

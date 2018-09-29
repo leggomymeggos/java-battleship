@@ -1,7 +1,6 @@
 package com.leggomymeggos.battleship.game
 
 import com.leggomymeggos.battleship.board.Board
-import com.leggomymeggos.battleship.board.tile.Tile
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
@@ -40,15 +39,12 @@ class GameControllerTest {
     }
 
     @Test
-    fun `newGame returns a new board`() {
-        val board = Board(listOf(
-                listOf(Tile(), Tile()),
-                listOf(Tile(), Tile())
-        ))
-        whenever(gameService.new()).thenReturn(board)
+    fun `newGame returns a new game`() {
+        val game = Game(Board())
+        whenever(gameService.new()).thenReturn(game)
 
         val actual = controller.newGame()
 
-        assertThat(actual).isEqualTo(board)
+        assertThat(actual).isEqualTo(game)
     }
 }
