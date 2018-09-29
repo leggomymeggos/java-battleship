@@ -1,35 +1,40 @@
 package com.leggomymeggos.battleship.game
 
+import com.leggomymeggos.battleship.board.Board
+import com.leggomymeggos.battleship.board.BoardService
 import com.leggomymeggos.battleship.board.tile.Tile
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockito_kotlin.whenever
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 
 class GameServiceTest {
 
-    lateinit var gameService: GameService
+    private lateinit var boardService: BoardService
+    private lateinit var gameService: GameService
 
     @Before
     fun setup() {
-        gameService = GameService()
+        boardService = mock()
+        gameService = GameService(boardService)
+    }
+
+    @Test
+    fun `new requests board from boardService`() {
+        gameService.new()
+
+        verify(boardService).initBoard()
     }
 
     @Test
     fun `new returns a board`() {
+        val expectedBoard = Board(listOf(listOf(Tile())))
+        whenever(boardService.initBoard()).thenReturn(expectedBoard)
+
         val board = gameService.new()
 
-
-        assertThat(board).containsExactly(
-                listOf(Tile(shipId = 1), Tile(shipId = 5), Tile(shipId = 5), Tile(shipId = 5), Tile(), Tile(), Tile(shipId = 3), Tile(), Tile(), Tile()),
-                listOf(Tile(shipId = 1), Tile(), Tile(), Tile(), Tile(), Tile(), Tile(shipId = 3), Tile(), Tile(), Tile()),
-                listOf(Tile(shipId = 1), Tile(), Tile(), Tile(), Tile(), Tile(), Tile(shipId = 3), Tile(), Tile(), Tile()),
-                listOf(Tile(shipId = 1), Tile(), Tile(), Tile(), Tile(), Tile(), Tile(), Tile(), Tile(), Tile()),
-                listOf(Tile(shipId = 1), Tile(), Tile(), Tile(), Tile(), Tile(), Tile(), Tile(), Tile(), Tile()),
-                listOf(Tile(), Tile(), Tile(), Tile(), Tile(), Tile(), Tile(), Tile(), Tile(), Tile()),
-                listOf(Tile(), Tile(), Tile(), Tile(shipId = 4), Tile(shipId = 4), Tile(), Tile(), Tile(), Tile(), Tile()),
-                listOf(Tile(), Tile(), Tile(), Tile(), Tile(), Tile(), Tile(), Tile(), Tile(), Tile()),
-                listOf(Tile(), Tile(), Tile(), Tile(), Tile(), Tile(), Tile(), Tile(), Tile(), Tile()),
-                listOf(Tile(), Tile(), Tile(), Tile(), Tile(), Tile(), Tile(shipId = 2), Tile(shipId = 2), Tile(shipId = 2), Tile(shipId = 2))
-        )
+        assertThat(board).isEqualTo(expectedBoard)
     }
 }

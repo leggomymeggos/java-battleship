@@ -12,7 +12,7 @@ export interface IBoardPropsFromActions {
 }
 
 export interface IBoardPropsFromStore {
-    coordinates: any[][];
+    grid: any[][];
 }
 
 export type BoardProps = IBoardPropsFromActions & IBoardPropsFromStore;
@@ -39,7 +39,7 @@ export class Board extends React.Component<BoardProps> {
     private renderColumnLabels() {
         return <div className="board__labels column">
             <div className="board__label column"/>
-            {this.props.coordinates[0].map((_, index) => {
+            {this.props.grid[0].map((_, index) => {
                 return <div className="board__label column" key={Board.getKey()}>
                     {this.alphabet[index].toUpperCase()}
                 </div>
@@ -49,7 +49,7 @@ export class Board extends React.Component<BoardProps> {
 
     private renderRowLabels() {
         return <div key={Board.getKey()} className="board__labels row">{
-            this.props.coordinates.map((value, rowIndex) => {
+            this.props.grid.map((value, rowIndex) => {
                 return <div key={Board.getKey()} className="board__label row">{rowIndex + 1}</div>
             })
         }</div>;
@@ -57,7 +57,7 @@ export class Board extends React.Component<BoardProps> {
 
     private renderGrid() {
         return <div className={"board__grid"}>{
-            this.props.coordinates.map((value, rowIndex) => {
+            this.props.grid.map((value, rowIndex) => {
                 return value.map((tile, columnIndex) => {
                     return <BoardTile key={Board.getKey()}
                                       tile={tile}
@@ -81,9 +81,9 @@ export const mapDispatchToProps = (dispatch: Dispatch<{}>): IBoardPropsFromActio
     }
 };
 
-export const mapStateToProps = (state: { boardReducer: { coordinates: any[][] } }): IBoardPropsFromStore => {
+export const mapStateToProps = (state: { boardReducer: { grid: any[][] } }): IBoardPropsFromStore => {
     return {
-        coordinates: state.boardReducer.coordinates
+        grid: state.boardReducer.grid
     }
 };
 

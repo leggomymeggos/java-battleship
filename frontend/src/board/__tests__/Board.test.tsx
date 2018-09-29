@@ -16,7 +16,7 @@ describe("Board", () => {
             getInitialBoard: jest.fn()
         };
         defaultProps = {
-            coordinates: [[]],
+            grid: [[]],
             actions: mockActions,
         }
     });
@@ -31,7 +31,7 @@ describe("Board", () => {
         let tile = new Tile();
         const props = {
             ...defaultProps,
-            coordinates: [[tile, tile], [tile, tile]],
+            grid: [[tile, tile], [tile, tile]],
         };
         const subject = shallow(<Board {...props} />);
 
@@ -43,7 +43,7 @@ describe("Board", () => {
     it("has coordinate row labels", () => {
         const props = {
             ...defaultProps,
-            coordinates: [[new Tile(), new Tile()], [new Tile(), new Tile()], [new Tile(), new Tile()]],
+            grid: [[new Tile(), new Tile()], [new Tile(), new Tile()], [new Tile(), new Tile()]],
         };
         const subject = shallow(<Board {...props} />);
 
@@ -59,7 +59,7 @@ describe("Board", () => {
     it("has coordinate column labels", () => {
         const props = {
             ...defaultProps,
-            coordinates: [[new Tile(), new Tile()], [new Tile(), new Tile()], [new Tile(), new Tile()]],
+            grid: [[new Tile(), new Tile()], [new Tile(), new Tile()], [new Tile(), new Tile()]],
         };
         const subject = shallow(<Board {...props} />);
 
@@ -90,13 +90,13 @@ describe("mapDispatchToProps", () => {
 });
 
 describe("mapStateToProps", () => {
-    it("maps coordinates", () => {
+    it("maps grid", () => {
         const boardReducer: BoardState = {
-            coordinates: [[new Tile()], [new Tile()]]
+            grid: [[new Tile()], [new Tile()]]
         };
         const props = mapStateToProps({
             boardReducer
         });
-        expect(props.coordinates).toEqual([[new Tile()], [new Tile()]]);
+        expect(props.grid).toEqual([[new Tile()], [new Tile()]]);
     });
 });

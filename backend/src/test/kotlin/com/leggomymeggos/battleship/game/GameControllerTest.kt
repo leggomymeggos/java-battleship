@@ -1,5 +1,6 @@
 package com.leggomymeggos.battleship.game
 
+import com.leggomymeggos.battleship.board.Board
 import com.leggomymeggos.battleship.board.tile.Tile
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
@@ -40,10 +41,10 @@ class GameControllerTest {
 
     @Test
     fun `newGame returns a new board`() {
-        val board = listOf(
+        val board = Board(listOf(
                 listOf(Tile(), Tile()),
                 listOf(Tile(), Tile())
-        )
+        ))
         whenever(gameService.new()).thenReturn(board)
 
         val actual = controller.newGame()
