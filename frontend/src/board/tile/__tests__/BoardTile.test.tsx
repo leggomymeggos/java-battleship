@@ -61,6 +61,7 @@ describe("BoardTile", () => {
                 }
             };
 
+            
             const subject = shallow(<BoardTile {...props}/>);
 
             expect(subject.find("._62").exists()).toBeTruthy();
