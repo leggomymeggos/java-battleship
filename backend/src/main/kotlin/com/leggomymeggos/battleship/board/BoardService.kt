@@ -89,10 +89,3 @@ class BoardService {
         return this.copy(y = yCoordinate)
     }
 }
-
-data class Coordinate(val x: Int, val y: Int)
-
-enum class Direction {
-    HORIZONTAL,
-    VERTICAL
-}
