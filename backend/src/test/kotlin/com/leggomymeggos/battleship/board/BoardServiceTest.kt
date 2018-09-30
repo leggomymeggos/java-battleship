@@ -2,7 +2,6 @@ package com.leggomymeggos.battleship.board
 
 import com.leggomymeggos.battleship.board.Ship.CRUISER
 import com.leggomymeggos.battleship.board.Ship.SUBMARINE
-import com.leggomymeggos.battleship.board.tile.Tile
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test

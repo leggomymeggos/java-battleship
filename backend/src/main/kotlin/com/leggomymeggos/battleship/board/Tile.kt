@@ -1,4 +1,4 @@
-package com.leggomymeggos.battleship.board.tile
+package com.leggomymeggos.battleship.board
 
 import com.leggomymeggos.battleship.board.Ship
 

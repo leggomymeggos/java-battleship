@@ -2,7 +2,7 @@ package com.leggomymeggos.battleship.game
 
 import com.leggomymeggos.battleship.board.Board
 import com.leggomymeggos.battleship.board.BoardService
-import com.leggomymeggos.battleship.board.tile.Tile
+import com.leggomymeggos.battleship.board.Tile
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever

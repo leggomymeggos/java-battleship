@@ -1,6 +1,5 @@
 package com.leggomymeggos.battleship.board
 
-import com.leggomymeggos.battleship.board.tile.Tile
 import org.springframework.stereotype.Service
 
 @Service
