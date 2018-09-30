@@ -6,17 +6,17 @@ import org.springframework.stereotype.Service
 class BoardService {
 
     fun initBoard(): Board {
-        val tiles = mutableGrid()
+        val grid = mutableGridOf()
 
         for (row in 0..9) {
-            val innerTiles = mutableListOf<Tile>()
+            val row = mutableListOf<Tile>()
             for (col in 0..9) {
-                innerTiles.add(Tile())
+                row.add(Tile())
             }
-            tiles.add(innerTiles)
+            grid.add(row)
         }
 
-        return Board(tiles)
+        return Board(grid)
     }
 
     fun addShip(board: Board, ship: Ship, coordinate: Coordinate, direction: Direction): Board {

@@ -1,8 +1,9 @@
 package com.leggomymeggos.battleship.game
 
 import com.leggomymeggos.battleship.board.Board
-import com.leggomymeggos.battleship.board.BoardService
 import com.leggomymeggos.battleship.board.Tile
+import com.leggomymeggos.battleship.player.Player
+import com.leggomymeggos.battleship.player.PlayerService
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
@@ -12,35 +13,37 @@ import org.junit.Test
 
 class GameServiceTest {
 
-    private lateinit var boardService: BoardService
+    private lateinit var playerService: PlayerService
     private lateinit var gameService: GameService
 
     @Before
     fun setup() {
-        boardService = mock()
-        gameService = GameService(boardService)
+        playerService = mock()
+        gameService = GameService(playerService)
+
+        whenever(playerService.initPlayer()).thenReturn(Player(Board()))
     }
 
     @Test
     fun `new requests board from boardService`() {
         gameService.new()
 
-        verify(boardService).initBoard()
+        verify(playerService).initPlayer()
     }
 
     @Test
     fun `new gets a board`() {
         gameService.new()
 
-        verify(boardService).initBoard()
+        verify(playerService).initPlayer()
     }
 
     @Test
     fun `new returns a game`() {
-        val board = Board(listOf(listOf(Tile())))
-        whenever(boardService.initBoard()).thenReturn(board)
+        val player = Player(board = Board(listOf(listOf(Tile()))))
+        whenever(playerService.initPlayer()).thenReturn(player)
 
         val game = gameService.new()
-        assertThat(game.board).isEqualTo(board)
+        assertThat(game.player).isEqualTo(player)
     }
 }

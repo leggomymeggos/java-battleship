@@ -17,6 +17,6 @@ describe("gameSaga test", () => {
 
         generator.next();
 
-        expect(generator.next({board: {grid: [[new Tile()]]}}).value).toEqual(put({type: "NEW_GAME_CREATED", payload: {grid: [[new Tile()]]}}));
+        expect(generator.next({player: {board: {grid: [[new Tile()]]}}}).value).toEqual(put({type: "NEW_GAME_CREATED", payload: {grid: [[new Tile()]]}}));
     });
 });

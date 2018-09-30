@@ -1,5 +1,5 @@
 package com.leggomymeggos.battleship.game
 
-import com.leggomymeggos.battleship.board.Board
+import com.leggomymeggos.battleship.player.Player
 
-data class Game(val board: Board)
+data class Game(val player: Player)

@@ -1,12 +1,12 @@
 package com.leggomymeggos.battleship.game
 
-import com.leggomymeggos.battleship.board.BoardService
+import com.leggomymeggos.battleship.player.PlayerService
 import org.springframework.stereotype.Service
 
 @Service
-class GameService(val boardService: BoardService) {
+class GameService(val playerService: PlayerService) {
     fun new(): Game {
-        val board = boardService.initBoard()
-        return Game(board)
+        val player = playerService.initPlayer()
+        return Game(player)
     }
 }

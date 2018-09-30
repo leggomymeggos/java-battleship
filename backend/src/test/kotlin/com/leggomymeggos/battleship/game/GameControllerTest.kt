@@ -1,6 +1,7 @@
 package com.leggomymeggos.battleship.game
 
 import com.leggomymeggos.battleship.board.Board
+import com.leggomymeggos.battleship.player.Player
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
@@ -40,7 +41,7 @@ class GameControllerTest {
 
     @Test
     fun `newGame returns a new game`() {
-        val game = Game(Board())
+        val game = Game(Player(Board()))
         whenever(gameService.new()).thenReturn(game)
 
         val actual = controller.newGame()

@@ -1,3 +1,3 @@
 package com.leggomymeggos.battleship.board
 
-data class Board(val grid: Grid = grid())
+data class Board(val grid: Grid = gridOf())

@@ -25,7 +25,7 @@ describe("BoardTile", () => {
         it("rotates by -155 if both coordinates are even", () => {
             const props = {
                 ...defaultProps,
-                grid: {
+                coordinates: {
                     xCoordinate: 421,
                     yCoordinate: 153
                 }
@@ -40,7 +40,7 @@ describe("BoardTile", () => {
         it("rotates by -155 if both coordinates are odd", () => {
             const props = {
                 ...defaultProps,
-                grid: {
+                coordinates: {
                     xCoordinate: 494,
                     yCoordinate: 1528
                 }
@@ -55,7 +55,7 @@ describe("BoardTile", () => {
         it("rotates by 62 if one coordinate is even and one is odd", () => {
             const props = {
                 ...defaultProps,
-                grid: {
+                coordinates: {
                     xCoordinate: 499,
                     yCoordinate: 1528
                 }
@@ -107,7 +107,7 @@ describe("BoardTile", () => {
         it("calls 'tileHit' with the coordinates", () => {
             const props = {
                 ...defaultProps,
-                grid: {
+                coordinates: {
                     xCoordinate: 421,
                     yCoordinate: 153
                 }
@@ -127,7 +127,7 @@ describe("BoardTile", () => {
             const props = {
                 ...defaultProps,
                 tile: new Tile(null, true),
-                grid: {
+                coordinates: {
                     xCoordinate: 421,
                     yCoordinate: 153
                 }
