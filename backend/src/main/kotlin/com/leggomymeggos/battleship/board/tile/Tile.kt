@@ -1,4 +1,6 @@
 package com.leggomymeggos.battleship.board.tile
 
-data class Tile(val shipId: Int? = null,
+import com.leggomymeggos.battleship.board.Ship
+
+data class Tile(val ship: Ship? = null,
                 val hit: Boolean = false)
