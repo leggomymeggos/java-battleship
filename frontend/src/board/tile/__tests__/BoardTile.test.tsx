@@ -52,6 +52,7 @@ describe("BoardTile", () => {
             expect(subject.find("._62").exists()).toBeFalsy();
         });
 
+
         it("rotates by 62 if one coordinate is even and one is odd", () => {
             const props = {
                 ...defaultProps,
