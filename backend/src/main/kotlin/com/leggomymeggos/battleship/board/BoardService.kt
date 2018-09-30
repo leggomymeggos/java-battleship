@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 class BoardService {
 
     fun initBoard(): Board {
-        val tiles = mutableListOf<MutableList<Tile>>()
+        val tiles = mutableGrid()
 
         for (row in 0..9) {
             val innerTiles = mutableListOf<Tile>()
@@ -41,21 +41,21 @@ class BoardService {
         return Board(newGrid)
     }
 
-    private fun List<List<Tile>>.isValidHorizontalPlacement(coordinate: Coordinate, ship: Ship): Boolean {
+    private fun Grid.isValidHorizontalPlacement(coordinate: Coordinate, ship: Ship): Boolean {
         val tilesContainingShip = this[coordinate.y]
                 .subList(coordinate.x, ship.size + coordinate.x)
                 .filter { it.ship != null }
         return tilesContainingShip.isEmpty()
     }
 
-    private fun List<List<Tile>>.isValidVerticalPlacement(coordinate: Coordinate, ship: Ship): Boolean {
+    private fun Grid.isValidVerticalPlacement(coordinate: Coordinate, ship: Ship): Boolean {
         val tilesContainingShip = this.map { it[coordinate.x] }
                 .subList(coordinate.y, ship.size + coordinate.y)
                 .filter { it.ship != null }
         return tilesContainingShip.isEmpty()
     }
 
-    private fun MutableList<List<Tile>>.addShipHorizontally(coordinate: Coordinate, ship: Ship) {
+    private fun MutableGrid.addShipHorizontally(coordinate: Coordinate, ship: Ship) {
         for (i in coordinate.x until ship.size + coordinate.x) {
             val shipPlacement = this[coordinate.y].toMutableList()
             shipPlacement[i] = Tile(ship)
@@ -63,7 +63,7 @@ class BoardService {
         }
     }
 
-    private fun MutableList<List<Tile>>.addShipVertically(coordinate: Coordinate, ship: Ship) {
+    private fun MutableGrid.addShipVertically(coordinate: Coordinate, ship: Ship) {
         for (i in coordinate.y until ship.size + coordinate.y) {
             val shipPlacement = this[i].toMutableList()
             shipPlacement[coordinate.x] = Tile(ship)

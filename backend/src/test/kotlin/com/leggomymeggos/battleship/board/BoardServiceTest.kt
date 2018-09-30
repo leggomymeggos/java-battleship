@@ -121,8 +121,8 @@ class BoardServiceTest {
     }
     // endregion
 
-    private fun createGridWithSize(size: Int): List<List<Tile>> {
-        val tiles = mutableListOf<MutableList<Tile>>()
+    private fun createGridWithSize(size: Int): Grid {
+        val tiles = mutableGrid()
 
         for (row in 0 until size) {
             val innerTiles = mutableListOf<Tile>()
