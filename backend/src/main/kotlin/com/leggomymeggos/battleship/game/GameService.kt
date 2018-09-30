@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service
 class GameService(val playerService: PlayerService) {
     fun new(): Game {
         val player = playerService.initPlayer()
-        return Game(player)
+        val gamePlayer = playerService.setShips(player)
+        return Game(gamePlayer)
     }
 }

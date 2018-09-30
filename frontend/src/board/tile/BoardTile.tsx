@@ -60,7 +60,7 @@ export class BoardTile extends React.Component<BoardTileProps, {}> {
     }
 
     private static tileIndicator(tile: Tile) {
-        if (tile.hit && tile.shipId !== null) {
+        if (tile.hit && tile.ship !== null) {
             return <span className="aimed--hit">
                 {hitIndicator()}
                 </span>

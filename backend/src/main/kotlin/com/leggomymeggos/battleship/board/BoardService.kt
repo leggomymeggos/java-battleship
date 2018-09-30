@@ -8,9 +8,9 @@ class BoardService {
     fun initBoard(): Board {
         val grid = mutableGridOf()
 
-        for (row in 0..9) {
+        for (rowIndex in 0..9) {
             val row = mutableListOf<Tile>()
-            for (col in 0..9) {
+            for (colIndex in 0..9) {
                 row.add(Tile())
             }
             grid.add(row)

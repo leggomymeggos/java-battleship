@@ -82,7 +82,7 @@ describe("BoardTile", () => {
         it("adds 'aimed--hit' if the tile was hit and contained a ship", () => {
             const props = {
                 ...defaultProps,
-                tile: new Tile(123, true)
+                tile: new Tile("123", true)
             };
 
             const subject = shallow(<BoardTile {...props}/>);

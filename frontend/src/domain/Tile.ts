@@ -1,9 +1,9 @@
 export class Tile {
-    shipId: number;
+    ship: string;
     hit: boolean;
 
-    constructor(shipId: number = null, hit: boolean = false) {
-        this.shipId = shipId;
+    constructor(ship: string = null, hit: boolean = false) {
+        this.ship = ship;
         this.hit = hit;
     }
 }

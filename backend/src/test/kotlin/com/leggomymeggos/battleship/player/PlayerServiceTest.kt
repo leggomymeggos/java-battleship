@@ -1,9 +1,8 @@
 package com.leggomymeggos.battleship.player
 
 import com.leggomymeggos.battleship.board.*
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.whenever
+import com.leggomymeggos.battleship.board.Ship.*
+import com.nhaarman.mockito_kotlin.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -35,5 +34,31 @@ class PlayerServiceTest {
         val player = playerService.initPlayer()
 
         assertThat(player.board).isEqualTo(board)
+    }
+
+    @Test
+    fun `setShips sets all ships`() {
+        val boardWithCruiser = Board()
+        val boardWithSubmarine = Board()
+        val boardWithAircraftCarrier = Board()
+        val boardWithDestroyer = Board()
+        val boardWithBattleship = Board()
+
+        whenever(boardService.addShip(any(), eq(CRUISER), any(), any())).thenReturn(boardWithCruiser)
+        whenever(boardService.addShip(any(), eq(SUBMARINE), any(), any())).thenReturn(boardWithSubmarine)
+        whenever(boardService.addShip(any(), eq(AIRCRAFT_CARRIER), any(), any())).thenReturn(boardWithAircraftCarrier)
+        whenever(boardService.addShip(any(), eq(DESTROYER), any(), any())).thenReturn(boardWithDestroyer)
+        whenever(boardService.addShip(any(), eq(BATTLESHIP), any(), any())).thenReturn(boardWithBattleship)
+
+        val playerBoard = Board()
+        val playerWithShips = playerService.setShips(Player(playerBoard))
+
+        verify(boardService).addShip(same(playerBoard), eq(CRUISER), any(), any())
+        verify(boardService).addShip(same(boardWithCruiser), eq(SUBMARINE), any(), any())
+        verify(boardService).addShip(same(boardWithSubmarine), eq(AIRCRAFT_CARRIER), any(), any())
+        verify(boardService).addShip(same(boardWithAircraftCarrier), eq(DESTROYER), any(), any())
+        verify(boardService).addShip(same(boardWithDestroyer), eq(BATTLESHIP), any(), any())
+
+        assertThat(playerWithShips.board).isSameAs(boardWithBattleship)
     }
 }
