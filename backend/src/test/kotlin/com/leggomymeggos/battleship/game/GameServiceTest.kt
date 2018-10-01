@@ -4,10 +4,7 @@ import com.leggomymeggos.battleship.board.Board
 import com.leggomymeggos.battleship.board.Tile
 import com.leggomymeggos.battleship.player.Player
 import com.leggomymeggos.battleship.player.PlayerService
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockito_kotlin.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -15,12 +12,14 @@ import org.junit.Test
 class GameServiceTest {
 
     private lateinit var playerService: PlayerService
+    private lateinit var gameRegistry: GameRegistry
     private lateinit var gameService: GameService
 
     @Before
     fun setup() {
         playerService = mock()
-        gameService = GameService(playerService)
+        gameRegistry = mock()
+        gameService = GameService(playerService, gameRegistry)
 
         whenever(playerService.initPlayer()).thenReturn(Player(Board()))
         whenever(playerService.setShips(any())).thenReturn(Player(Board()))
@@ -41,6 +40,19 @@ class GameServiceTest {
         gameService.new()
 
         verify(playerService).setShips(player)
+    }
+
+    @Test
+    fun `new adds game to game registry`() {
+        val player = Player(board = Board(listOf(listOf(Tile()))))
+        whenever(playerService.setShips(any())).thenReturn(player)
+
+        gameService.new()
+
+        val argumentCaptor = argumentCaptor<Game>()
+        verify(gameRegistry).game = argumentCaptor.capture()
+
+        assertThat(argumentCaptor.firstValue.player).isEqualTo(player)
     }
 
     @Test
