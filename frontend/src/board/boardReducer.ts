@@ -18,15 +18,10 @@ const boardReducer = handleActions({
             ...state, grid: action.payload.grid
         }
     },
-    [BoardActions.TILE_HIT]: (state: BoardState, action: Action<any>) => {
-        const grid = _.cloneDeep(state.grid);
-        const hitTile = grid[action.payload.yCoordinate][action.payload.xCoordinate];
-        hitTile.hit = true;
-        grid[action.payload.yCoordinate][action.payload.xCoordinate] = hitTile;
-
+    [BoardActions.BOARD_HIT_SUCCESS]: (state: BoardState, action: Action<any>) => {
         return {
             ...state,
-            grid
+            grid: action.payload
         };
     },
 }, initialState);

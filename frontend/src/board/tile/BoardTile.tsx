@@ -1,19 +1,19 @@
 import * as React from "react";
 import {connect, Dispatch} from "react-redux";
 import {bindActionCreators} from "redux";
-import boardActions, {Coordinates} from "../boardActions";
+import boardActions, {Coordinate} from "../boardActions";
 import {Tile} from "../../domain/Tile";
 import {hitIndicator, missIndicator} from "./tileIndicators";
 
 export interface IBoardTilePropsFromActions {
     actions: {
-        tileHit: any;
+        boardHit: any;
     };
 }
 
 export interface IBoardTilePropsFromParent {
     tile: Tile,
-    coordinates: Coordinates
+    coordinates: Coordinate
 }
 
 export type BoardTileProps = IBoardTilePropsFromParent & IBoardTilePropsFromActions;
@@ -27,7 +27,7 @@ export class BoardTile extends React.Component<BoardTileProps, {}> {
                         if (tile.hit) {
                             return;
                         }
-                        this.props.actions.tileHit(this.props.coordinates);
+                        this.props.actions.boardHit(this.props.coordinates);
                     }}>
             {BoardTile.tileIndicator(tile)}
         </div>;
@@ -45,9 +45,9 @@ export class BoardTile extends React.Component<BoardTileProps, {}> {
     }
 
     private classNameForCoordinate() {
-        let {xCoordinate, yCoordinate} = this.props.coordinates;
-        const rowEven = xCoordinate % 2 == 0;
-        const columnEven = yCoordinate % 2 == 0;
+        let {x, y} = this.props.coordinates;
+        const rowEven = x % 2 == 0;
+        const columnEven = y % 2 == 0;
 
         let bothEven = columnEven && rowEven;
         let bothOdd = !columnEven && !rowEven;
@@ -77,7 +77,7 @@ export class BoardTile extends React.Component<BoardTileProps, {}> {
 export const mapDispatchToProps = (dispatch: Dispatch<{}>): IBoardTilePropsFromActions => {
     return {
         actions: bindActionCreators({
-            ...boardActions
+            ...boardActions,
         }, dispatch)
     }
 };

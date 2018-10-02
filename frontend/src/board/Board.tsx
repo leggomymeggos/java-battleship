@@ -7,7 +7,6 @@ import BoardTile from "./tile/BoardTile";
 export interface IBoardPropsFromActions {
     actions: {
         getInitialBoard: any;
-        tileHit: any;
     };
 }
 
@@ -61,7 +60,7 @@ export class Board extends React.Component<BoardProps> {
                 return value.map((tile, columnIndex) => {
                     return <BoardTile key={Board.getKey()}
                                       tile={tile}
-                                      coordinates={{xCoordinate: columnIndex, yCoordinate: rowIndex}}
+                                      coordinates={{x: columnIndex, y: rowIndex}}
                     />
                 })
             })

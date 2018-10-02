@@ -1,21 +1,32 @@
 import {createAction} from "redux-actions";
+import {Tile} from "../domain/Tile";
 
 export const BoardActions = {
     GET_INITIAL_BOARD: "GET_INITIAL_BOARD",
-    TILE_HIT: "TILE_HIT"
+    BOARD_HIT_SUCCESS: "BOARD_HIT_SUCCESS",
+    BOARD_HIT: "BOARD_HIT"
 };
 
-export class Coordinates {
-    xCoordinate: number;
-    yCoordinate: number;
+export class Coordinate {
+    x: number;
+    y: number;
+
+    constructor(x: number, y: number) {
+        this.x = x;
+        this.y = y;
+    }
 }
 
 export const getInitialBoard =
     createAction(BoardActions.GET_INITIAL_BOARD);
 
-export const tileHit = createAction(BoardActions.TILE_HIT, (coordinates: Coordinates) => coordinates);
+export const boardHit = createAction(BoardActions.BOARD_HIT, (coordinates: Coordinate) => coordinates);
+
+export const boardHitSuccess =
+    createAction(BoardActions.BOARD_HIT_SUCCESS, (board: { grid: Tile[][] }) => board.grid);
 
 export default {
     getInitialBoard,
-    tileHit
+    boardHitSuccess,
+    boardHit
 }

@@ -16,7 +16,7 @@ describe("BoardTile", () => {
 
         defaultProps = {
             tile: new Tile(),
-            coordinates: {xCoordinate:0, yCoordinate: 0},
+            coordinates: {x:0, y: 0},
             actions: mockActions,
         }
     });
@@ -26,8 +26,8 @@ describe("BoardTile", () => {
             const props = {
                 ...defaultProps,
                 coordinates: {
-                    xCoordinate: 421,
-                    yCoordinate: 153
+                    x: 421,
+                    y: 153
                 }
             };
 
@@ -41,8 +41,8 @@ describe("BoardTile", () => {
             const props = {
                 ...defaultProps,
                 coordinates: {
-                    xCoordinate: 494,
-                    yCoordinate: 1528
+                    x: 494,
+                    y: 1528
                 }
             };
 
@@ -56,8 +56,8 @@ describe("BoardTile", () => {
             const props = {
                 ...defaultProps,
                 coordinates: {
-                    xCoordinate: 499,
-                    yCoordinate: 1528
+                    x: 499,
+                    y: 1528
                 }
             };
 
@@ -104,12 +104,12 @@ describe("BoardTile", () => {
     });
 
     describe("clicking a tile", () => {
-        it("calls 'tileHit' with the coordinates", () => {
+        it("calls 'boardHit' with the coordinates", () => {
             const props = {
                 ...defaultProps,
                 coordinates: {
-                    xCoordinate: 421,
-                    yCoordinate: 153
+                    x: 421,
+                    y: 153
                 }
             };
 
@@ -117,19 +117,19 @@ describe("BoardTile", () => {
 
             subject.find(".board__tile").get(0).props.onClick();
 
-            expect(mockActions.tileHit).toHaveBeenCalledWith({
-                xCoordinate: 421,
-                yCoordinate: 153
+            expect(mockActions.boardHit).toHaveBeenCalledWith({
+                x: 421,
+                y: 153
             })
         });
 
-        it("does not call 'tileHit' action if the tile has already been hit", () => {
+        it("does not call 'boardHit' action if the tile has already been hit", () => {
             const props = {
                 ...defaultProps,
                 tile: new Tile(null, true),
                 coordinates: {
-                    xCoordinate: 421,
-                    yCoordinate: 153
+                    x: 421,
+                    y: 153
                 }
             };
 
@@ -137,7 +137,7 @@ describe("BoardTile", () => {
 
             subject.find(".board__tile").get(0).props.onClick();
 
-            expect(mockActions.tileHit).not.toHaveBeenCalled()
+            expect(mockActions.boardHit).not.toHaveBeenCalled()
         });
     });
 });

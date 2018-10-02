@@ -24,8 +24,9 @@ describe("board reducer", () => {
             ]
         };
 
-        const state = boardReducer(prevState, {type: BoardActions.TILE_HIT, payload: {xCoordinate: 1, yCoordinate: 0}});
+        let board = [[new Tile()]];
+        const state = boardReducer(prevState, {type: BoardActions.BOARD_HIT_SUCCESS, payload: board});
 
-        expect(state.grid[0][1].hit).toBeTruthy();
+        expect(state.grid).toEqual(board);
     });
 });

@@ -1,4 +1,5 @@
-import {BoardActions, getInitialBoard, tileHit} from "../boardActions";
+import {BoardActions, getInitialBoard, boardHit, boardHitSuccess} from "../boardActions";
+import {Tile} from "../../domain/Tile";
 
 describe("getInitialBoard", () => {
     it("returns GET_INITIAL_BOARD action", () => {
@@ -9,17 +10,26 @@ describe("getInitialBoard", () => {
 
 });
 
-describe("tileHit", () => {
-    it("returns TILE_HIT action", () => {
-        expect(tileHit({
-            xCoordinate: 1,
-            yCoordinate: 2
+describe("boardHit", () => {
+    it("returns BOARD_HIT action", () => {
+        expect(boardHit({
+            x: 1,
+            y: 2
         })).toEqual({
-            type: BoardActions.TILE_HIT,
+            type: BoardActions.BOARD_HIT,
             payload: {
-                xCoordinate: 1,
-                yCoordinate: 2
+                x: 1,
+                y: 2
             }
+        });
+    });
+});
+
+describe("boardHitSuccess", () => {
+    it("returns BOARD_HIT_SUCCESS action", () => {
+        expect(boardHitSuccess({grid: [[new Tile()]]})).toEqual({
+            type: BoardActions.BOARD_HIT_SUCCESS,
+            payload: [[new Tile()]]
         });
     });
 });

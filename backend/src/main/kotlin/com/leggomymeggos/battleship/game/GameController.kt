@@ -21,6 +21,7 @@ class GameController(val gameService: GameService) {
             value =["/{gameId}/players/{playerId}/hit"],
             method = [RequestMethod.PUT]
     )
+    @CrossOrigin
     fun hitBoard(@RequestBody coordinate: Coordinate): Board {
         return gameService.hitBoard(coordinate)
     }

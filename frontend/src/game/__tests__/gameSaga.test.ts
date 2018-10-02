@@ -4,8 +4,9 @@ import {Tile} from "../../domain/Tile";
 import * as gameSaga from "../gameSaga";
 import {GameApi} from "../gameApi";
 import {call, put} from "redux-saga/effects";
+import {Coordinate} from "../../board/boardActions";
 
-describe("gameSaga test", () => {
+describe("fetchGame", () => {
     it("calls api to get game", () => {
         const generator = gameSaga.fetchGame();
 
@@ -17,6 +18,29 @@ describe("gameSaga test", () => {
 
         generator.next();
 
-        expect(generator.next({player: {board: {grid: [[new Tile()]]}}}).value).toEqual(put({type: "NEW_GAME_CREATED", payload: {grid: [[new Tile()]]}}));
+        expect(generator.next({player: {board: {grid: [[new Tile()]]}}}).value).toEqual(put({
+            type: "NEW_GAME_CREATED",
+            payload: {grid: [[new Tile()]]}
+        }));
+    });
+});
+
+describe("hitBoard", () => {
+    it("calls api to hit board", () => {
+        let coordinate = new Coordinate(0, 0);
+        const generator = gameSaga.hitBoard(coordinate);
+
+        expect(generator.next().value).toEqual(call(GameApi.hitBoard, coordinate));
+    });
+
+    it("triggers action to update board", () => {
+        const generator = gameSaga.hitBoard(new Coordinate(1, 2));
+
+        generator.next();
+
+        expect(generator.next({grid: [[new Tile()]]}).value).toEqual(put({
+            type: "BOARD_HIT_SUCCESS",
+            payload: [[new Tile()]]
+        }));
     });
 });
