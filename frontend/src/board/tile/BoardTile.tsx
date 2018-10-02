@@ -3,7 +3,7 @@ import {connect, Dispatch} from "react-redux";
 import {bindActionCreators} from "redux";
 import boardActions, {Coordinates} from "../boardActions";
 import {Tile} from "../../domain/Tile";
-import {hitIndicator, missIndicator} from "../../domain/tileIndicators";
+import {hitIndicator, missIndicator} from "./tileIndicators";
 
 export interface IBoardTilePropsFromActions {
     actions: {

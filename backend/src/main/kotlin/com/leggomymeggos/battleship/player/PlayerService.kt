@@ -1,5 +1,6 @@
 package com.leggomymeggos.battleship.player
 
+import com.leggomymeggos.battleship.board.Board
 import com.leggomymeggos.battleship.board.BoardService
 import com.leggomymeggos.battleship.board.Coordinate
 import com.leggomymeggos.battleship.board.Direction
@@ -23,5 +24,9 @@ class PlayerService(val boardService: BoardService) {
         val boardWithBattleship = boardService.addShip(boardWithDestroyer, BATTLESHIP, Coordinate(9, 9), Direction.VERTICAL)
 
         return Player(boardWithBattleship)
+    }
+
+    fun hitBoard(board: Board, coordinate: Coordinate): Board {
+        return boardService.hitTile(board, coordinate)
     }
 }

@@ -1,7 +1,9 @@
 package com.leggomymeggos.battleship.game
 
 import com.leggomymeggos.battleship.board.Board
+import com.leggomymeggos.battleship.board.Coordinate
 import com.leggomymeggos.battleship.board.Tile
+import com.leggomymeggos.battleship.board.gridOf
 import com.leggomymeggos.battleship.player.Player
 import com.leggomymeggos.battleship.player.PlayerService
 import com.nhaarman.mockito_kotlin.*
@@ -62,5 +64,31 @@ class GameServiceTest {
 
         val game = gameService.new()
         assertThat(game.player).isEqualTo(player)
+    }
+
+    @Test
+    fun `hit board hits board for player`() {
+        val playerBoard = Board(gridOf(3))
+        whenever(gameRegistry.game).thenReturn(Game(Player(playerBoard)))
+        whenever(playerService.hitBoard(any(), any())).thenReturn(Board())
+
+        val coordinate = Coordinate(1, 2)
+        gameService.hitBoard(coordinate)
+
+        verify(playerService).hitBoard(playerBoard, coordinate)
+    }
+
+    @Test
+    fun `hitBoard sets hit board on registered game and returns it`() {
+        val game = Game(Player(Board(gridOf(3))))
+        whenever(gameRegistry.game).thenReturn(game)
+
+        val expectedBoard = Board(gridOf(4))
+        whenever(playerService.hitBoard(any(), any())).thenReturn(expectedBoard)
+
+        val hitBoard = gameService.hitBoard(Coordinate(1, 1))
+
+        verify(gameRegistry).game = game.copy(player = game.player.copy(board = expectedBoard))
+        assertThat(hitBoard).isEqualTo(expectedBoard)
     }
 }

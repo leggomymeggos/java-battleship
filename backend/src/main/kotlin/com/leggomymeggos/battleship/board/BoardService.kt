@@ -6,17 +6,7 @@ import org.springframework.stereotype.Service
 class BoardService {
 
     fun initBoard(): Board {
-        val grid = mutableGridOf()
-
-        for (rowIndex in 0..9) {
-            val row = mutableListOf<Tile>()
-            for (colIndex in 0..9) {
-                row.add(Tile())
-            }
-            grid.add(row)
-        }
-
-        return Board(grid)
+        return Board(gridOf(10))
     }
 
     fun addShip(board: Board, ship: Ship, coordinate: Coordinate, direction: Direction): Board {
@@ -38,6 +28,10 @@ class BoardService {
         }
 
         return Board(newGrid)
+    }
+
+    fun hitTile(board: Board, coordinate: Coordinate): Board {
+        return board.copy(grid = board.grid.hitCoordinate(coordinate))
     }
 
     private fun Grid.isValidHorizontalPlacement(coordinate: Coordinate, ship: Ship): Boolean {
@@ -81,10 +75,23 @@ class BoardService {
 
     private fun Coordinate.normalizeForVerticalPlacement(grid: List<List<Tile>>, ship: Ship): Coordinate {
         val yCoordinate = when {
-            ship.size + this.y > grid.size -> (this.y +1) - ship.size
+            ship.size + this.y > grid.size -> (this.y + 1) - ship.size
             else -> this.y
         }
 
         return this.copy(y = yCoordinate)
     }
+
+    private fun Grid.hitCoordinate(coordinate: Coordinate): Grid {
+        return toMutableList().apply {
+            this[coordinate.y] = this[coordinate.y].withTileHit(coordinate.x)
+        }
+    }
+
+    private fun List<Tile>.withTileHit(index: Int): List<Tile> {
+        return toMutableList().apply {
+            this[index] = this[index].copy(hit = true)
+        }
+    }
 }
+

@@ -1,19 +1,27 @@
 package com.leggomymeggos.battleship.game
 
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RestController
+import com.leggomymeggos.battleship.board.Board
+import com.leggomymeggos.battleship.board.Coordinate
+import org.springframework.web.bind.annotation.*
 
 @RestController
+@RequestMapping(value = ["/games"])
 class GameController(val gameService: GameService) {
 
     @RequestMapping(
-            value = ["/games/new"],
+            value = ["/new"],
             method = [RequestMethod.GET]
     )
     @CrossOrigin
     fun newGame(): Game {
         return gameService.new()
+    }
+
+    @RequestMapping(
+            value =["/{gameId}/players/{playerId}/hit"],
+            method = [RequestMethod.PUT]
+    )
+    fun hitBoard(@RequestBody coordinate: Coordinate): Board {
+        return gameService.hitBoard(coordinate)
     }
 }

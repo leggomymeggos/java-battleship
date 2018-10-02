@@ -28,7 +28,7 @@ class PlayerServiceTest {
 
     @Test
     fun `initPlayer returns new player with board`() {
-        val board = Board(gridOf(listOf(Tile()), listOf(Tile())))
+        val board = Board(gridOf(2))
         whenever(boardService.initBoard()).thenReturn(board)
 
         val player = playerService.initPlayer()
@@ -60,5 +60,25 @@ class PlayerServiceTest {
         verify(boardService).addShip(same(boardWithDestroyer), eq(BATTLESHIP), any(), any())
 
         assertThat(playerWithShips.board).isSameAs(boardWithBattleship)
+    }
+
+    @Test
+    fun `hitBoard hits a board`() {
+        val board = Board(gridOf(2))
+        val coordinate = Coordinate(1, 2)
+
+        playerService.hitBoard(board, coordinate)
+
+        verify(boardService).hitTile(board, coordinate)
+    }
+
+    @Test
+    fun `hitBoard returns newly hit board`() {
+        val board = Board(gridOf(1))
+        whenever(boardService.hitTile(any(), any())).thenReturn(board)
+
+        val result = playerService.hitBoard(Board(), Coordinate(0, 0))
+
+        assertThat(result).isEqualTo(board)
     }
 }
