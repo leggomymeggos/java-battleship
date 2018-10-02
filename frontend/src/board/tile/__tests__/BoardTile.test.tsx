@@ -11,7 +11,7 @@ describe("BoardTile", () => {
 
     beforeEach(() => {
         mockActions = {
-            tileHit: jest.fn()
+            boardHit: jest.fn()
         };
 
         defaultProps = {
