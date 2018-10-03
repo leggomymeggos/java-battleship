@@ -1,3 +1,35 @@
 @import 'patternfills';
 @import 'colors';
 @import 'board';
+
+@keyframes play {
+  100% {
+    background-position: 125px;
+  }
+}
+
+.game__content {
+  display: flex;
+  flex-direction: row;
+  margin: 0 auto;
+}
+
+.agent__main-container {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  justify-content: center;
+  align-items: center;
+
+  .agent__enemy--avatar {
+    height: 34px;
+    width: 34px;
+    background: url("../images/peach_sprites_hover.png") right center;
+    animation: play 0.5s steps(3) infinite;
+  }
+
+  .agent__enemy--dialogue {
+
+  }
+}
+

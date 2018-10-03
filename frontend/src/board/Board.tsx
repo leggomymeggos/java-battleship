@@ -32,7 +32,6 @@ export class Board extends React.Component<BoardProps> {
                 {this.renderGrid()}
             </div>
         </div>
-
     }
 
     private renderColumnLabels() {
