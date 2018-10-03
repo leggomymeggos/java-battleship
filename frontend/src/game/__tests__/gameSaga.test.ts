@@ -40,7 +40,7 @@ describe("hitBoard", () => {
 
         expect(generator.next({grid: [[new Tile()]]}).value).toEqual(put({
             type: "BOARD_HIT_SUCCESS",
-            payload: [[new Tile()]]
+            payload: {grid: [[new Tile()]]}
         }));
     });
 });
