@@ -20,13 +20,11 @@ class GameService(val playerService: PlayerService, val gameRegistry: GameRegist
 
     fun hitBoard(coordinate: Coordinate): Board {
         val game = gameRegistry.game
-        val hitBoard = playerService.hitBoard(game.player.board, coordinate)
+        val updatedPlayer = playerService.hitBoard(game.player, coordinate)
 
         gameRegistry.game = game.copy(
-                player = game.player.copy(
-                        board = hitBoard
-                )
+                player = updatedPlayer
         )
-        return hitBoard
+        return updatedPlayer.board
     }
 }

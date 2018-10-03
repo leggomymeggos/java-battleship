@@ -68,14 +68,15 @@ class GameServiceTest {
 
     @Test
     fun `hit board hits board for player`() {
-        val playerBoard = Board(gridOf(3))
-        whenever(gameRegistry.game).thenReturn(Game(Player(playerBoard)))
-        whenever(playerService.hitBoard(any(), any())).thenReturn(Board())
+        whenever(playerService.hitBoard(any(), any())).thenReturn(Player(Board()))
+
+        val player = Player(Board(gridOf(3)))
+        whenever(gameRegistry.game).thenReturn(Game(player))
 
         val coordinate = Coordinate(1, 2)
         gameService.hitBoard(coordinate)
 
-        verify(playerService).hitBoard(playerBoard, coordinate)
+        verify(playerService).hitBoard(player, coordinate)
     }
 
     @Test
@@ -83,12 +84,12 @@ class GameServiceTest {
         val game = Game(Player(Board(gridOf(3))))
         whenever(gameRegistry.game).thenReturn(game)
 
-        val expectedBoard = Board(gridOf(4))
-        whenever(playerService.hitBoard(any(), any())).thenReturn(expectedBoard)
+        val expectedPlayer = Player(Board(gridOf(4)))
+        whenever(playerService.hitBoard(any(), any())).thenReturn(expectedPlayer)
 
         val hitBoard = gameService.hitBoard(Coordinate(1, 1))
 
-        verify(gameRegistry).game = game.copy(player = game.player.copy(board = expectedBoard))
-        assertThat(hitBoard).isEqualTo(expectedBoard)
+        verify(gameRegistry).game = game.copy(player = expectedPlayer)
+        assertThat(hitBoard).isEqualTo(expectedPlayer.board)
     }
 }

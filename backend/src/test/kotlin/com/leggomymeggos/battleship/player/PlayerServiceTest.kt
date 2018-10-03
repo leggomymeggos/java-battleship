@@ -64,21 +64,23 @@ class PlayerServiceTest {
 
     @Test
     fun `hitBoard hits a board`() {
+        whenever(boardService.hitTile(any(), any())).thenReturn(Board())
+
         val board = Board(gridOf(2))
         val coordinate = Coordinate(1, 2)
 
-        playerService.hitBoard(board, coordinate)
+        playerService.hitBoard(Player(board), coordinate)
 
         verify(boardService).hitTile(board, coordinate)
     }
 
     @Test
-    fun `hitBoard returns newly hit board`() {
+    fun `hitBoard returns player with newly hit board`() {
         val board = Board(gridOf(1))
         whenever(boardService.hitTile(any(), any())).thenReturn(board)
 
-        val result = playerService.hitBoard(Board(), Coordinate(0, 0))
+        val result = playerService.hitBoard(Player(Board()), Coordinate(0, 0))
 
-        assertThat(result).isEqualTo(board)
+        assertThat(result.board).isEqualTo(board)
     }
 }
