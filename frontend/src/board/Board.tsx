@@ -3,6 +3,7 @@ import {connect, Dispatch} from "react-redux";
 import {bindActionCreators} from "redux";
 import boardActions from "./boardActions";
 import BoardTile from "./tile/BoardTile";
+import {BoardState} from "./boardReducer";
 
 export interface IBoardPropsFromActions {
     actions: {
@@ -12,6 +13,7 @@ export interface IBoardPropsFromActions {
 
 export interface IBoardPropsFromStore {
     grid: any[][];
+    sunkenShips: string[];
 }
 
 export type BoardProps = IBoardPropsFromActions & IBoardPropsFromStore;
@@ -26,6 +28,7 @@ export class Board extends React.Component<BoardProps> {
 
     public render() {
         return <div className="board">
+            <div>{this.props.sunkenShips}</div>
             {this.renderColumnLabels()}
             <div className="board__grid-and-row-labels-container">
                 {this.renderRowLabels()}
@@ -79,9 +82,9 @@ export const mapDispatchToProps = (dispatch: Dispatch<{}>): IBoardPropsFromActio
     }
 };
 
-export const mapStateToProps = (state: { boardReducer: { grid: any[][] } }): IBoardPropsFromStore => {
+export const mapStateToProps = (state: { boardReducer: BoardState }): IBoardPropsFromStore => {
     return {
-        grid: state.boardReducer.grid
+        ...state.boardReducer,
     }
 };
 

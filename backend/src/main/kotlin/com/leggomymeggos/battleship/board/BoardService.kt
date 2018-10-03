@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service
 
 @Service
 class BoardService {
-
     fun initBoard(): Board {
         return Board(gridOf(10))
     }
@@ -31,7 +30,15 @@ class BoardService {
     }
 
     fun hitTile(board: Board, coordinate: Coordinate): Board {
-        return board.copy(grid = board.grid.hitCoordinate(coordinate))
+        val hitBoard = board.copy(grid = board.grid.hitCoordinate(coordinate))
+
+        val ship = hitBoard.grid[coordinate.y][coordinate.x].ship
+
+        if (ship?.isSunk(hitBoard.grid) == true) {
+            hitBoard.sunkenShips.add(ship)
+        }
+
+        return hitBoard
     }
 
     private fun Grid.isValidHorizontalPlacement(coordinate: Coordinate, ship: Ship): Boolean {
@@ -93,5 +100,13 @@ class BoardService {
             this[index] = this[index].copy(hit = true)
         }
     }
-}
 
+    private fun Ship.isSunk(grid: Grid): Boolean {
+        val hitTilesWithShip = grid.flatten().asSequence()
+                .filter { it.ship == this }
+                .filter { it.hit }
+                .toList()
+
+        return hitTilesWithShip.size == this.size
+    }
+}

@@ -1,8 +1,7 @@
 package com.leggomymeggos.battleship.board
 
 import com.leggomymeggos.battleship.board.Direction.*
-import com.leggomymeggos.battleship.board.Ship.CRUISER
-import com.leggomymeggos.battleship.board.Ship.SUBMARINE
+import com.leggomymeggos.battleship.board.Ship.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -136,5 +135,17 @@ class BoardServiceTest {
         val hitBoard = boardService.hitTile(boardWithShip, Coordinate(0, 0))
 
         assertThat(hitBoard.grid[0][0].ship).isEqualTo(SUBMARINE)
+    }
+
+    @Test
+    fun `hitTile can update sunken ships`() {
+        val boardWithShip = boardService.addShip(Board(gridOf(5)), DESTROYER, Coordinate(0, 0), HORIZONTAL)
+
+        val hitBoard = boardService.hitTile(boardWithShip, Coordinate(0, 0))
+
+        assertThat(hitBoard.sunkenShips).isEmpty()
+
+        val sunkBoard = boardService.hitTile(hitBoard, Coordinate(1, 0))
+        assertThat(sunkBoard.sunkenShips).containsExactly(DESTROYER)
     }
 }

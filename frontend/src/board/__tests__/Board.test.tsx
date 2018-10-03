@@ -17,6 +17,7 @@ describe("Board", () => {
         };
         defaultProps = {
             grid: [[]],
+            sunkenShips: [],
             actions: mockActions,
         }
     });
@@ -92,11 +93,23 @@ describe("mapDispatchToProps", () => {
 describe("mapStateToProps", () => {
     it("maps grid", () => {
         const boardReducer: BoardState = {
-            grid: [[new Tile()], [new Tile()]]
+            grid: [[new Tile()], [new Tile()]],
+            sunkenShips: []
         };
         const props = mapStateToProps({
             boardReducer
         });
         expect(props.grid).toEqual([[new Tile()], [new Tile()]]);
+    });
+
+    it("maps sunken ships", () => {
+        const boardReducer: BoardState = {
+            grid: [],
+            sunkenShips: ["battleship", "aircraft carrier"]
+        };
+        const props = mapStateToProps({
+            boardReducer
+        });
+        expect(props.sunkenShips).toEqual(["battleship", "aircraft carrier"]);
     });
 });

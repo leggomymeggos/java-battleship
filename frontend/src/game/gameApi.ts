@@ -12,6 +12,5 @@ export class GameApi {
         return axios.put("/games/0/players/0/hit", coordinate,{
             baseURL: "http://localhost:8081"
         }).then((response) => response.data);
-
     }
 }

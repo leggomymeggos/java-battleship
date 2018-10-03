@@ -27,9 +27,9 @@ describe("boardHit", () => {
 
 describe("boardHitSuccess", () => {
     it("returns BOARD_HIT_SUCCESS action", () => {
-        expect(boardHitSuccess({grid: [[new Tile()]]})).toEqual({
+        expect(boardHitSuccess({grid: [[new Tile()]], sunkenShips: ["one"]})).toEqual({
             type: BoardActions.BOARD_HIT_SUCCESS,
-            payload: [[new Tile()]]
+            payload: {grid: [[new Tile()]], sunkenShips: ["one"]}
         });
     });
 });

@@ -1,15 +1,16 @@
 import {Action, handleActions} from "redux-actions";
 import {BoardActions} from "./boardActions";
 import {Tile} from "../domain/Tile";
-import * as _ from "lodash";
 import {GameActions} from "../game/gameActions";
 
 export type BoardState = {
     grid: Tile[][];
+    sunkenShips: string[];
 }
 
 export const initialState: BoardState = {
     grid: [[]],
+    sunkenShips: []
 };
 
 const boardReducer = handleActions({
@@ -21,7 +22,8 @@ const boardReducer = handleActions({
     [BoardActions.BOARD_HIT_SUCCESS]: (state: BoardState, action: Action<any>) => {
         return {
             ...state,
-            grid: action.payload
+            grid: action.payload.grid,
+            sunkenShips: action.payload.sunkenShips,
         };
     },
 }, initialState);

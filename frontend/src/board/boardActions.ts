@@ -23,7 +23,7 @@ export const getInitialBoard =
 export const boardHit = createAction(BoardActions.BOARD_HIT, (coordinates: Coordinate) => coordinates);
 
 export const boardHitSuccess =
-    createAction(BoardActions.BOARD_HIT_SUCCESS, (board: { grid: Tile[][] }) => board.grid);
+    createAction(BoardActions.BOARD_HIT_SUCCESS, (board: { grid: Tile[][], sunkenShips: string[] }) => board);
 
 export default {
     getInitialBoard,

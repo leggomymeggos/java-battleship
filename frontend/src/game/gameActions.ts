@@ -6,4 +6,4 @@ export const GameActions = {
 };
 
 export const newGameCreated =
-    createAction(GameActions.NEW_GAME_CREATED, (payload: Tile[][]) => payload);
+    createAction(GameActions.NEW_GAME_CREATED, (payload: {grid: Tile[][], sunkenShips: string[]}) => payload);
