@@ -18,6 +18,7 @@ describe("Board", () => {
         defaultProps = {
             grid: [[]],
             sunkenShips: [],
+            winner: false,
             actions: mockActions,
         }
     });
@@ -97,7 +98,10 @@ describe("mapStateToProps", () => {
             sunkenShips: []
         };
         const props = mapStateToProps({
-            boardReducer
+            boardReducer,
+            gameReducer: {
+                winner: false
+            }
         });
         expect(props.grid).toEqual([[new Tile()], [new Tile()]]);
     });
@@ -108,8 +112,25 @@ describe("mapStateToProps", () => {
             sunkenShips: ["battleship", "aircraft carrier"]
         };
         const props = mapStateToProps({
-            boardReducer
+            boardReducer,
+            gameReducer: {
+                winner: false
+            }
         });
         expect(props.sunkenShips).toEqual(["battleship", "aircraft carrier"]);
+    });
+
+    it("maps winner", () => {
+        const boardReducer: BoardState = {
+            grid: [],
+            sunkenShips: []
+        };
+        const props = mapStateToProps({
+            boardReducer,
+            gameReducer: {
+                winner: true
+            }
+        });
+        expect(props.winner).toBeTruthy();
     });
 });

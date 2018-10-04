@@ -13,18 +13,19 @@ export interface IBoardTilePropsFromActions {
 
 export interface IBoardTilePropsFromParent {
     tile: Tile,
+    winner: boolean,
     coordinates: Coordinate
 }
 
 export type BoardTileProps = IBoardTilePropsFromParent & IBoardTilePropsFromActions;
 
-export class BoardTile extends React.Component<BoardTileProps, {}> {
+export class BoardTile extends React.Component<BoardTileProps> {
 
     public render() {
         const tile = this.props.tile;
         return <div className={this.className()}
                     onClick={() => {
-                        if (tile.hit) {
+                        if (tile.hit || this.props.winner) {
                             return;
                         }
                         this.props.actions.boardHit(this.props.coordinates);
@@ -36,7 +37,7 @@ export class BoardTile extends React.Component<BoardTileProps, {}> {
     private className(): string {
         let className = "board__tile";
 
-        if (this.props.tile.hit) {
+        if (this.props.tile.hit || this.props.winner) {
             className += " clicked";
         }
 

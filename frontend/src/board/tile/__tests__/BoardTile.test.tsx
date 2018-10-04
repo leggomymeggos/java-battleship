@@ -15,6 +15,7 @@ describe("BoardTile", () => {
         };
 
         defaultProps = {
+            winner: false,
             tile: new Tile(),
             coordinates: {x:0, y: 0},
             actions: mockActions,
@@ -127,6 +128,24 @@ describe("BoardTile", () => {
             const props = {
                 ...defaultProps,
                 tile: new Tile(null, true),
+                coordinates: {
+                    x: 421,
+                    y: 153
+                }
+            };
+
+            const subject = shallow(<BoardTile {...props}/>);
+
+            subject.find(".board__tile").get(0).props.onClick();
+
+            expect(mockActions.boardHit).not.toHaveBeenCalled()
+        });
+
+        it("does not call 'boardHit' action if the game has been won", () => {
+            const props = {
+                ...defaultProps,
+                winner: true,
+                tile: new Tile(null, false),
                 coordinates: {
                     x: 421,
                     y: 153

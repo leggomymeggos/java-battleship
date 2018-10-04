@@ -1,6 +1,11 @@
 import {combineReducers} from "redux";
-import boardReducer from "./board/boardReducer";
-import gameReducer from "./game/gameReducer";
+import boardReducer, {BoardState} from "./board/boardReducer";
+import gameReducer, {GameState} from "./game/gameReducer";
+
+export type rootState =  {
+    boardReducer: BoardState;
+    gameReducer: GameState;
+}
 
 export const rootReducer = combineReducers({
     boardReducer,
