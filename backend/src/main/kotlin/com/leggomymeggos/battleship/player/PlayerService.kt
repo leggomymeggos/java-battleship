@@ -29,4 +29,10 @@ class PlayerService(val boardService: BoardService) {
         val updatedBoard = boardService.hitTile(player.board, coordinate)
         return player.copy(board = updatedBoard)
     }
+
+    fun isDefeated(player: Player): Boolean {
+        val shipsOnBoard = player.board.grid.flatten().asSequence().filter { it.ship != null }.toSet()
+
+        return shipsOnBoard.size == player.board.sunkenShips.size
+    }
 }

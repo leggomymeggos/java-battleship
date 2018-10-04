@@ -25,6 +25,10 @@ class GameService(val playerService: PlayerService, val gameRegistry: GameRegist
         gameRegistry.game = game.copy(
                 player = updatedPlayer
         )
+
+        if (playerService.isDefeated(updatedPlayer)) {
+            gameRegistry.setWinner()
+        }
         return updatedPlayer.board
     }
 }

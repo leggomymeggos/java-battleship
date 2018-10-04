@@ -83,4 +83,64 @@ class PlayerServiceTest {
 
         assertThat(result.board).isEqualTo(board)
     }
+
+    @Test
+    fun `isDefeated returns true if all ships are sunk`() {
+        val player = Player(Board(
+                grid = listOf(listOf(
+                        Tile(ship = CRUISER),
+                        Tile(ship = DESTROYER),
+                        Tile(ship = SUBMARINE),
+                        Tile(ship = AIRCRAFT_CARRIER),
+                        Tile(ship = BATTLESHIP)
+                )),
+                sunkenShips = mutableSetOf(
+                        CRUISER,
+                        DESTROYER,
+                        SUBMARINE,
+                        AIRCRAFT_CARRIER,
+                        BATTLESHIP
+                )
+        ))
+
+        assertThat(playerService.isDefeated(player)).isTrue()
+    }
+
+    @Test
+    fun `isDefeated returns false if not all ships are sunk`() {
+        val player = Player(Board(
+                grid = listOf(listOf(
+                        Tile(ship = CRUISER),
+                        Tile(ship = DESTROYER),
+                        Tile(ship = SUBMARINE),
+                        Tile(ship = AIRCRAFT_CARRIER),
+                        Tile(ship = BATTLESHIP)
+                )),
+                sunkenShips = mutableSetOf(
+                        CRUISER,
+                        SUBMARINE,
+                        AIRCRAFT_CARRIER,
+                        BATTLESHIP
+                )
+        ))
+
+        assertThat(playerService.isDefeated(player)).isFalse()
+    }
+
+    @Test
+    fun `isDefeated returns true if all ships on the board are sunk`() {
+        val player = Player(Board(
+                grid = listOf(listOf(
+                        Tile(ship = AIRCRAFT_CARRIER),
+                        Tile(ship = AIRCRAFT_CARRIER),
+                        Tile(ship = BATTLESHIP)
+                )),
+                sunkenShips = mutableSetOf(
+                        AIRCRAFT_CARRIER,
+                        BATTLESHIP
+                )
+        ))
+
+        assertThat(playerService.isDefeated(player)).isTrue()
+    }
 }

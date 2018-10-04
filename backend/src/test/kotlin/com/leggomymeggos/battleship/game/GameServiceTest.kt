@@ -27,6 +27,7 @@ class GameServiceTest {
         whenever(playerService.setShips(any())).thenReturn(Player(Board()))
     }
 
+    // region new
     @Test
     fun `new requests player from playerService`() {
         gameService.new()
@@ -65,7 +66,9 @@ class GameServiceTest {
         val game = gameService.new()
         assertThat(game.player).isEqualTo(player)
     }
+    // endregion
 
+    // region hitBoard
     @Test
     fun `hit board hits board for player`() {
         whenever(playerService.hitBoard(any(), any())).thenReturn(Player(Board()))
@@ -92,4 +95,31 @@ class GameServiceTest {
         verify(gameRegistry).game = game.copy(player = expectedPlayer)
         assertThat(hitBoard).isEqualTo(expectedPlayer.board)
     }
+
+    @Test
+    fun `hitBoard checks winning player`() {
+        whenever(gameRegistry.game).thenReturn(Game(Player(Board())))
+
+        val player = Player(Board(gridOf(3)))
+        whenever(playerService.hitBoard(any(), any())).thenReturn(player)
+
+        gameService.hitBoard(Coordinate(0, 0))
+
+        verify(playerService).isDefeated(player)
+    }
+
+    @Test
+    fun `hitBoard sets winning player`() {
+        val game = Game(Player(Board(gridOf())))
+        whenever(gameRegistry.game).thenReturn(game)
+
+        val player = Player(Board(gridOf(1)))
+        whenever(playerService.hitBoard(any(), any())).thenReturn(player)
+        whenever(playerService.isDefeated(any())).thenReturn(true)
+
+        gameService.hitBoard(Coordinate(0, 0))
+
+        verify(gameRegistry).setWinner()
+    }
+    // endregion
 }
