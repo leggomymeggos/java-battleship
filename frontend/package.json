@@ -14,6 +14,9 @@
       "tsx",
       "js"
     ],
+    "moduleNameMapper": {
+      "\\.(css|jpg|png)$": "<rootDir>/empty-module.ts"
+    },
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },

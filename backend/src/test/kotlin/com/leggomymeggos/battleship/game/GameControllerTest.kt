@@ -31,6 +31,7 @@ class GameControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build()
     }
 
+    // region newGame
     @Test
     fun `newGame mapping`() {
         mockMvc.perform(get("/games/new"))
@@ -53,7 +54,9 @@ class GameControllerTest {
 
         assertThat(actual).isEqualTo(game)
     }
+    // endregion
 
+    // region hitBoard
     @Test
     fun `hitBoard mapping`() {
         mockMvc.perform(put("/games/0/players/0/hit")
@@ -79,4 +82,27 @@ class GameControllerTest {
 
         assertThat(actual).isEqualTo(board)
     }
+    // endregion
+
+    // region fetchWinner
+    @Test
+    fun `fetchWinner mapping`() {
+        mockMvc.perform(get("games/0/winner"))
+                .andExpect(status().isOk)
+    }
+
+    @Test
+    fun `fetchWinner requests winner`() {
+        controller.fetchWinner()
+
+        verify(gameService).getWinner()
+    }
+
+    @Test
+    fun `fetchWinner returns fetched winner`() {
+        whenever(gameService.getWinner()).thenReturn(true)
+
+        assertThat(controller.fetchWinner()).isTrue()
+    }
+    // endregion
 }

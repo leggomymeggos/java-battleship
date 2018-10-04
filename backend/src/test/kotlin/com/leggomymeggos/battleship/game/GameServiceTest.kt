@@ -122,4 +122,17 @@ class GameServiceTest {
         verify(gameRegistry).setWinner()
     }
     // endregion
+
+    @Test
+    fun `getWinner returns winner from game registry`() {
+        whenever(gameRegistry.game).thenReturn(Game(winner = true, player = Player(Board())))
+
+        assertThat(gameService.getWinner()).isTrue()
+
+        whenever(gameRegistry.game).thenReturn(Game(winner = false, player = Player(Board())))
+
+        assertThat(gameService.getWinner()).isFalse()
+
+        verify(gameRegistry, times(2)).game
+    }
 }

@@ -32,4 +32,15 @@ describe("gameApi", () => {
             expect(response).toEqual("game!");
         });
     });
+
+    describe("fetching winner", () => {
+        it("returns response data", async () => {
+            mock.onGet("http://localhost:8081/games/0/winner")
+                .reply(200, true);
+
+            const response = await GameApi.fetchWinner();
+
+            expect(response).toEqual(true);
+        });
+    });
 });

@@ -28,7 +28,6 @@ export class Board extends React.Component<BoardProps> {
 
     public render() {
         return <div className="board">
-            <div>{this.props.sunkenShips}</div>
             {this.renderColumnLabels()}
             <div className="board__grid-and-row-labels-container">
                 {this.renderRowLabels()}

@@ -6,23 +6,31 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping(value = ["/games"])
+@CrossOrigin
 class GameController(val gameService: GameService) {
 
     @RequestMapping(
             value = ["/new"],
             method = [RequestMethod.GET]
     )
-    @CrossOrigin
     fun newGame(): Game {
         return gameService.new()
     }
 
     @RequestMapping(
-            value =["/{gameId}/players/{playerId}/hit"],
+            value = ["/{gameId}/players/{playerId}/hit"],
             method = [RequestMethod.PUT]
     )
-    @CrossOrigin
     fun hitBoard(@RequestBody coordinate: Coordinate): Board {
         return gameService.hitBoard(coordinate)
+    }
+
+
+    @RequestMapping(
+            value = ["/{gameId}/winner"],
+            method = [RequestMethod.GET]
+    )
+    fun fetchWinner(): Boolean {
+        return gameService.getWinner()
     }
 }

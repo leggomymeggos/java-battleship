@@ -43,4 +43,42 @@ describe("hitBoard", () => {
             payload: {grid: [[new Tile()]]}
         }));
     });
+
+    it("dispatches action to check for winner", () => {
+        const generator = gameSaga.hitBoard(new Coordinate(1, 2));
+
+        generator.next();
+        generator.next({grid: []});
+
+        expect(generator.next().value).toEqual(put({
+            type: "FETCH_WINNER"
+        }));
+    });
+});
+
+describe("checkWinner", () => {
+    it("calls api to check winner", () => {
+        const generator = gameSaga.checkWinner();
+
+        expect(generator.next().value).toEqual(call(GameApi.fetchWinner));
+    });
+
+    it("dispatches winner", () => {
+        const generator = gameSaga.checkWinner();
+
+        generator.next();
+
+        expect(generator.next(true).value).toEqual(put({
+            type: "GAME_WON",
+            payload: true
+        }));
+    });
+
+    it("does nothing if there is no winner", () => {
+        const generator = gameSaga.checkWinner();
+
+        generator.next();
+
+        expect(generator.next(false).value).toBeUndefined();
+    });
 });

@@ -31,4 +31,8 @@ class GameService(val playerService: PlayerService, val gameRegistry: GameRegist
         }
         return updatedPlayer.board
     }
+
+    fun getWinner(): Boolean {
+        return gameRegistry.game.winner
+    }
 }
