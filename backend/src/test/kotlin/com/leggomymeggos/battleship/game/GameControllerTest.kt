@@ -87,7 +87,7 @@ class GameControllerTest {
     // region fetchWinner
     @Test
     fun `fetchWinner mapping`() {
-        mockMvc.perform(get("games/0/winner"))
+        mockMvc.perform(get("/games/0/winner"))
                 .andExpect(status().isOk)
     }
 
