@@ -10,14 +10,14 @@ export class GameApi {
         }).then((response) => response.data);
     }
 
-    static hitBoard(coordinate: Coordinate) {
-        return axios.put("/games/0/players/0/hit", coordinate, {
-            baseURL: GameApi.baseUrl
+    static fetchWinner() {
+        return axios.get("/games/0/winner", {
+            baseURL: GameApi.baseUrl,
         }).then((response) => response.data);
     }
 
-    static fetchWinner() {
-        return axios.get("/games/0/winner", {
+    static hitBoard(defendingPlayerId: number, coordinate: Coordinate, attackingPlayerId: number) {
+        return axios.put(`/games/0/players/${defendingPlayerId}/hit?attackerId=${attackingPlayerId}`, coordinate, {
             baseURL: GameApi.baseUrl,
         }).then((response) => response.data);
     }

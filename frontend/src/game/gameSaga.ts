@@ -7,15 +7,15 @@ import {Action} from "redux-actions";
 export function* fetchGame(): any {
     try {
         const game = yield call(GameApi.newGame);
-        yield put(newGameCreated(game.player.board));
+        yield put(newGameCreated(game.computerPlayer.board));
     } catch (e) {
         console.error(e)
     }
 }
 
-export function* hitBoard(coordinate: Coordinate): any {
+export function* hitBoard(defendingPlayerId: number, coordinate: Coordinate, attackingPlayerId: number): any {
     try {
-        const newBoard = yield call(GameApi.hitBoard, coordinate);
+        const newBoard = yield call(GameApi.hitBoard, defendingPlayerId, coordinate, attackingPlayerId);
         yield put(boardHitSuccess(newBoard));
         yield put(fetchWinner());
     } catch (e) {
@@ -40,8 +40,8 @@ export function* fetchGameSaga(): any {
 }
 
 export function* hitBoardSaga(): any {
-    yield takeEvery(BoardActions.BOARD_HIT, (action: Action<Coordinate>) => {
-        return hitBoard(action.payload);
+    yield takeEvery(BoardActions.BOARD_HIT, (action: Action<any>) => {
+        return hitBoard(1, action.payload, 1);
     });
 }
 

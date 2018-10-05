@@ -4,6 +4,7 @@ import {bindActionCreators} from "redux";
 import boardActions from "./boardActions";
 import BoardTile from "./tile/BoardTile";
 import {rootState} from "../rootReducer";
+import {Player} from "../agent/Player";
 
 export interface IBoardPropsFromActions {
     actions: {
@@ -14,7 +15,7 @@ export interface IBoardPropsFromActions {
 export interface IBoardPropsFromStore {
     grid: any[][];
     sunkenShips: string[];
-    winner: boolean;
+    winner: Player;
 }
 
 export type BoardProps = IBoardPropsFromActions & IBoardPropsFromStore;
@@ -62,7 +63,7 @@ export class Board extends React.Component<BoardProps> {
                 return value.map((tile, columnIndex) => {
                     return <BoardTile key={Board.getKey()}
                                       tile={tile}
-                                      winner={this.props.winner}
+                                      winner={this.props.winner != null}
                                       coordinates={{x: columnIndex, y: rowIndex}}
                     />
                 })
@@ -86,7 +87,7 @@ export const mapDispatchToProps = (dispatch: Dispatch<{}>): IBoardPropsFromActio
 export const mapStateToProps = (state: rootState): IBoardPropsFromStore => {
     return {
         ...state.boardReducer,
-        ...state.gameReducer
+        winner: state.gameReducer.winner,
     }
 };
 

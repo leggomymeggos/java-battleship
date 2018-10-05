@@ -1,9 +1,10 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {GameState} from "../game/gameReducer";
+import {Player} from "./Player";
 
 export interface IAgentDataPropsFromStore {
-    winner: boolean;
+    winner: Player;
 }
 
 export type AgentDataProps = IAgentDataPropsFromStore;
@@ -25,7 +26,7 @@ export class AgentData extends React.Component<AgentDataProps> {
 
 export const mapStateToProps = (state: { gameReducer: GameState }): IAgentDataPropsFromStore => {
     return {
-        ...state.gameReducer,
+        winner: state.gameReducer.winner,
     }
 };
 

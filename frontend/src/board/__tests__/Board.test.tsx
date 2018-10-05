@@ -6,6 +6,8 @@ import {Board, BoardProps, mapDispatchToProps, mapStateToProps} from "../Board";
 import {getInitialBoard} from "../boardActions";
 import {BoardState} from "../boardReducer";
 import {Tile} from "../../domain/Tile";
+import {GameState} from "../../game/gameReducer";
+import {Player} from "../../agent/Player";
 
 describe("Board", () => {
     let defaultProps: BoardProps;
@@ -18,7 +20,7 @@ describe("Board", () => {
         defaultProps = {
             grid: [[]],
             sunkenShips: [],
-            winner: false,
+            winner: null,
             actions: mockActions,
         }
     });
@@ -92,43 +94,49 @@ describe("mapDispatchToProps", () => {
 });
 
 describe("mapStateToProps", () => {
+    let boardReducer: BoardState, gameReducer: GameState;
+    beforeEach(() => {
+        boardReducer = {
+            grid: [],
+            sunkenShips: []
+        };
+        gameReducer = {
+            winner: null,
+            humanPlayer: null,
+            computerPlayer: null
+        }
+    });
+
     it("maps grid", () => {
-        const boardReducer: BoardState = {
+        boardReducer = {
             grid: [[new Tile()], [new Tile()]],
             sunkenShips: []
         };
         const props = mapStateToProps({
             boardReducer,
-            gameReducer: {
-                winner: false
-            }
+            gameReducer
         });
         expect(props.grid).toEqual([[new Tile()], [new Tile()]]);
     });
 
     it("maps sunken ships", () => {
-        const boardReducer: BoardState = {
-            grid: [],
+        boardReducer = {
+            ...boardReducer,
             sunkenShips: ["battleship", "aircraft carrier"]
         };
         const props = mapStateToProps({
             boardReducer,
-            gameReducer: {
-                winner: false
-            }
+            gameReducer
         });
         expect(props.sunkenShips).toEqual(["battleship", "aircraft carrier"]);
     });
 
     it("maps winner", () => {
-        const boardReducer: BoardState = {
-            grid: [],
-            sunkenShips: []
-        };
         const props = mapStateToProps({
             boardReducer,
             gameReducer: {
-                winner: true
+                ...gameReducer,
+                winner: new Player()
             }
         });
         expect(props.winner).toBeTruthy();

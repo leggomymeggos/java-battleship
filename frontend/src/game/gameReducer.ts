@@ -1,12 +1,17 @@
 import {Action, handleActions} from "redux-actions";
 import {GameActions} from "./gameActions";
+import {Player} from "../agent/Player";
 
 export type GameState = {
-    winner: boolean;
+    winner: Player;
+    humanPlayer: Player;
+    computerPlayer: Player;
 }
 
 export const initialState: GameState = {
-    winner: false
+    winner: null,
+    humanPlayer: null,
+    computerPlayer: null
 };
 
 const gameReducer = handleActions({

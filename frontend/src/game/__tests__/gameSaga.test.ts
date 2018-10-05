@@ -18,7 +18,7 @@ describe("fetchGame", () => {
 
         generator.next();
 
-        expect(generator.next({player: {board: {grid: [[new Tile()]]}}}).value).toEqual(put({
+        expect(generator.next({computerPlayer: {board: {grid: [[new Tile()]]}}}).value).toEqual(put({
             type: "NEW_GAME_CREATED",
             payload: {grid: [[new Tile()]]}
         }));
@@ -28,13 +28,13 @@ describe("fetchGame", () => {
 describe("hitBoard", () => {
     it("calls api to hit board", () => {
         let coordinate = new Coordinate(0, 0);
-        const generator = gameSaga.hitBoard(coordinate);
+        const generator = gameSaga.hitBoard(1, coordinate, 2);
 
-        expect(generator.next().value).toEqual(call(GameApi.hitBoard, coordinate));
+        expect(generator.next().value).toEqual(call(GameApi.hitBoard, 1, coordinate, 2));
     });
 
     it("triggers action to update board", () => {
-        const generator = gameSaga.hitBoard(new Coordinate(1, 2));
+        const generator = gameSaga.hitBoard(0, new Coordinate(1, 2), 0);
 
         generator.next();
 
@@ -45,7 +45,7 @@ describe("hitBoard", () => {
     });
 
     it("dispatches action to check for winner", () => {
-        const generator = gameSaga.hitBoard(new Coordinate(1, 2));
+        const generator = gameSaga.hitBoard(0, new Coordinate(1, 2), 0);
 
         generator.next();
         generator.next({grid: []});

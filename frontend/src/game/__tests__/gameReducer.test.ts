@@ -1,17 +1,21 @@
 import gameReducer, {initialState} from "../gameReducer";
-import {GameActions, gameWon} from "../gameActions";
+import {gameWon} from "../gameActions";
+import {Player} from "../../agent/Player";
 
 describe("game reducer", () => {
     it("has a default state", () => {
         expect(initialState)
             .toEqual({
-                winner: false
+                winner: null,
+                humanPlayer: null,
+                computerPlayer: null
             });
     });
 
     it("updates winner when the game is won", () => {
-        const gameState = gameReducer(initialState, {type: GameActions.GAME_WON, payload: true});
+        let player = new Player(123);
+        const gameState = gameReducer(initialState, gameWon(player));
 
-        expect(gameState.winner).toBeTruthy();
+        expect(gameState.winner).toBe(player);
     });
 });

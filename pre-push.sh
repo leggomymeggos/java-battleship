@@ -8,7 +8,7 @@ cd ../frontend && npm test;
 if [ $? == 0 ]; then
     popd && gosleap
 else
-    popd && ./ganonleap.sh
+    popd && ./ganonleap.sh -e 2
 fi
 
 
