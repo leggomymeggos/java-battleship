@@ -138,6 +138,6 @@ class GameServiceTest {
 
         assertThat(gameService.getWinner()).isEqualTo(winner)
 
-        verify(gameRegistry, times(2)).game
+        verify(gameRegistry).game
     }
 }
