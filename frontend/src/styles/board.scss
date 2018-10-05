@@ -1,9 +1,9 @@
-$board-dimension: 1000px;
-$tile-dimension: 100px;
+$board-dimension: 500px;
+$tile-dimension: $board-dimension/10;
 
 .board {
-  width: 1112px;
-  height: 1112px;
+  width: $board-dimension + $tile-dimension + 12px;
+  height: $board-dimension + $tile-dimension + 12px;
 }
 
 .board__labels {
