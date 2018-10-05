@@ -2,7 +2,6 @@ package com.leggomymeggos.battleship.game
 
 import com.leggomymeggos.battleship.board.Board
 import com.leggomymeggos.battleship.board.Coordinate
-import com.leggomymeggos.battleship.board.Tile
 import com.leggomymeggos.battleship.board.gridOf
 import com.leggomymeggos.battleship.player.Player
 import com.leggomymeggos.battleship.player.PlayerService
@@ -23,115 +22,121 @@ class GameServiceTest {
         gameRegistry = mock()
         gameService = GameService(playerService, gameRegistry)
 
-        whenever(playerService.initPlayer()).thenReturn(Player(Board()))
-        whenever(playerService.setShips(any())).thenReturn(Player(Board()))
-    }
+        whenever(playerService.initPlayer()).thenReturn(Player())
+        whenever(playerService.setShips(any())).thenReturn(Player())
+        whenever(playerService.hitBoard(any(), any())).thenReturn(Player())
+
+        whenever(gameRegistry.getPlayer(any())).thenReturn(Player())
+     }
 
     // region new
     @Test
-    fun `new requests player from playerService`() {
+    fun `new requests two players from playerService`() {
         gameService.new()
 
-        verify(playerService).initPlayer()
+        verify(playerService, times(2)).initPlayer()
     }
 
     @Test
     fun `new sets ships`() {
-        val player = Player(Board())
-        whenever(playerService.initPlayer()).thenReturn(player)
+        val player = Player(board = Board())
+        val player2 = Player(board = Board(gridOf(1)))
+        whenever(playerService.initPlayer())
+                .thenReturn(player)
+                .thenReturn(player2)
 
         gameService.new()
 
         verify(playerService).setShips(player)
+        verify(playerService).setShips(player2)
     }
 
     @Test
     fun `new adds game to game registry`() {
-        val player = Player(board = Board(listOf(listOf(Tile()))))
-        whenever(playerService.setShips(any())).thenReturn(player)
+        val player = Player(board = Board())
+        val player2 = Player(board = Board(gridOf(1)))
+        whenever(playerService.setShips(any()))
+                .thenReturn(player)
+                .thenReturn(player2)
 
         gameService.new()
 
         val argumentCaptor = argumentCaptor<Game>()
         verify(gameRegistry).game = argumentCaptor.capture()
 
-        assertThat(argumentCaptor.firstValue.player).isEqualTo(player)
+        assertThat(argumentCaptor.firstValue).isEqualTo(Game(humanPlayer = player, computerPlayer = player2))
     }
 
     @Test
     fun `new returns a game with ships`() {
-        val player = Player(board = Board(listOf(listOf(Tile()))))
-        whenever(playerService.setShips(any())).thenReturn(player)
+        val player = Player(board = Board())
+        val player2 = Player(board = Board(gridOf(1)))
+        whenever(playerService.setShips(any()))
+                .thenReturn(player)
+                .thenReturn(player2)
 
         val game = gameService.new()
-        assertThat(game.player).isEqualTo(player)
+
+        assertThat(game).isEqualTo(Game(humanPlayer = player, computerPlayer = player2))
     }
     // endregion
 
     // region hitBoard
     @Test
-    fun `hit board hits board for player`() {
-        whenever(playerService.hitBoard(any(), any())).thenReturn(Player(Board()))
+    fun `hit board retrieves given player`() {
+        gameService.hitBoard(143, Coordinate(0, 0), 0)
 
-        val player = Player(Board(gridOf(3)))
-        whenever(gameRegistry.game).thenReturn(Game(player))
+        verify(gameRegistry).getPlayer(143)
+    }
+
+    @Test
+    fun `hit board hits board for given player`() {
+        val player = Player(board = Board(gridOf(3)))
+        whenever(gameRegistry.getPlayer(any())).thenReturn(player)
 
         val coordinate = Coordinate(1, 2)
-        gameService.hitBoard(coordinate)
+        gameService.hitBoard(0, coordinate, 0)
 
         verify(playerService).hitBoard(player, coordinate)
     }
 
     @Test
-    fun `hitBoard sets hit board on registered game and returns it`() {
-        val game = Game(Player(Board(gridOf(3))))
-        whenever(gameRegistry.game).thenReturn(game)
-
-        val expectedPlayer = Player(Board(gridOf(4)))
+    fun `hitBoard updates board for player`() {
+        val expectedPlayer = Player(board = Board(gridOf(4)))
         whenever(playerService.hitBoard(any(), any())).thenReturn(expectedPlayer)
 
-        val hitBoard = gameService.hitBoard(Coordinate(1, 1))
+        val hitBoard = gameService.hitBoard(123, Coordinate(1, 1), 0)
 
-        verify(gameRegistry).game = game.copy(player = expectedPlayer)
+        verify(gameRegistry).updatePlayer(123, expectedPlayer)
         assertThat(hitBoard).isEqualTo(expectedPlayer.board)
     }
 
     @Test
     fun `hitBoard checks winning player`() {
-        whenever(gameRegistry.game).thenReturn(Game(Player(Board())))
-
-        val player = Player(Board(gridOf(3)))
+        val player = Player(board = Board(gridOf(3)))
         whenever(playerService.hitBoard(any(), any())).thenReturn(player)
 
-        gameService.hitBoard(Coordinate(0, 0))
+        gameService.hitBoard(0, Coordinate(0, 0), 0)
 
         verify(playerService).isDefeated(player)
     }
 
     @Test
     fun `hitBoard sets winning player`() {
-        val game = Game(Player(Board(gridOf())))
-        whenever(gameRegistry.game).thenReturn(game)
-
-        val player = Player(Board(gridOf(1)))
-        whenever(playerService.hitBoard(any(), any())).thenReturn(player)
         whenever(playerService.isDefeated(any())).thenReturn(true)
 
-        gameService.hitBoard(Coordinate(0, 0))
+        gameService.hitBoard(0, Coordinate(0, 0), 12)
 
-        verify(gameRegistry).setWinner()
+        verify(gameRegistry).setWinner(12)
     }
     // endregion
 
     @Test
     fun `getWinner returns winner from game registry`() {
-        whenever(gameRegistry.game).thenReturn(Game(winner = true, player = Player(Board())))
+        val winner = Player(board = Board(gridOf(2)))
+        whenever(gameRegistry.game).thenReturn(Game(winner = winner))
 
-        assertThat(gameService.getWinner()).isTrue()
-
-        whenever(gameRegistry.game).thenReturn(Game(winner = false, player = Player(Board())))
-
-        assertThat(gameService.getWinner()).isFalse()
+        assertThat(gameService.getWinner()).isEqualTo(winner)
 
         verify(gameRegistry, times(2)).game
     }

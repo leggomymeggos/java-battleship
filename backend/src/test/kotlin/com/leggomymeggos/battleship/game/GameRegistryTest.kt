@@ -1,6 +1,7 @@
 package com.leggomymeggos.battleship.game
 
 import com.leggomymeggos.battleship.board.Board
+import com.leggomymeggos.battleship.board.gridOf
 import com.leggomymeggos.battleship.player.Player
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
@@ -13,13 +14,39 @@ class GameRegistryTest {
     fun setup() {
         gameRegistry = GameRegistry()
     }
+
+    @Test
+    fun `setWinner sets winner based on id`() {
+        val humanPlayer = Player(id = 123)
+        val computerPlayer = Player(id = 456)
+        gameRegistry.game = Game(humanPlayer, computerPlayer)
+
+        gameRegistry.setWinner(123)
+        assertThat(gameRegistry.game.winner).isEqualTo(humanPlayer)
+
+        gameRegistry.setWinner(456)
+        assertThat(gameRegistry.game.winner).isEqualTo(computerPlayer)
+    }
     
     @Test
-    fun `set winner sets winner on the saved game`() {
-        gameRegistry.game = Game(Player(Board()))
+    fun `getPlayer returns player with given id`() {
+        val humanPlayer = Player(id = 444)
+        val computerPlayer = Player(id = 222)
+        gameRegistry.game = Game(humanPlayer, computerPlayer)
 
-        gameRegistry.setWinner()
+        assertThat(gameRegistry.getPlayer(444)).isEqualTo(humanPlayer)
+        assertThat(gameRegistry.getPlayer(222)).isEqualTo(computerPlayer)
+    }
 
-        assertThat(gameRegistry.game.winner).isTrue()
+    @Test
+    fun `updatePlayer updates player with given id with the provided player`() {
+        val humanPlayer = Player(id = 123, board = Board(gridOf(2)))
+        val computerPlayer = Player(id = 456)
+        gameRegistry.game = Game(humanPlayer = humanPlayer, computerPlayer = computerPlayer)
+
+        val updatedPlayer = Player(id = 111, board = Board(gridOf(1)))
+        gameRegistry.updatePlayer(123, updatedPlayer)
+
+        assertThat(gameRegistry.game.humanPlayer).isEqualTo(updatedPlayer)
     }
 }

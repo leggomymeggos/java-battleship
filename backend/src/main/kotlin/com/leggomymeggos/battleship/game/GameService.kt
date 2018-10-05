@@ -2,6 +2,7 @@ package com.leggomymeggos.battleship.game
 
 import com.leggomymeggos.battleship.board.Board
 import com.leggomymeggos.battleship.board.Coordinate
+import com.leggomymeggos.battleship.player.Player
 import com.leggomymeggos.battleship.player.PlayerService
 import org.springframework.stereotype.Service
 
@@ -10,29 +11,31 @@ class GameService(val playerService: PlayerService, val gameRegistry: GameRegist
 
     fun new(): Game {
         val player = playerService.initPlayer()
-        val gamePlayer = playerService.setShips(player)
+        val player2 = playerService.initPlayer()
 
-        val game = Game(gamePlayer)
+        val playerWithShips = playerService.setShips(player)
+        val player2WithShips = playerService.setShips(player2)
+
+        val game = Game(playerWithShips, player2WithShips)
         gameRegistry.game = game
 
         return game
     }
 
-    fun hitBoard(coordinate: Coordinate): Board {
-        val game = gameRegistry.game
-        val updatedPlayer = playerService.hitBoard(game.player, coordinate)
+    fun hitBoard(defendingPlayerId: Int, coordinate: Coordinate, attackingPlayerId: Int): Board {
+        val player = gameRegistry.getPlayer(defendingPlayerId)
 
-        gameRegistry.game = game.copy(
-                player = updatedPlayer
-        )
+        val updatedPlayer = playerService.hitBoard(player, coordinate)
+
+        gameRegistry.updatePlayer(defendingPlayerId, updatedPlayer)
 
         if (playerService.isDefeated(updatedPlayer)) {
-            gameRegistry.setWinner()
+            gameRegistry.setWinner(attackingPlayerId)
         }
         return updatedPlayer.board
     }
 
-    fun getWinner(): Boolean {
+    fun getWinner(): Player? {
         return gameRegistry.game.winner
     }
 }

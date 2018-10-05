@@ -47,7 +47,7 @@ class GameControllerTest {
 
     @Test
     fun `newGame returns a new game`() {
-        val game = Game(Player(Board()))
+        val game = Game(Player())
         whenever(gameService.new()).thenReturn(game)
 
         val actual = controller.newGame()
@@ -59,7 +59,7 @@ class GameControllerTest {
     // region hitBoard
     @Test
     fun `hitBoard mapping`() {
-        mockMvc.perform(put("/games/0/players/0/hit")
+        mockMvc.perform(put("/games/0/players/76/hit?attackerId=98")
                 .content("{\"x\": 123, \"y\": 456}")
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().is2xxSuccessful)
@@ -68,17 +68,17 @@ class GameControllerTest {
     @Test
     fun `hitBoard attempts to hit the game board`() {
         val coordinate = Coordinate(9, 10)
-        controller.hitBoard(coordinate)
+        controller.hitBoard(123, coordinate, 456)
 
-        verify(gameService).hitBoard(coordinate)
+        verify(gameService).hitBoard(123, coordinate,456)
     }
 
     @Test
     fun `hitBoard returns hit game board`() {
         val board = Board(gridOf(1))
-        whenever(gameService.hitBoard(any())).thenReturn(board)
+        whenever(gameService.hitBoard(any(), any(), any())).thenReturn(board)
 
-        val actual = controller.hitBoard(Coordinate(123, 456))
+        val actual = controller.hitBoard(0, Coordinate(123, 456), 0)
 
         assertThat(actual).isEqualTo(board)
     }
@@ -100,9 +100,10 @@ class GameControllerTest {
 
     @Test
     fun `fetchWinner returns fetched winner`() {
-        whenever(gameService.getWinner()).thenReturn(true)
+        val player = Player(id = 123)
+        whenever(gameService.getWinner()).thenReturn(player)
 
-        assertThat(controller.fetchWinner()).isTrue()
+        assertThat(controller.fetchWinner()).isEqualTo(player)
     }
     // endregion
 }

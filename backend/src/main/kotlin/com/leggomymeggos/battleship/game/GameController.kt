@@ -2,6 +2,7 @@ package com.leggomymeggos.battleship.game
 
 import com.leggomymeggos.battleship.board.Board
 import com.leggomymeggos.battleship.board.Coordinate
+import com.leggomymeggos.battleship.player.Player
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -21,16 +22,17 @@ class GameController(val gameService: GameService) {
             value = ["/{gameId}/players/{playerId}/hit"],
             method = [RequestMethod.PUT]
     )
-    fun hitBoard(@RequestBody coordinate: Coordinate): Board {
-        return gameService.hitBoard(coordinate)
+    fun hitBoard(@PathVariable(name = "playerId") defendingPlayerId: Int,
+                 @RequestBody coordinate: Coordinate,
+                 @RequestParam(name = "attackerId") attackingPlayerId: Int): Board {
+        return gameService.hitBoard(defendingPlayerId, coordinate, attackingPlayerId)
     }
-
 
     @RequestMapping(
             value = ["/{gameId}/winner"],
             method = [RequestMethod.GET]
     )
-    fun fetchWinner(): Boolean {
+    fun fetchWinner(): Player? {
         return gameService.getWinner()
     }
 }

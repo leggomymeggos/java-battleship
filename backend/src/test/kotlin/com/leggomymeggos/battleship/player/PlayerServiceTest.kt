@@ -34,6 +34,7 @@ class PlayerServiceTest {
         val player = playerService.initPlayer()
 
         assertThat(player.board).isEqualTo(board)
+        assertThat(player.id).isNotEqualTo(-1)
     }
 
     @Test
@@ -51,7 +52,7 @@ class PlayerServiceTest {
         whenever(boardService.addShip(any(), eq(BATTLESHIP), any(), any())).thenReturn(boardWithBattleship)
 
         val playerBoard = Board()
-        val playerWithShips = playerService.setShips(Player(playerBoard))
+        val playerWithShips = playerService.setShips(Player(id = 1, board = playerBoard))
 
         verify(boardService).addShip(same(playerBoard), eq(CRUISER), any(), any())
         verify(boardService).addShip(same(boardWithCruiser), eq(SUBMARINE), any(), any())
@@ -60,6 +61,7 @@ class PlayerServiceTest {
         verify(boardService).addShip(same(boardWithDestroyer), eq(BATTLESHIP), any(), any())
 
         assertThat(playerWithShips.board).isSameAs(boardWithBattleship)
+        assertThat(playerWithShips.id).isEqualTo(1)
     }
 
     @Test
@@ -69,7 +71,7 @@ class PlayerServiceTest {
         val board = Board(gridOf(2))
         val coordinate = Coordinate(1, 2)
 
-        playerService.hitBoard(Player(board), coordinate)
+        playerService.hitBoard(Player(board = board), coordinate)
 
         verify(boardService).hitTile(board, coordinate)
     }
@@ -79,14 +81,15 @@ class PlayerServiceTest {
         val board = Board(gridOf(1))
         whenever(boardService.hitTile(any(), any())).thenReturn(board)
 
-        val result = playerService.hitBoard(Player(Board()), Coordinate(0, 0))
+        val result = playerService.hitBoard(Player(id = 3), Coordinate(0, 0))
 
         assertThat(result.board).isEqualTo(board)
+        assertThat(result.id).isEqualTo(3)
     }
 
     @Test
     fun `isDefeated returns true if all ships are sunk`() {
-        val player = Player(Board(
+        val player = Player(board = Board(
                 grid = listOf(listOf(
                         Tile(ship = CRUISER),
                         Tile(ship = DESTROYER),
@@ -108,7 +111,7 @@ class PlayerServiceTest {
 
     @Test
     fun `isDefeated returns false if not all ships are sunk`() {
-        val player = Player(Board(
+        val player = Player(board = Board(
                 grid = listOf(listOf(
                         Tile(ship = CRUISER),
                         Tile(ship = DESTROYER),
@@ -129,7 +132,7 @@ class PlayerServiceTest {
 
     @Test
     fun `isDefeated returns true if all ships on the board are sunk`() {
-        val player = Player(Board(
+        val player = Player(board = Board(
                 grid = listOf(listOf(
                         Tile(ship = AIRCRAFT_CARRIER),
                         Tile(ship = AIRCRAFT_CARRIER),
