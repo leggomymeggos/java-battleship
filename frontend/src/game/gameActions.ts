@@ -15,6 +15,5 @@ export const fetchWinner =
 
 export const gameWon =
     createAction(GameActions.GAME_WON, (payload: boolean) => {
-        console.log("game won");
         return payload
     });

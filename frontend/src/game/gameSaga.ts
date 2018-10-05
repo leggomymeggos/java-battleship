@@ -27,7 +27,6 @@ export function* checkWinner(): any {
     try {
         const winner = yield call(GameApi.fetchWinner);
         if (!winner) {
-            console.log("no winner yet", winner);
             return;
         }
         yield put(gameWon(winner));
