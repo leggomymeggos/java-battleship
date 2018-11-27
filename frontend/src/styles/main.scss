@@ -2,10 +2,32 @@
 @import 'colors';
 @import 'board';
 
-@keyframes play {
+@keyframes idle {
   100% {
-    background-position: 125px;
+    background-position-x: -416px;
   }
+}
+
+@keyframes miss {
+  100% {
+    background-position-x: -256px;
+  }
+}
+
+@keyframes hit {
+  100% {
+    background-position-x: -128px;
+  }
+}
+
+@keyframes defeated {
+  100% {
+    background-position-x: -188px;
+  }
+}
+
+@keyframes won {
+
 }
 
 .game__content {
@@ -24,8 +46,33 @@
   .agent__enemy--avatar {
     height: 34px;
     width: 34px;
-    background: url("../images/peach_sprites_hover.png") right center;
-    animation: play 0.5s steps(3) infinite;
+    background: url("../images/enemy_agent_sprite_sheet.png");
+    background-origin: border-box;
+
+    &.idle {
+      animation-delay: 2s;
+      background-position-y: 250px;
+      animation: idle 1.5s steps(13) infinite;
+    }
+
+    &.miss {
+      background-position-y: 225px;
+      animation: miss 1.5s steps(8) infinite;
+    }
+
+    &.hit {
+      background-position-y: 60px;
+      animation: hit 1.5s steps(4) infinite;
+    }
+
+    &.defeated {
+      background-position-y: 30px;
+      animation: defeated 1s steps(6) forwards;
+    }
+
+    &.won {
+
+    }
   }
 
   .agent__enemy--dialogue {

@@ -17,7 +17,7 @@ export class AgentData extends React.Component<AgentDataProps> {
                     "Oh no! You defeated me!" :
                     "Hi! Ready to play?"
             }</div>
-            <div className="agent__enemy--avatar">
+            <div className="agent__enemy--avatar idle">
                 <img src={require("../images/img_transparent.png")}/>
             </div>
         </div>
