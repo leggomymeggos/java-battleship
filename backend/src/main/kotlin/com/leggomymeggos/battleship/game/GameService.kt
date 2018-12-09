@@ -13,8 +13,8 @@ class GameService(val playerService: PlayerService, val gameRegistry: GameRegist
         val player = playerService.initPlayer()
         val player2 = playerService.initPlayer()
 
-        val playerWithShips = playerService.setShips(player)
-        val player2WithShips = playerService.setShips(player2)
+        val playerWithShips = playerService.randomlySetShips(player)
+        val player2WithShips = playerService.randomlySetShips(player2)
 
         val game = Game(playerWithShips, player2WithShips)
         gameRegistry.game = game

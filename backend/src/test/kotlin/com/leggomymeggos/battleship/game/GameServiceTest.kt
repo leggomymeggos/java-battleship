@@ -23,7 +23,7 @@ class GameServiceTest {
         gameService = GameService(playerService, gameRegistry)
 
         whenever(playerService.initPlayer()).thenReturn(Player())
-        whenever(playerService.setShips(any())).thenReturn(Player())
+        whenever(playerService.randomlySetShips(any())).thenReturn(Player())
         whenever(playerService.hitBoard(any(), any())).thenReturn(Player())
 
         whenever(gameRegistry.getPlayer(any())).thenReturn(Player())
@@ -38,7 +38,7 @@ class GameServiceTest {
     }
 
     @Test
-    fun `new sets ships`() {
+    fun `new randomly sets ships`() {
         val player = Player(board = Board())
         val player2 = Player(board = Board(gridOf(1)))
         whenever(playerService.initPlayer())
@@ -47,15 +47,15 @@ class GameServiceTest {
 
         gameService.new()
 
-        verify(playerService).setShips(player)
-        verify(playerService).setShips(player2)
+        verify(playerService).randomlySetShips(player)
+        verify(playerService).randomlySetShips(player2)
     }
 
     @Test
     fun `new adds game to game registry`() {
         val player = Player(board = Board())
         val player2 = Player(board = Board(gridOf(1)))
-        whenever(playerService.setShips(any()))
+        whenever(playerService.randomlySetShips(any()))
                 .thenReturn(player)
                 .thenReturn(player2)
 
@@ -71,7 +71,7 @@ class GameServiceTest {
     fun `new returns a game with ships`() {
         val player = Player(board = Board())
         val player2 = Player(board = Board(gridOf(1)))
-        whenever(playerService.setShips(any()))
+        whenever(playerService.randomlySetShips(any()))
                 .thenReturn(player)
                 .thenReturn(player2)
 

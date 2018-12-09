@@ -15,13 +15,17 @@ class PlayerService(val boardService: BoardService) {
     }
 
     fun setShips(player: Player): Player {
-        val boardWithCruiser = boardService.addShip(player.board, CRUISER, Coordinate(0, 0), Direction.HORIZONTAL)
-        val boardWithSubmarine = boardService.addShip(boardWithCruiser, SUBMARINE, Coordinate(2, 6), Direction.HORIZONTAL)
-        val boardWithAircraftCarrier = boardService.addShip(boardWithSubmarine, AIRCRAFT_CARRIER, Coordinate(5, 3), Direction.HORIZONTAL)
-        val boardWithDestroyer = boardService.addShip(boardWithAircraftCarrier, DESTROYER, Coordinate(0, 9), Direction.VERTICAL)
-        val boardWithBattleship = boardService.addShip(boardWithDestroyer, BATTLESHIP, Coordinate(9, 9), Direction.VERTICAL)
+        val board = boardService.addShip(player.board, CRUISER, Coordinate(0, 0), Direction.HORIZONTAL).run {
+            boardService.addShip(this, SUBMARINE, Coordinate(2, 6), Direction.HORIZONTAL).run {
+                boardService.addShip(this, AIRCRAFT_CARRIER, Coordinate(5, 3), Direction.HORIZONTAL).run {
+                    boardService.addShip(this, DESTROYER, Coordinate(0, 9), Direction.VERTICAL).run {
+                        boardService.addShip(this, BATTLESHIP, Coordinate(9, 9), Direction.VERTICAL)
+                    }
+                }
+            }
+        }
 
-        return player.copy(board = boardWithBattleship)
+        return player.copy(board = board)
     }
 
     fun hitBoard(player: Player, coordinate: Coordinate): Player {
@@ -33,5 +37,19 @@ class PlayerService(val boardService: BoardService) {
         val shipsOnBoard = player.board.grid.flatten().asSequence().filter { it.ship != null }.toSet()
 
         return shipsOnBoard.size == player.board.sunkenShips.size
+    }
+
+    fun randomlySetShips(player: Player): Player {
+        val board = boardService.addShipRandomly(player.board, CRUISER, Direction.values().random()).run {
+            boardService.addShipRandomly(this, SUBMARINE, Direction.values().random()).run {
+                boardService.addShipRandomly(this, AIRCRAFT_CARRIER, Direction.values().random()).run {
+                    boardService.addShipRandomly(this, DESTROYER, Direction.values().random()).run {
+                        boardService.addShipRandomly(this, BATTLESHIP, Direction.values().random())
+                    }
+                }
+            }
+        }
+
+        return player.copy(board = board)
     }
 }

@@ -71,6 +71,30 @@ class BoardServiceTest {
     }
 
     @Test
+    fun `addShip handles coordinate as the ending coordinate (horizontal)`() {
+        val grid = gridOf(4)
+        val board = Board(grid)
+
+        val boardWithCruiser = boardService.addShip(board, CRUISER, Coordinate(3, 1), HORIZONTAL)
+
+        assertThat(boardWithCruiser.grid[1][3].ship).isEqualTo(CRUISER)
+        assertThat(boardWithCruiser.grid[1][2].ship).isEqualTo(CRUISER)
+        assertThat(boardWithCruiser.grid[1][1].ship).isEqualTo(CRUISER)
+    }
+
+    @Test
+    fun `addShip handles coordinate as the ending coordinate (vertical)`() {
+        val grid = gridOf(4)
+        val board = Board(grid)
+
+        val boardWithCruiser = boardService.addShip(board, CRUISER, Coordinate(1, 3), VERTICAL)
+
+        assertThat(boardWithCruiser.grid[3][1].ship).isEqualTo(CRUISER)
+        assertThat(boardWithCruiser.grid[2][1].ship).isEqualTo(CRUISER)
+        assertThat(boardWithCruiser.grid[1][1].ship).isEqualTo(CRUISER)
+    }
+
+    @Test
     fun `addShip does not add a ship on top of another ship`() {
         val grid = gridOf(5)
         val board = Board(grid)
@@ -94,32 +118,9 @@ class BoardServiceTest {
         assertThat(boardWithVerticalShip.grid[1][2].ship).isEqualTo(CRUISER)
         assertThat(boardWithVerticalShip.grid[0][2].ship).isNull()
     }
-
-    @Test
-    fun `addShip handles coordinate as the ending coordinate (horizontal)`() {
-        val grid = gridOf(4)
-        val board = Board(grid)
-
-        val boardWithCruiser = boardService.addShip(board, CRUISER, Coordinate(3, 1), HORIZONTAL)
-
-        assertThat(boardWithCruiser.grid[1][3].ship).isEqualTo(CRUISER)
-        assertThat(boardWithCruiser.grid[1][2].ship).isEqualTo(CRUISER)
-        assertThat(boardWithCruiser.grid[1][1].ship).isEqualTo(CRUISER)
-    }
-
-    @Test
-    fun `addShip handles coordinate as the ending coordinate (vertical)`() {
-        val grid = gridOf(4)
-        val board = Board(grid)
-
-        val boardWithCruiser = boardService.addShip(board, CRUISER, Coordinate(1, 3), VERTICAL)
-
-        assertThat(boardWithCruiser.grid[3][1].ship).isEqualTo(CRUISER)
-        assertThat(boardWithCruiser.grid[2][1].ship).isEqualTo(CRUISER)
-        assertThat(boardWithCruiser.grid[1][1].ship).isEqualTo(CRUISER)
-    }
     // endregion
 
+    // region hitTile
     @Test
     fun `hitTile updates tile for given coordinate`() {
         val board = boardService.hitTile(Board(gridOf(5)), Coordinate(2, 3))
@@ -148,4 +149,93 @@ class BoardServiceTest {
         val sunkBoard = boardService.hitTile(hitBoard, Coordinate(1, 0))
         assertThat(sunkBoard.sunkenShips).containsExactly(DESTROYER)
     }
+    // endregion
+
+    // region randomValidCoordinate
+    @Test
+    fun `randomValidCoordinate does not return coordinates containing a ship for vertically placed ships`() {
+        val boardWithShip = boardService.addShip(Board(gridOf(4)), DESTROYER, Coordinate(0, 0), VERTICAL)
+
+        val randomCoordinate = boardService.randomValidCoordinate(boardWithShip, CRUISER, VERTICAL)
+
+        val invalidCoordinates = listOf(
+                Coordinate(0, 0),
+                Coordinate(0, 1),
+                Coordinate(0, 2),
+                Coordinate(0, 3)
+        )
+
+        assertThat(invalidCoordinates).doesNotContain(randomCoordinate)
+    }
+
+    @Test
+    fun `randomValidCoordinate does not return coordinates containing a ship for horizontally placed ships`() {
+        val boardWithShip = boardService.addShip(
+                Board(gridOf(4)),
+                DESTROYER,
+                Coordinate(0, 0),
+                HORIZONTAL)
+
+        val randomCoordinate = boardService.randomValidCoordinate(boardWithShip, CRUISER, HORIZONTAL)
+
+        val invalidCoordinates = listOf(
+                Coordinate(0, 0),
+                Coordinate(1, 0),
+                Coordinate(2, 0),
+                Coordinate(3, 0)
+        )
+
+        assertThat(invalidCoordinates).doesNotContain(randomCoordinate)
+    }
+
+    @Test
+    fun `randomValidCoordinate does not return invalid placement coordinates for vertically placed ships`() {
+        val randomCoordinate = boardService.randomValidCoordinate(Board(gridOf(3)), CRUISER, VERTICAL)
+
+        val invalidCoordinates = listOf(
+                Coordinate(0, 1),
+                Coordinate(1, 1),
+                Coordinate(2, 1)
+        )
+
+        assertThat(invalidCoordinates).doesNotContain(randomCoordinate)
+    }
+
+    @Test
+    fun `randomValidCoordinate does not return invalid placement coordinates for horizontally placed ships`() {
+        val randomCoordinate = boardService.randomValidCoordinate(Board(gridOf(4)), BATTLESHIP, HORIZONTAL)
+
+        val invalidCoordinates = listOf(
+                Coordinate(1, 0),
+                Coordinate(1, 1),
+                Coordinate(1, 2),
+                Coordinate(1, 3),
+                Coordinate(2, 1),
+                Coordinate(2, 1),
+                Coordinate(2, 2),
+                Coordinate(2, 3)
+        )
+
+        assertThat(invalidCoordinates).doesNotContain(randomCoordinate)
+    }
+    // endregion
+
+    // region addShipRandomly
+    @Test
+    fun `addShipRandomly always adds all ships`() {
+        val randomBoard = boardService.addShipRandomly(Board(gridOf(10)), DESTROYER, Direction.values().random()).run {
+            boardService.addShipRandomly(this, CRUISER, Direction.values().random()).run {
+                boardService.addShipRandomly(this, SUBMARINE, Direction.values().random()).run {
+                    boardService.addShipRandomly(this, BATTLESHIP, Direction.values().random()).run {
+                        boardService.addShipRandomly(this, AIRCRAFT_CARRIER, Direction.values().random())
+                    }
+                }
+            }
+        }
+
+        assertThat(randomBoard.grid.flatten().mapNotNull { it.ship }.toSet()).containsExactlyInAnyOrder(
+                DESTROYER, CRUISER, SUBMARINE, BATTLESHIP, AIRCRAFT_CARRIER
+        )
+    }
+    // endregion
 }

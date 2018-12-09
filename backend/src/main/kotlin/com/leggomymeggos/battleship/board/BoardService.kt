@@ -13,14 +13,18 @@ class BoardService {
             when (direction) {
                 Direction.HORIZONTAL -> {
                     val normalizedCoordinate = coordinate.normalizeForHorizontalPlacement(this, ship)
-                    if (isValidHorizontalPlacement(normalizedCoordinate, ship)) {
+                    if (containsNoShipsInHorizontalPlacement(normalizedCoordinate, ship)) {
                         addShipHorizontally(normalizedCoordinate, ship)
+                    } else {
+                        println("invalid horizontal placement for $ship at $normalizedCoordinate for board ${board.grid.map { it.map { col -> col.ship } }}")
                     }
                 }
                 Direction.VERTICAL -> {
                     val normalizedCoordinate = coordinate.normalizeForVerticalPlacement(this, ship)
-                    if (isValidVerticalPlacement(normalizedCoordinate, ship)) {
+                    if (containsNoShipsInVerticalPlacement(normalizedCoordinate, ship)) {
                         addShipVertically(normalizedCoordinate, ship)
+                    } else {
+                        println("invalid vertical placement for $ship at $normalizedCoordinate for board ${board.grid.map { it.map { col -> col.ship } }}")
                     }
                 }
             }
@@ -41,14 +45,48 @@ class BoardService {
         return hitBoard
     }
 
-    private fun Grid.isValidHorizontalPlacement(coordinate: Coordinate, ship: Ship): Boolean {
+    fun addShipRandomly(board: Board, ship: Ship, direction: Direction): Board {
+        val coordinate = randomValidCoordinate(board, ship, direction)
+        return addShip(board, ship, coordinate, direction)
+    }
+
+    tailrec fun randomValidCoordinate(board: Board, ship: Ship, direction: Direction): Coordinate {
+        val randomCoordinate = board.grid
+                .mapIndexed { yIndex, row ->
+                    row.mapIndexed { xIndex, _ ->
+                        Coordinate(xIndex, yIndex)
+                    }.select {
+                        when (direction) {
+                            Direction.HORIZONTAL -> it.isValidHorizontalCoordinate(board.grid, ship)
+                            Direction.VERTICAL -> it.isValidVerticalCoordinate(board.grid, ship)
+                        }
+                    }
+                }.flatten().random()
+
+        val normalizedCoordinate = when (direction) {
+            Direction.HORIZONTAL -> randomCoordinate.normalizeForHorizontalPlacement(board.grid, ship)
+            Direction.VERTICAL -> randomCoordinate.normalizeForVerticalPlacement(board.grid, ship)
+        }
+
+        val isValidCoordinate = when (direction) {
+            Direction.HORIZONTAL -> board.grid.containsNoShipsInHorizontalPlacement(normalizedCoordinate, ship)
+            Direction.VERTICAL -> board.grid.containsNoShipsInVerticalPlacement(normalizedCoordinate, ship)
+        }
+
+        return when {
+            isValidCoordinate -> randomCoordinate
+            else -> randomValidCoordinate(board, ship, direction)
+        }
+    }
+
+    private fun Grid.containsNoShipsInHorizontalPlacement(coordinate: Coordinate, ship: Ship): Boolean {
         val tilesContainingShip = this[coordinate.y]
                 .subList(coordinate.x, ship.size + coordinate.x)
                 .filter { it.ship != null }
         return tilesContainingShip.isEmpty()
     }
 
-    private fun Grid.isValidVerticalPlacement(coordinate: Coordinate, ship: Ship): Boolean {
+    private fun Grid.containsNoShipsInVerticalPlacement(coordinate: Coordinate, ship: Ship): Boolean {
         val tilesContainingShip = this.map { it[coordinate.x] }
                 .subList(coordinate.y, ship.size + coordinate.y)
                 .filter { it.ship != null }
@@ -71,6 +109,14 @@ class BoardService {
         }
     }
 
+    private fun Coordinate.isValidHorizontalCoordinate(grid: List<List<Tile>>, ship: Ship): Boolean {
+        val xCoordinate = when {
+            ship.size + this.x > grid.size -> (this.x + 1) - ship.size
+            else -> this.x
+        }
+        return xCoordinate >= 0
+    }
+
     private fun Coordinate.normalizeForHorizontalPlacement(grid: List<List<Tile>>, ship: Ship): Coordinate {
         val xCoordinate = when {
             ship.size + this.x > grid.size -> (this.x + 1) - ship.size
@@ -78,6 +124,14 @@ class BoardService {
         }
 
         return this.copy(x = xCoordinate)
+    }
+
+    private fun Coordinate.isValidVerticalCoordinate(grid: List<List<Tile>>, ship: Ship): Boolean {
+        val yCoordinate = when {
+            ship.size + this.y > grid.size -> (this.y + 1) - ship.size
+            else -> this.y
+        }
+        return yCoordinate >= 0
     }
 
     private fun Coordinate.normalizeForVerticalPlacement(grid: List<List<Tile>>, ship: Ship): Coordinate {
@@ -109,4 +163,9 @@ class BoardService {
 
         return hitTilesWithShip.size == this.size
     }
+}
+
+
+inline fun <T> Iterable<T>.select(predicate: (T) -> Boolean): List<T> {
+    return this.filter(predicate)
 }
