@@ -4,25 +4,25 @@
 
 @keyframes idle {
   100% {
-    background-position-x: -416px;
+    background-position-x: -720px;
   }
 }
 
 @keyframes miss {
   100% {
-    background-position-x: -256px;
+    background-position-x: -330px;
   }
 }
 
 @keyframes hit {
   100% {
-    background-position-x: -128px;
+    background-position-x: -220px;
   }
 }
 
 @keyframes defeated {
   100% {
-    background-position-x: -188px;
+    background-position-x: -330px;
   }
 }
 
@@ -44,29 +44,29 @@
   align-items: center;
 
   .agent__enemy--avatar {
-    height: 34px;
-    width: 34px;
+    height: 50px;
+    width: 50px;
     background: url("../images/enemy_agent_sprite_sheet.png");
     background-origin: border-box;
 
     &.idle {
       animation-delay: 2s;
-      background-position-y: 250px;
+      background-position-y: 435px;
       animation: idle 1.5s steps(13) infinite;
     }
 
     &.miss {
-      background-position-y: 225px;
-      animation: miss 1.5s steps(8) infinite;
+      background-position-y: 160px;
+      animation: miss 1.5s steps(6) infinite;
     }
 
     &.hit {
-      background-position-y: 60px;
+      background-position-y: 100px;
       animation: hit 1.5s steps(4) infinite;
     }
 
     &.defeated {
-      background-position-y: 30px;
+      background-position-y: 50px;
       animation: defeated 1s steps(6) forwards;
     }
 
