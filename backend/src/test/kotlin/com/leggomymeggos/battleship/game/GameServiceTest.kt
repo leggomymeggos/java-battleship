@@ -39,8 +39,8 @@ class GameServiceTest {
 
     @Test
     fun `new randomly sets ships`() {
-        val player = Player(board = Board())
-        val player2 = Player(board = Board(gridOf(1)))
+        val player = Player(board = Board()).copy(id = 1)
+        val player2 = Player(board = Board(gridOf(1))).copy(id = 2)
         whenever(playerService.initPlayer())
                 .thenReturn(player)
                 .thenReturn(player2)

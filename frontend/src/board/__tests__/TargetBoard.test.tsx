@@ -22,7 +22,7 @@ describe("TargetBoard", () => {
     it("has a grid", () => {
         const subject = shallow(<TargetBoard {...defaultProps} />);
 
-        expect(subject.find(".board__grid").exists()).toBeTruthy();
+        expect(subject.find(".target--board__grid").exists()).toBeTruthy();
     });
 
     it("renders each tile", () => {
