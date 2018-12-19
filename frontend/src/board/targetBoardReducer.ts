@@ -13,7 +13,7 @@ export const initialState: BoardState = {
     sunkenShips: []
 };
 
-const boardReducer = handleActions({
+const targetBoardReducer = handleActions({
     [GameActions.NEW_GAME_CREATED]: (state: BoardState, action: Action<any>) => {
         return {
             ...state, grid: action.payload.grid
@@ -28,4 +28,4 @@ const boardReducer = handleActions({
     },
 }, initialState);
 
-export default boardReducer;
+export default targetBoardReducer;

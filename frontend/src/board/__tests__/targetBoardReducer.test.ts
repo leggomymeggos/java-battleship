@@ -1,9 +1,9 @@
-import boardReducer, {BoardState, initialState} from "../boardReducer";
+import targetBoardReducer, {BoardState, initialState} from "../targetBoardReducer";
 import {BoardActions} from "../boardActions";
 import {Tile} from "../../domain/Tile";
 import {GameActions} from "../../game/gameActions";
 
-describe("board reducer", () => {
+describe("target board reducer", () => {
     it("has an initial state", () => {
         expect(initialState).toEqual({
             grid: [[]],
@@ -12,7 +12,7 @@ describe("board reducer", () => {
     });
 
     it("handles NEW_GAME_CREATED action", () => {
-        const state = boardReducer(initialState, {
+        const state = targetBoardReducer(initialState, {
             type: GameActions.NEW_GAME_CREATED,
             payload: {grid: [[new Tile()], [new Tile()]], sunkenShips: ["none yet"]}
         });
@@ -31,7 +31,7 @@ describe("board reducer", () => {
             };
 
             let board = {grid: [[new Tile()]]};
-            const state = boardReducer(prevState, {type: BoardActions.BOARD_HIT_SUCCESS, payload: board});
+            const state = targetBoardReducer(prevState, {type: BoardActions.BOARD_HIT_SUCCESS, payload: board});
 
             expect(state.grid).toEqual(board.grid);
         });
@@ -43,7 +43,7 @@ describe("board reducer", () => {
             };
 
             let board = {grid: [[new Tile()]], sunkenShips: ["the battleship"]};
-            const state = boardReducer(prevState, {type: BoardActions.BOARD_HIT_SUCCESS, payload: board});
+            const state = targetBoardReducer(prevState, {type: BoardActions.BOARD_HIT_SUCCESS, payload: board});
 
             expect(state.sunkenShips).toEqual(["the battleship"]);
         });

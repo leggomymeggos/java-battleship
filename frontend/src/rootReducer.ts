@@ -1,5 +1,5 @@
 import {combineReducers} from "redux";
-import boardReducer, {BoardState} from "./board/boardReducer";
+import targetBoardReducer, {BoardState} from "./board/targetBoardReducer";
 import gameReducer, {GameState} from "./game/gameReducer";
 
 export type rootState =  {
@@ -8,6 +8,6 @@ export type rootState =  {
 }
 
 export const rootReducer = combineReducers({
-    boardReducer,
+    boardReducer: targetBoardReducer,
     gameReducer
 });

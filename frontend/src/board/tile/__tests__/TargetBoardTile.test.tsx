@@ -3,9 +3,9 @@ jest.mock("../../boardActions");
 import {shallow} from "enzyme";
 import * as React from "react";
 import {Tile} from "../../../domain/Tile";
-import {BoardTile, BoardTileProps} from "../BoardTile";
+import {TargetBoardTile, BoardTileProps} from "../TargetBoardTile";
 
-describe("BoardTile", () => {
+describe("TargetBoardTile", () => {
     let defaultProps: BoardTileProps;
     let mockActions: any;
 
@@ -32,7 +32,7 @@ describe("BoardTile", () => {
                 }
             };
 
-            const subject = shallow(<BoardTile {...props}/>);
+            const subject = shallow(<TargetBoardTile {...props}/>);
 
             expect(subject.find("._155-reverse").exists()).toBeTruthy();
             expect(subject.find("._62").exists()).toBeFalsy();
@@ -47,7 +47,7 @@ describe("BoardTile", () => {
                 }
             };
 
-            const subject = shallow(<BoardTile {...props}/>);
+            const subject = shallow(<TargetBoardTile {...props}/>);
 
             expect(subject.find("._155-reverse").exists()).toBeTruthy();
             expect(subject.find("._62").exists()).toBeFalsy();
@@ -62,7 +62,7 @@ describe("BoardTile", () => {
                 }
             };
 
-            const subject = shallow(<BoardTile {...props}/>);
+            const subject = shallow(<TargetBoardTile {...props}/>);
 
             expect(subject.find("._62").exists()).toBeTruthy();
             expect(subject.find("._155-reverse").exists()).toBeFalsy();
@@ -74,7 +74,7 @@ describe("BoardTile", () => {
                 tile: new Tile(null, true)
             };
 
-            const subject = shallow(<BoardTile {...props}/>);
+            const subject = shallow(<TargetBoardTile {...props}/>);
 
             expect(subject.find(".aimed--miss").exists()).toBeTruthy();
             expect(subject.find(".aimed--hit").exists()).toBeFalsy();
@@ -86,7 +86,7 @@ describe("BoardTile", () => {
                 tile: new Tile("123", true)
             };
 
-            const subject = shallow(<BoardTile {...props}/>);
+            const subject = shallow(<TargetBoardTile {...props}/>);
 
             expect(subject.find(".aimed--hit").exists()).toBeTruthy();
             expect(subject.find(".aimed--miss").exists()).toBeFalsy();
@@ -97,7 +97,7 @@ describe("BoardTile", () => {
                 ...defaultProps
             };
 
-            const subject = shallow(<BoardTile {...props}/>);
+            const subject = shallow(<TargetBoardTile {...props}/>);
 
             expect(subject.find(".aimed--hit").exists()).toBeFalsy();
             expect(subject.find(".aimed--miss").exists()).toBeFalsy();
@@ -114,7 +114,7 @@ describe("BoardTile", () => {
                 }
             };
 
-            const subject = shallow(<BoardTile {...props}/>);
+            const subject = shallow(<TargetBoardTile {...props}/>);
 
             subject.find(".board__tile").get(0).props.onClick();
 
@@ -134,7 +134,7 @@ describe("BoardTile", () => {
                 }
             };
 
-            const subject = shallow(<BoardTile {...props}/>);
+            const subject = shallow(<TargetBoardTile {...props}/>);
 
             subject.find(".board__tile").get(0).props.onClick();
 
@@ -152,7 +152,7 @@ describe("BoardTile", () => {
                 }
             };
 
-            const subject = shallow(<BoardTile {...props}/>);
+            const subject = shallow(<TargetBoardTile {...props}/>);
 
             subject.find(".board__tile").get(0).props.onClick();
 

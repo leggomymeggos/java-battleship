@@ -1,6 +1,6 @@
 import {call, put, takeEvery} from "redux-saga/effects";
 import {GameApi} from "./gameApi";
-import {fetchWinner, gameWon, newGameCreated} from "./gameActions";
+import {fetchWinner, GameActions, gameWon, newGameCreated} from "./gameActions";
 import {Coordinate, boardHitSuccess, BoardActions} from "../board/boardActions";
 import {Action} from "redux-actions";
 
@@ -36,15 +36,15 @@ export function* checkWinner(): any {
 }
 
 export function* fetchGameSaga(): any {
-    yield takeEvery(BoardActions.GET_INITIAL_BOARD, fetchGame);
+    yield takeEvery(GameActions.NEW_GAME, fetchGame);
 }
 
 export function* hitBoardSaga(): any {
     yield takeEvery(BoardActions.BOARD_HIT, (action: Action<any>) => {
-        return hitBoard(1, action.payload, 1);
+        return hitBoard(2, action.payload, 1);
     });
 }
 
 export function* checkWinnerSaga(): any {
-    yield takeEvery("FETCH_WINNER", checkWinner);
+    yield takeEvery(GameActions.FETCH_WINNER, checkWinner);
 }

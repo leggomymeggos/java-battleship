@@ -1,10 +1,13 @@
-//$board-dimension: 850px;
-$board-dimension: 550px;
-$tile-dimension: $board-dimension/10;
+//$target-board-dimension: 850px;
+$target-board-dimension: 550px;
+$target-tile-dimension: $target-board-dimension/10;
 
-.board {
-  width: $board-dimension + $tile-dimension + 12px;
-  height: $board-dimension + $tile-dimension + 12px;
+$player-board-dimension: 500px;
+$player-tile-dimension: $player-board-dimension/10;
+
+.target--board {
+  width: $target-board-dimension + $target-tile-dimension + 12px;
+  height: $target-board-dimension + $target-tile-dimension + 12px;
 }
 
 .board__labels {
@@ -21,8 +24,8 @@ $tile-dimension: $board-dimension/10;
   }
 
   .board__label {
-    height: $tile-dimension;
-    width: $tile-dimension;
+    height: $target-tile-dimension;
+    width: $target-tile-dimension;
     font-weight: bold;
     display: flex;
     justify-content: center;
@@ -37,8 +40,6 @@ $tile-dimension: $board-dimension/10;
 }
 
 .board__grid {
-  width: $board-dimension + 10px;
-  height: $board-dimension + 10px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -48,13 +49,6 @@ $tile-dimension: $board-dimension/10;
     border: 0.5px solid #0a6ea8;
     position: relative;
     overflow: hidden;
-    width: $tile-dimension;
-    height: $tile-dimension;
-
-    &:not(.clicked):hover {
-      background-color: rgba(250, 250, 250, .3);
-      cursor: pointer;
-    }
 
     &::before {
       @extend .diagonal-stripe-6-ocean-blue;
@@ -84,12 +78,54 @@ $tile-dimension: $board-dimension/10;
       }
     }
   }
+}
 
-  .aimed--hit--image {
+.target--board__grid {
+  @extend .board__grid;
+  width: $target-board-dimension + 10px;
+  height: $target-board-dimension + 10px;
+
+  .board__tile {
+    width: $target-tile-dimension;
+    height: $target-tile-dimension;
+
+    &:not(.clicked):hover {
+      background-color: rgba(250, 250, 250, .3);
+      cursor: pointer;
+    }
+  }
+
+  .aimed__hit--image {
     stroke: $hit-indicator;
   }
 
-  .aimed--miss--image {
+  .aimed__miss--image {
     stroke: $miss-indicator;
+  }
+}
+
+.player--board {
+  width: $player-board-dimension + $player-tile-dimension + 17px;
+  height: $player-board-dimension + $player-tile-dimension + 17px;
+}
+
+.player--board__grid {
+  @extend .board__grid;
+  width: $player-board-dimension + 10px;
+  height: $player-board-dimension + 10px;
+
+  .board__tile {
+    width: $player-tile-dimension;
+    height: $player-tile-dimension;
+  }
+
+  .occupied {
+    background: limegreen;
+    border-color: green;
+  }
+
+  .occupied--hit {
+    background: darkgray;
+    border-color: gray;
   }
 }

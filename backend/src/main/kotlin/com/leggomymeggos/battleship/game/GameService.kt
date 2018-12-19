@@ -10,13 +10,17 @@ import org.springframework.stereotype.Service
 class GameService(val playerService: PlayerService, val gameRegistry: GameRegistry) {
 
     fun new(): Game {
-        val player = playerService.initPlayer()
-        val player2 = playerService.initPlayer()
+        val humanPlayer = playerService.initPlayer()
+                .copy(id = 1).run {
+                    playerService.randomlySetShips(this)
+                }
 
-        val playerWithShips = playerService.randomlySetShips(player)
-        val player2WithShips = playerService.randomlySetShips(player2)
+        val computerPlayer = playerService.initPlayer()
+                .copy(id = 2).run {
+                    playerService.randomlySetShips(this)
+                }
 
-        val game = Game(playerWithShips, player2WithShips)
+        val game = Game(humanPlayer, computerPlayer)
         gameRegistry.game = game
 
         return game

@@ -2,31 +2,25 @@ jest.mock("../boardActions");
 
 import {shallow} from "enzyme";
 import * as React from "react";
-import {Board, BoardProps, mapDispatchToProps, mapStateToProps} from "../Board";
-import {getInitialBoard} from "../boardActions";
-import {BoardState} from "../boardReducer";
+import {TargetBoard, BoardProps, mapStateToProps} from "../TargetBoard";
+import {BoardState} from "../targetBoardReducer";
 import {Tile} from "../../domain/Tile";
 import {GameState} from "../../game/gameReducer";
 import {Player} from "../../agent/Player";
 
-describe("Board", () => {
+describe("TargetBoard", () => {
     let defaultProps: BoardProps;
-    let mockActions: any;
 
     beforeEach(() => {
-        mockActions = {
-            getInitialBoard: jest.fn()
-        };
         defaultProps = {
             grid: [[]],
             sunkenShips: [],
             winner: null,
-            actions: mockActions,
         }
     });
 
     it("has a grid", () => {
-        const subject = shallow(<Board {...defaultProps} />);
+        const subject = shallow(<TargetBoard {...defaultProps} />);
 
         expect(subject.find(".board__grid").exists()).toBeTruthy();
     });
@@ -37,9 +31,9 @@ describe("Board", () => {
             ...defaultProps,
             grid: [[tile, tile], [tile, tile]],
         };
-        const subject = shallow(<Board {...props} />);
+        const subject = shallow(<TargetBoard {...props} />);
 
-        const tiles = subject.find("Connect(BoardTile)");
+        const tiles = subject.find("Connect(TargetBoardTile)");
 
         expect(tiles).toHaveLength(4);
     });
@@ -49,7 +43,7 @@ describe("Board", () => {
             ...defaultProps,
             grid: [[new Tile(), new Tile()], [new Tile(), new Tile()], [new Tile(), new Tile()]],
         };
-        const subject = shallow(<Board {...props} />);
+        const subject = shallow(<TargetBoard {...props} />);
 
         const rowLabels = subject.find(".board__label.row").map((item) => {
             return item.text();
@@ -65,7 +59,7 @@ describe("Board", () => {
             ...defaultProps,
             grid: [[new Tile(), new Tile()], [new Tile(), new Tile()], [new Tile(), new Tile()]],
         };
-        const subject = shallow(<Board {...props} />);
+        const subject = shallow(<TargetBoard {...props} />);
 
         const columnLabels = subject.find(".board__label.column").map((item) => {
             return item.text();
@@ -73,23 +67,6 @@ describe("Board", () => {
 
         expect(columnLabels).toContain("A");
         expect(columnLabels).toContain("B");
-    });
-
-    it("gets a new board from the backend", () => {
-        shallow(<Board {...defaultProps}/>);
-
-        expect(mockActions.getInitialBoard).toHaveBeenCalled();
-    });
-});
-
-describe("mapDispatchToProps", () => {
-    it("maps getInitialBoard action", () => {
-        const dispatch = jest.fn();
-        const props = mapDispatchToProps(dispatch);
-
-        props.actions.getInitialBoard();
-
-        expect(getInitialBoard).toHaveBeenCalled()
     });
 });
 

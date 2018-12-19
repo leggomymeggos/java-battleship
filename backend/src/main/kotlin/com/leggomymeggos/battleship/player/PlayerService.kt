@@ -5,13 +5,14 @@ import com.leggomymeggos.battleship.board.Coordinate
 import com.leggomymeggos.battleship.board.Direction
 import com.leggomymeggos.battleship.board.Ship.*
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class PlayerService(val boardService: BoardService) {
     fun initPlayer(): Player {
         val board = boardService.initBoard()
 
-        return Player(id = Math.random().toInt(), board = board)
+        return Player(id = Random().nextInt(10), board = board)
     }
 
     fun setShips(player: Player): Player {

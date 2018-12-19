@@ -1,6 +1,14 @@
-import {fetchWinner, GameActions, gameWon, newGameCreated} from "../gameActions";
+import {createNewGame, fetchWinner, GameActions, gameWon, newGameCreated} from "../gameActions";
 import {Tile} from "../../domain/Tile";
 import {Player} from "../../agent/Player";
+
+describe("createNewGame", () => {
+    it("returns NEW_GAME action", () => {
+        expect(createNewGame()).toEqual({
+            type: GameActions.NEW_GAME,
+        });
+    });
+});
 
 describe("newGameCreated", () => {
     it("returns NEW_GAME_CREATED action", () => {

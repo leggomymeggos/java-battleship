@@ -3,7 +3,7 @@ import {connect, Dispatch} from "react-redux";
 import {bindActionCreators} from "redux";
 import boardActions, {Coordinate} from "../boardActions";
 import {Tile} from "../../domain/Tile";
-import {hitIndicator, missIndicator} from "./tileIndicators";
+import {targetHitIndicator, targetMissIndicator} from "./tileIndicators";
 
 export interface IBoardTilePropsFromActions {
     actions: {
@@ -19,8 +19,7 @@ export interface IBoardTilePropsFromParent {
 
 export type BoardTileProps = IBoardTilePropsFromParent & IBoardTilePropsFromActions;
 
-export class BoardTile extends React.Component<BoardTileProps> {
-
+export class TargetBoardTile extends React.Component<BoardTileProps> {
     public render() {
         const tile = this.props.tile;
         return <div className={this.className()}
@@ -30,7 +29,7 @@ export class BoardTile extends React.Component<BoardTileProps> {
                         }
                         this.props.actions.boardHit(this.props.coordinates);
                     }}>
-            {BoardTile.tileIndicator(tile)}
+            {TargetBoardTile.tileIndicator(tile)}
         </div>;
     }
 
@@ -63,11 +62,11 @@ export class BoardTile extends React.Component<BoardTileProps> {
     private static tileIndicator(tile: Tile) {
         if (tile.hit && tile.ship !== null) {
             return <span className="aimed--hit">
-                {hitIndicator()}
+                {targetHitIndicator()}
                 </span>
         } else if (tile.hit) {
             return <span className="aimed--miss">
-                {missIndicator()}
+                {targetMissIndicator()}
                 </span>
         } else {
             return null;
@@ -83,5 +82,5 @@ export const mapDispatchToProps = (dispatch: Dispatch<{}>): IBoardTilePropsFromA
     }
 };
 
-export default connect(null, mapDispatchToProps)(BoardTile);
+export default connect(null, mapDispatchToProps)(TargetBoardTile);
 
