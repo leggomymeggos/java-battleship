@@ -1,6 +1,6 @@
 import {Tile} from "../domain/Tile";
 
-export class Player {
+export class Agent {
     id: number;
     board: {
         grid: Tile[][];
@@ -14,4 +14,10 @@ export class Player {
         this.id = id;
         this.board = board;
     }
+}
+
+export type AgentState = {
+    id: number;
+    grid: Tile[][];
+    sunkenShips: string[];
 }

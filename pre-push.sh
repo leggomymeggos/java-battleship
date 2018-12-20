@@ -10,5 +10,3 @@ if [ $? == 0 ]; then
 else
     popd && ./ganonleap.sh -e 2
 fi
-
-

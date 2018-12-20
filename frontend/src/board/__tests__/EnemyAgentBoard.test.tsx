@@ -2,17 +2,17 @@ jest.mock("../boardActions");
 
 import {shallow} from "enzyme";
 import * as React from "react";
-import {TargetBoard, BoardProps, mapStateToProps} from "../TargetBoard";
-import {BoardState} from "../targetBoardReducer";
+import {EnemyAgentBoard, BoardProps, mapStateToProps} from "../EnemyAgentBoard";
 import {Tile} from "../../domain/Tile";
 import {GameState} from "../../game/gameReducer";
-import {Player} from "../../agent/Player";
+import {Agent, AgentState} from "../../agent/Agent";
 
-describe("TargetBoard", () => {
+describe("EnemyAgentBoard", () => {
     let defaultProps: BoardProps;
 
     beforeEach(() => {
         defaultProps = {
+            id: 1,
             grid: [[]],
             sunkenShips: [],
             winner: null,
@@ -20,7 +20,7 @@ describe("TargetBoard", () => {
     });
 
     it("has a grid", () => {
-        const subject = shallow(<TargetBoard {...defaultProps} />);
+        const subject = shallow(<EnemyAgentBoard {...defaultProps} />);
 
         expect(subject.find(".target--board__grid").exists()).toBeTruthy();
     });
@@ -31,9 +31,9 @@ describe("TargetBoard", () => {
             ...defaultProps,
             grid: [[tile, tile], [tile, tile]],
         };
-        const subject = shallow(<TargetBoard {...props} />);
+        const subject = shallow(<EnemyAgentBoard {...props} />);
 
-        const tiles = subject.find("Connect(TargetBoardTile)");
+        const tiles = subject.find("Connect(EnemyAgentBoardTile)");
 
         expect(tiles).toHaveLength(4);
     });
@@ -43,7 +43,7 @@ describe("TargetBoard", () => {
             ...defaultProps,
             grid: [[new Tile(), new Tile()], [new Tile(), new Tile()], [new Tile(), new Tile()]],
         };
-        const subject = shallow(<TargetBoard {...props} />);
+        const subject = shallow(<EnemyAgentBoard {...props} />);
 
         const rowLabels = subject.find(".board__label.row").map((item) => {
             return item.text();
@@ -59,7 +59,7 @@ describe("TargetBoard", () => {
             ...defaultProps,
             grid: [[new Tile(), new Tile()], [new Tile(), new Tile()], [new Tile(), new Tile()]],
         };
-        const subject = shallow(<TargetBoard {...props} />);
+        const subject = shallow(<EnemyAgentBoard {...props} />);
 
         const columnLabels = subject.find(".board__label.column").map((item) => {
             return item.text();
@@ -71,9 +71,10 @@ describe("TargetBoard", () => {
 });
 
 describe("mapStateToProps", () => {
-    let boardReducer: BoardState, gameReducer: GameState;
+    let enemyAgentReducer: AgentState, gameReducer: GameState;
     beforeEach(() => {
-        boardReducer = {
+        enemyAgentReducer = {
+            id: 0,
             grid: [],
             sunkenShips: []
         };
@@ -85,24 +86,26 @@ describe("mapStateToProps", () => {
     });
 
     it("maps grid", () => {
-        boardReducer = {
+        enemyAgentReducer = {
+            id: 0,
             grid: [[new Tile()], [new Tile()]],
             sunkenShips: []
         };
         const props = mapStateToProps({
-            boardReducer,
+            enemyAgentReducer,
             gameReducer
         });
         expect(props.grid).toEqual([[new Tile()], [new Tile()]]);
     });
 
     it("maps sunken ships", () => {
-        boardReducer = {
-            ...boardReducer,
+        enemyAgentReducer = {
+            ...enemyAgentReducer,
             sunkenShips: ["battleship", "aircraft carrier"]
         };
         const props = mapStateToProps({
-            boardReducer,
+            id: 0,
+            enemyAgentReducer,
             gameReducer
         });
         expect(props.sunkenShips).toEqual(["battleship", "aircraft carrier"]);
@@ -110,10 +113,10 @@ describe("mapStateToProps", () => {
 
     it("maps winner", () => {
         const props = mapStateToProps({
-            boardReducer,
+            enemyAgentReducer,
             gameReducer: {
                 ...gameReducer,
-                winner: new Player()
+                winner: new Agent()
             }
         });
         expect(props.winner).toBeTruthy();

@@ -20,7 +20,7 @@ describe("fetchGame", () => {
 
         expect(generator.next({computerPlayer: {board: {grid: [[new Tile()]]}}}).value).toEqual(put({
             type: "NEW_GAME_CREATED",
-            payload: {grid: [[new Tile()]]}
+            payload: {computerPlayer: {board: {grid: [[new Tile()]]}}}
         }));
     });
 });

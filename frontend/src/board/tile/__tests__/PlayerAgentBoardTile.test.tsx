@@ -1,9 +1,9 @@
-import {PlayerBoardTile, PlayerBoardTileProps} from "../PlayerBoardTile";
+import {PlayerAgentBoardTile, PlayerBoardTileProps} from "../PlayerAgentBoardTile";
 import {shallow} from "enzyme";
 import * as React from "react";
 import {Tile} from "../../../domain/Tile";
 
-describe("PlayerBoardTile", () => {
+describe("PlayerAgentBoardTile", () => {
     let defaultProps: PlayerBoardTileProps;
 
     beforeEach(() => {
@@ -23,7 +23,7 @@ describe("PlayerBoardTile", () => {
                 }
             };
 
-            const subject = shallow(<PlayerBoardTile {...props}/>);
+            const subject = shallow(<PlayerAgentBoardTile {...props}/>);
 
             expect(subject.find("._155-reverse").exists()).toBeTruthy();
             expect(subject.find("._62").exists()).toBeFalsy();
@@ -38,7 +38,7 @@ describe("PlayerBoardTile", () => {
                 }
             };
 
-            const subject = shallow(<PlayerBoardTile {...props}/>);
+            const subject = shallow(<PlayerAgentBoardTile {...props}/>);
 
             expect(subject.find("._155-reverse").exists()).toBeTruthy();
             expect(subject.find("._62").exists()).toBeFalsy();
@@ -53,7 +53,7 @@ describe("PlayerBoardTile", () => {
                 }
             };
 
-            const subject = shallow(<PlayerBoardTile {...props}/>);
+            const subject = shallow(<PlayerAgentBoardTile {...props}/>);
 
             expect(subject.find("._62").exists()).toBeTruthy();
             expect(subject.find("._155-reverse").exists()).toBeFalsy();
@@ -65,7 +65,7 @@ describe("PlayerBoardTile", () => {
                 tile: new Tile("this is a ship!", false)
             };
 
-            const subject = shallow(<PlayerBoardTile {...props}/>);
+            const subject = shallow(<PlayerAgentBoardTile {...props}/>);
 
             expect(subject.find(".occupied").exists()).toBeTruthy();
         });
@@ -76,7 +76,7 @@ describe("PlayerBoardTile", () => {
                 tile: new Tile(null, false)
             };
 
-            const subject = shallow(<PlayerBoardTile {...props}/>);
+            const subject = shallow(<PlayerAgentBoardTile {...props}/>);
 
             expect(subject.find(".occupied").exists()).toBeFalsy();
         });
@@ -87,7 +87,7 @@ describe("PlayerBoardTile", () => {
                 tile: new Tile("this is a ship!", true)
             };
 
-            const subject = shallow(<PlayerBoardTile {...props}/>);
+            const subject = shallow(<PlayerAgentBoardTile {...props}/>);
 
             expect(subject.find(".occupied--hit").exists()).toBeTruthy();
             expect(subject.find(".miss").exists()).toBeFalsy();

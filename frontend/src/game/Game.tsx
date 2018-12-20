@@ -1,10 +1,10 @@
 import * as React from "react";
-import TargetBoard from "../board/TargetBoard";
+import TargetBoard from "../board/EnemyAgentBoard";
 import AgentData from "../agent/AgentData";
 import gameActions from "./gameActions";
 import {connect, Dispatch} from "react-redux";
 import {bindActionCreators} from "redux";
-import PlayerBoard from "../board/PlayerBoard";
+import PlayerBoard from "../board/PlayerAgentBoard";
 
 interface IGamePropsFromActions {
     actions: {

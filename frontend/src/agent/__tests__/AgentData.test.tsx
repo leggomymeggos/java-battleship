@@ -3,7 +3,7 @@ import * as React from "react";
 
 import {AgentData, AgentDataProps, mapStateToProps} from "../AgentData";
 import {GameState} from "../../game/gameReducer";
-import {Player} from "../Player";
+import {Agent} from "../Agent";
 
 describe("Agent Data", () => {
     let props: AgentDataProps;
@@ -27,7 +27,7 @@ describe("Agent Data", () => {
     });
 
     it("tells the player when they win", () => {
-        const subject = shallow(<AgentData {...props} winner={new Player()}/>);
+        const subject = shallow(<AgentData {...props} winner={new Agent()}/>);
 
         expect(subject.find(".agent__enemy--dialogue").text()).toContain("Oh no! You defeated me!")
     });
@@ -46,7 +46,7 @@ describe("mapStateToProps", () => {
         expect(props.winner).toBeFalsy();
 
         gameReducer = {
-            winner: new Player(),
+            winner: new Agent(),
             humanPlayer: null,
             computerPlayer: null,
         };

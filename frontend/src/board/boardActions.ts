@@ -3,6 +3,7 @@ import {Tile} from "../domain/Tile";
 
 export const BoardActions = {
     BOARD_HIT_SUCCESS: "BOARD_HIT_SUCCESS",
+    PLAYER_BOARD_HIT_SUCCESS: "PLAYER_BOARD_HIT_SUCCESS",
     BOARD_HIT: "BOARD_HIT"
 };
 

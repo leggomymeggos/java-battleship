@@ -1,11 +1,11 @@
 import {Action, handleActions} from "redux-actions";
 import {GameActions} from "./gameActions";
-import {Player} from "../agent/Player";
+import {Agent} from "../agent/Agent";
 
 export type GameState = {
-    winner: Player;
-    humanPlayer: Player;
-    computerPlayer: Player;
+    winner: Agent;
+    humanPlayer: Agent;
+    computerPlayer: Agent;
 }
 
 export const initialState: GameState = {

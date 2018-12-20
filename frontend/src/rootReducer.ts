@@ -1,13 +1,17 @@
 import {combineReducers} from "redux";
-import targetBoardReducer, {BoardState} from "./board/targetBoardReducer";
 import gameReducer, {GameState} from "./game/gameReducer";
+import enemyAgentReducer from "./agent/enemyAgentReducer";
+import playerAgentReducer from "./agent/playerAgentReducer";
+import {AgentState} from "./agent/Agent";
 
-export type rootState =  {
-    boardReducer: BoardState;
+export type rootState = {
     gameReducer: GameState;
+    enemyAgentReducer: AgentState;
+    playerAgentReducer: AgentState;
 }
 
 export const rootReducer = combineReducers({
-    boardReducer: targetBoardReducer,
-    gameReducer
+    gameReducer,
+    enemyAgentReducer,
+    playerAgentReducer,
 });

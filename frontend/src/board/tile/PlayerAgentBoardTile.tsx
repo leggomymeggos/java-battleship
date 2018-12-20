@@ -9,7 +9,7 @@ interface IPlayerBoardTileProps {
 
 export type PlayerBoardTileProps = IPlayerBoardTileProps;
 
-export class PlayerBoardTile extends React.Component<any> {
+export class PlayerAgentBoardTile extends React.Component<any> {
     public render() {
         return <div className={this.className()}/>;
     }

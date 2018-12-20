@@ -1,6 +1,6 @@
 import gameReducer, {initialState} from "../gameReducer";
 import {gameWon} from "../gameActions";
-import {Player} from "../../agent/Player";
+import {Agent} from "../../agent/Agent";
 
 describe("game reducer", () => {
     it("has a default state", () => {
@@ -13,7 +13,7 @@ describe("game reducer", () => {
     });
 
     it("updates winner when the game is won", () => {
-        let player = new Player(123);
+        let player = new Agent(123);
         const gameState = gameReducer(initialState, gameWon(player));
 
         expect(gameState.winner).toBe(player);

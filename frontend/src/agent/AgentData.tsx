@@ -1,10 +1,10 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {GameState} from "../game/gameReducer";
-import {Player} from "./Player";
+import {Agent} from "./Agent";
 
 export interface IAgentDataPropsFromStore {
-    winner: Player;
+    winner: Agent;
 }
 
 export type AgentDataProps = IAgentDataPropsFromStore;

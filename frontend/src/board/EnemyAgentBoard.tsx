@@ -1,23 +1,23 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import {PlayerBoardTile} from "./tile/PlayerBoardTile";
-import {rootState} from "../rootReducer";
-import {Player} from "../agent/Player";
+import BoardTile from "./tile/EnemyAgentBoardTile";
+import {Agent} from "../agent/Agent";
 
 export interface IBoardPropsFromStore {
+    id: number
     grid: any[][];
     sunkenShips: string[];
-    winner: Player;
+    winner: Agent;
 }
 
 export type BoardProps = IBoardPropsFromStore;
 
-export class PlayerBoard extends React.Component<BoardProps> {
+export class EnemyAgentBoard extends React.Component<BoardProps> {
     private alphabet = [...Array(26)]
         .map((_, index) => String.fromCharCode(index + 97));
 
     public render() {
-        return <div className="player--board">
+        return <div className="target--board">
             {this.renderColumnLabels()}
             <div className="board__grid-and-row-labels-container">
                 {this.renderRowLabels()}
@@ -30,7 +30,7 @@ export class PlayerBoard extends React.Component<BoardProps> {
         return <div className="board__labels column">
             <div className="board__label column"/>
             {this.props.grid[0].map((_, index) => {
-                return <div className="board__label column" key={PlayerBoard.getKey()}>
+                return <div className="board__label column" key={EnemyAgentBoard.getKey()}>
                     {this.alphabet[index].toUpperCase()}
                 </div>
             })
@@ -38,18 +38,18 @@ export class PlayerBoard extends React.Component<BoardProps> {
     }
 
     private renderRowLabels() {
-        return <div key={PlayerBoard.getKey()} className="board__labels row">{
+        return <div key={EnemyAgentBoard.getKey()} className="board__labels row">{
             this.props.grid.map((value, rowIndex) => {
-                return <div key={PlayerBoard.getKey()} className="board__label row">{rowIndex + 1}</div>
+                return <div key={EnemyAgentBoard.getKey()} className="board__label row">{rowIndex + 1}</div>
             })
         }</div>;
     }
 
     private renderGrid() {
-        return <div className="player--board__grid">{
+        return <div className="target--board__grid">{
             this.props.grid.map((value, rowIndex) => {
                 return value.map((tile, columnIndex) => {
-                    return <PlayerBoardTile key={PlayerBoard.getKey()}
+                    return <BoardTile key={EnemyAgentBoard.getKey()}
                                       tile={tile}
                                       winner={this.props.winner != null}
                                       coordinates={{x: columnIndex, y: rowIndex}}
@@ -64,11 +64,11 @@ export class PlayerBoard extends React.Component<BoardProps> {
     }
 }
 
-export const mapStateToProps = (state: rootState): IBoardPropsFromStore => {
+export const mapStateToProps = (state: any): IBoardPropsFromStore => {
     return {
-        ...state.boardReducer,
+        ...state.enemyAgentReducer,
         winner: state.gameReducer.winner,
     }
 };
 
-export default connect(mapStateToProps)(PlayerBoard);
+export default connect(mapStateToProps)(EnemyAgentBoard);

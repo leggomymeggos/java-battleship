@@ -7,7 +7,7 @@ import {Action} from "redux-actions";
 export function* fetchGame(): any {
     try {
         const game = yield call(GameApi.newGame);
-        yield put(newGameCreated(game.computerPlayer.board));
+        yield put(newGameCreated(game));
     } catch (e) {
         console.error(e)
     }

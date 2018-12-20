@@ -19,7 +19,7 @@ export interface IBoardTilePropsFromParent {
 
 export type BoardTileProps = IBoardTilePropsFromParent & IBoardTilePropsFromActions;
 
-export class TargetBoardTile extends React.Component<BoardTileProps> {
+export class EnemyAgentBoardTile extends React.Component<BoardTileProps> {
     public render() {
         const tile = this.props.tile;
         return <div className={this.className()}
@@ -29,7 +29,7 @@ export class TargetBoardTile extends React.Component<BoardTileProps> {
                         }
                         this.props.actions.boardHit(this.props.coordinates);
                     }}>
-            {TargetBoardTile.tileIndicator(tile)}
+            {EnemyAgentBoardTile.tileIndicator(tile)}
         </div>;
     }
 
@@ -82,5 +82,5 @@ export const mapDispatchToProps = (dispatch: Dispatch<{}>): IBoardTilePropsFromA
     }
 };
 
-export default connect(null, mapDispatchToProps)(TargetBoardTile);
+export default connect(null, mapDispatchToProps)(EnemyAgentBoardTile);
 

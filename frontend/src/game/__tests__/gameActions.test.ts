@@ -1,6 +1,6 @@
 import {createNewGame, fetchWinner, GameActions, gameWon, newGameCreated} from "../gameActions";
 import {Tile} from "../../domain/Tile";
-import {Player} from "../../agent/Player";
+import {Agent} from "../../agent/Agent";
 
 describe("createNewGame", () => {
     it("returns NEW_GAME action", () => {
@@ -12,9 +12,9 @@ describe("createNewGame", () => {
 
 describe("newGameCreated", () => {
     it("returns NEW_GAME_CREATED action", () => {
-        expect(newGameCreated({grid: [[new Tile()]], sunkenShips: []})).toEqual({
+        expect(newGameCreated({computerPlayer: new Agent(), humanPlayer: new Agent()})).toEqual({
             type: GameActions.NEW_GAME_CREATED,
-            payload: {grid: [[new Tile()]], sunkenShips: []}
+            payload: {computerPlayer: new Agent(), humanPlayer: new Agent()}
         });
     });
 });
@@ -27,7 +27,7 @@ describe("fetchWinner", () => {
 
 describe("gameWon", () => {
     it("returns GAME_WON action", () => {
-        const player = new Player(1, {grid: [[new Tile()]], sunkenShips: [""]});
+        const player = new Agent(1, {grid: [[new Tile()]], sunkenShips: [""]});
         expect(gameWon(player)).toEqual({
             type: GameActions.GAME_WON,
             payload: player
