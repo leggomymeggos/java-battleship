@@ -64,20 +64,24 @@ class GameServiceTest {
         val argumentCaptor = argumentCaptor<Game>()
         verify(gameRegistry).game = argumentCaptor.capture()
 
-        assertThat(argumentCaptor.firstValue).isEqualTo(Game(humanPlayer = player, computerPlayer = player2))
+        assertThat(argumentCaptor.firstValue).isEqualTo(Game(
+                humanPlayer = player,
+                computerPlayer = player2,
+                activePlayerId = player.id
+        ))
     }
 
     @Test
-    fun `new returns a game with ships`() {
-        val player = Player(board = Board())
-        val player2 = Player(board = Board(gridOf(1)))
+    fun `new returns a game with ships and the humanPlayer active`() {
+        val player = Player(id = 1, board = Board())
+        val player2 = Player(id = 3, board = Board(gridOf(1)))
         whenever(playerService.randomlySetShips(any()))
                 .thenReturn(player)
                 .thenReturn(player2)
 
         val game = gameService.new()
 
-        assertThat(game).isEqualTo(Game(humanPlayer = player, computerPlayer = player2))
+        assertThat(game).isEqualTo(Game(humanPlayer = player, computerPlayer = player2, activePlayerId = 1))
     }
     // endregion
 
@@ -132,6 +136,15 @@ class GameServiceTest {
         gameService.attack(0, 12, Coordinate(0, 0))
 
         verify(gameRegistry).setWinner(12)
+    }
+
+    @Test
+    fun `attack updates activePlayerId if there is no winner yet`() {
+        whenever(playerService.isDefeated(any())).thenReturn(false)
+
+        gameService.attack(0, 12, Coordinate(0, 0))
+
+        verify(gameRegistry).changeTurn()
     }
     // endregion
 

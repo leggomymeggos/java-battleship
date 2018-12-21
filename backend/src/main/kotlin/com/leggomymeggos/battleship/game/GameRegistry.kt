@@ -32,4 +32,13 @@ class GameRegistry {
             else -> game.copy(humanPlayer = player)
         }
     }
+
+    fun changeTurn() { // eventually with gameId
+        val nextActivePlayer = when (game.activePlayerId) {
+            game.computerPlayer.id -> game.humanPlayer.id
+            else -> game.computerPlayer.id
+        }
+
+        game = game.copy(activePlayerId = nextActivePlayer)
+    }
 }

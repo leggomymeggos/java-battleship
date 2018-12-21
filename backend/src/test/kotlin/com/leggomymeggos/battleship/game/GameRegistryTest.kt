@@ -49,4 +49,18 @@ class GameRegistryTest {
 
         assertThat(gameRegistry.game.humanPlayer).isEqualTo(updatedPlayer)
     }
+
+    @Test
+    fun `changeTurn toggles active player on the game`() {
+        val humanPlayer = Player(id = 123)
+        val computerPlayer = Player(id = 456)
+
+        gameRegistry.game = Game(humanPlayer, computerPlayer, humanPlayer.id)
+
+        gameRegistry.changeTurn()
+        assertThat(gameRegistry.game.activePlayerId).isEqualTo(computerPlayer.id)
+
+        gameRegistry.changeTurn()
+        assertThat(gameRegistry.game.activePlayerId).isEqualTo(humanPlayer.id)
+    }
 }

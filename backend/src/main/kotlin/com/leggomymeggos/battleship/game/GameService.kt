@@ -20,7 +20,11 @@ class GameService(val playerService: PlayerService, val gameRegistry: GameRegist
                     playerService.randomlySetShips(this)
                 }
 
-        val game = Game(humanPlayer, computerPlayer)
+        val game = Game(
+                humanPlayer = humanPlayer,
+                computerPlayer = computerPlayer,
+                activePlayerId = humanPlayer.id
+        )
         gameRegistry.game = game
 
         return game
@@ -29,20 +33,27 @@ class GameService(val playerService: PlayerService, val gameRegistry: GameRegist
     fun attack(gameId: Int, attackingPlayerId: Int, coordinate: Coordinate): Board {
         val currentGame = gameRegistry.getGame(gameId)
 
-        val defendingPlayer = when (attackingPlayerId) {
-            currentGame.computerPlayer.id -> currentGame.humanPlayer
-            else -> currentGame.computerPlayer
-        }.run {
-            playerService.hitBoard(this, coordinate)
+        val defendingPlayer = currentGame.determineDefendingPlayer(attackingPlayerId).run {
+            playerService.hitBoard(this, coordinate).run {
+                gameRegistry.updatePlayer(this)
+                this
+            }
         }
-
-        gameRegistry.updatePlayer(defendingPlayer)
 
         if (playerService.isDefeated(defendingPlayer)) {
             gameRegistry.setWinner(attackingPlayerId)
+        } else {
+            gameRegistry.changeTurn()
         }
 
         return defendingPlayer.board
+    }
+
+    private fun Game.determineDefendingPlayer(attackingPlayerId: Int): Player {
+        return when (attackingPlayerId) {
+            computerPlayer.id -> humanPlayer
+            else -> computerPlayer
+        }
     }
 
     fun getWinner(): Player? {
