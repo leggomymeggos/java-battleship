@@ -39,13 +39,13 @@ class GameRegistryTest {
     }
 
     @Test
-    fun `updatePlayer updates player with given id with the provided player`() {
+    fun `updatePlayer updates player with id with the provided player`() {
         val humanPlayer = Player(id = 123, board = Board(gridOf(2)))
         val computerPlayer = Player(id = 456)
         gameRegistry.game = Game(humanPlayer = humanPlayer, computerPlayer = computerPlayer)
 
-        val updatedPlayer = Player(id = 111, board = Board(gridOf(1)))
-        gameRegistry.updatePlayer(123, updatedPlayer)
+        val updatedPlayer = Player(id = 123, board = Board(gridOf(1)))
+        gameRegistry.updatePlayer(updatedPlayer)
 
         assertThat(gameRegistry.game.humanPlayer).isEqualTo(updatedPlayer)
     }

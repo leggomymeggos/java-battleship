@@ -8,27 +8,28 @@ class GameRegistry {
     lateinit var game: Game
 
     fun setWinner(winnerId: Int) {
-        val winner = if (game.computerPlayer.id == winnerId) {
-            game.computerPlayer
-        } else {
-            game.humanPlayer
+        val winner = when (winnerId) {
+            game.computerPlayer.id -> game.computerPlayer
+            else -> game.humanPlayer
         }
         game = game.copy(winner = winner)
     }
 
     fun getPlayer(playerId: Int): Player {
-        return if (game.computerPlayer.id == playerId) {
-            game.computerPlayer
-        } else {
-            game.humanPlayer
+        return when (playerId) {
+            game.computerPlayer.id -> game.computerPlayer
+            else -> game.humanPlayer
         }
     }
 
-    fun updatePlayer(playerId: Int, player: Player) {
-        game = if (game.computerPlayer.id == playerId) {
-            game.copy(computerPlayer = player)
-        } else {
-            game.copy(humanPlayer = player)
+    fun getGame(gameId: Int): Game {
+        return game
+    }
+
+    fun updatePlayer(player: Player) {
+        game = when (player.id) {
+            game.computerPlayer.id -> game.copy(computerPlayer = player)
+            else -> game.copy(humanPlayer = player)
         }
     }
 }

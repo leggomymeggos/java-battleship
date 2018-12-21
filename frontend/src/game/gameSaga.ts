@@ -13,9 +13,9 @@ export function* fetchGame(): any {
     }
 }
 
-export function* hitBoard(defendingPlayerId: number, coordinate: Coordinate, attackingPlayerId: number): any {
+export function* attack(attackingPlayerId: number, coordinate: Coordinate): any {
     try {
-        const newBoard = yield call(GameApi.hitBoard, defendingPlayerId, coordinate, attackingPlayerId);
+        const newBoard = yield call(GameApi.attack, attackingPlayerId, coordinate);
         yield put(boardHitSuccess(newBoard));
         yield put(fetchWinner());
     } catch (e) {
@@ -39,9 +39,9 @@ export function* fetchGameSaga(): any {
     yield takeEvery(GameActions.NEW_GAME, fetchGame);
 }
 
-export function* hitBoardSaga(): any {
+export function* attackSaga(): any {
     yield takeEvery(BoardActions.BOARD_HIT, (action: Action<any>) => {
-        return hitBoard(2, action.payload, 1);
+        return attack(1, action.payload);
     });
 }
 

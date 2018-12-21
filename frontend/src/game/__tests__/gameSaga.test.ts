@@ -25,16 +25,16 @@ describe("fetchGame", () => {
     });
 });
 
-describe("hitBoard", () => {
-    it("calls api to hit board", () => {
+describe("attack", () => {
+    it("calls api to attack", () => {
         let coordinate = new Coordinate(0, 0);
-        const generator = gameSaga.hitBoard(1, coordinate, 2);
+        const generator = gameSaga.attack(2, coordinate);
 
-        expect(generator.next().value).toEqual(call(GameApi.hitBoard, 1, coordinate, 2));
+        expect(generator.next().value).toEqual(call(GameApi.attack, 2, coordinate));
     });
 
     it("triggers action to update board", () => {
-        const generator = gameSaga.hitBoard(0, new Coordinate(1, 2), 0);
+        const generator = gameSaga.attack(0, new Coordinate(1, 2));
 
         generator.next();
 
@@ -45,7 +45,7 @@ describe("hitBoard", () => {
     });
 
     it("dispatches action to check for winner", () => {
-        const generator = gameSaga.hitBoard(0, new Coordinate(1, 2), 0);
+        const generator = gameSaga.attack(0, new Coordinate(1, 2));
 
         generator.next();
         generator.next({grid: []});

@@ -24,10 +24,10 @@ describe("gameApi", () => {
         it("returns response data", async () => {
             let coordinate = new Coordinate(1, 2);
 
-            mock.onPut("http://localhost:8081/games/0/players/1/hit?attackerId=2", coordinate)
+            mock.onPut("http://localhost:8081/games/0/attack?attackerId=2", coordinate)
                 .reply(200,  "game!");
 
-            const response = await GameApi.hitBoard(1, coordinate, 2);
+            const response = await GameApi.attack(2, coordinate);
 
             expect(response).toEqual("game!");
         });

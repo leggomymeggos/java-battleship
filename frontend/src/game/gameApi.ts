@@ -16,8 +16,8 @@ export class GameApi {
         }).then((response) => response.data);
     }
 
-    static hitBoard(defendingPlayerId: number, coordinate: Coordinate, attackingPlayerId: number) {
-        return axios.put(`/games/0/players/${defendingPlayerId}/hit?attackerId=${attackingPlayerId}`, coordinate, {
+    static attack(attackingPlayerId: number, coordinate: Coordinate) {
+        return axios.put(`/games/0/attack?attackerId=${attackingPlayerId}`, coordinate, {
             baseURL: GameApi.baseUrl,
         }).then((response) => response.data);
     }

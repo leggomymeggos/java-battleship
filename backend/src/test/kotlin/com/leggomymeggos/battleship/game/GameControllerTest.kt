@@ -56,29 +56,29 @@ class GameControllerTest {
     }
     // endregion
 
-    // region hitBoard
+    // region attack
     @Test
-    fun `hitBoard mapping`() {
-        mockMvc.perform(put("/games/0/players/76/hit?attackerId=98")
+    fun `attackBoard mapping`() {
+        mockMvc.perform(put("/games/0/attack?attackerId=98")
                 .content("{\"x\": 123, \"y\": 456}")
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().is2xxSuccessful)
     }
 
     @Test
-    fun `hitBoard attempts to hit the game board`() {
+    fun `attackBoard attempts to hit the game board`() {
         val coordinate = Coordinate(9, 10)
-        controller.hitBoard(123, coordinate, 456)
+        controller.attackBoard(123, 456, coordinate)
 
-        verify(gameService).hitBoard(123, coordinate,456)
+        verify(gameService).attack(123, 456,coordinate)
     }
 
     @Test
-    fun `hitBoard returns hit game board`() {
+    fun `attackBoard returns hit game board`() {
         val board = Board(gridOf(1))
-        whenever(gameService.hitBoard(any(), any(), any())).thenReturn(board)
+        whenever(gameService.attack(any(), any(), any())).thenReturn(board)
 
-        val actual = controller.hitBoard(0, Coordinate(123, 456), 0)
+        val actual = controller.attackBoard(0, 0, Coordinate(123, 456))
 
         assertThat(actual).isEqualTo(board)
     }

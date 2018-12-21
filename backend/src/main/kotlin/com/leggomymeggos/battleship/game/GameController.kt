@@ -19,13 +19,13 @@ class GameController(val gameService: GameService) {
     }
 
     @RequestMapping(
-            value = ["/{gameId}/players/{playerId}/hit"],
+            value = ["/{gameId}/attack"],
             method = [RequestMethod.PUT]
     )
-    fun hitBoard(@PathVariable(name = "playerId") defendingPlayerId: Int,
-                 @RequestBody coordinate: Coordinate,
-                 @RequestParam(name = "attackerId") attackingPlayerId: Int): Board {
-        return gameService.hitBoard(defendingPlayerId, coordinate, attackingPlayerId)
+    fun attackBoard(@PathVariable(name = "gameId") gameId: Int,
+                    @RequestParam(name = "attackerId") attackingPlayerId: Int,
+                    @RequestBody coordinate: Coordinate): Board {
+        return gameService.attack(gameId, attackingPlayerId, coordinate)
     }
 
     @RequestMapping(
