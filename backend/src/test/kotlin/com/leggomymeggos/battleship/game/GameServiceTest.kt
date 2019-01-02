@@ -26,7 +26,9 @@ class GameServiceTest {
         whenever(playerService.randomlySetShips(any())).thenReturn(Player())
         whenever(playerService.hitBoard(any(), any())).thenReturn(Player())
 
-        whenever(gameRegistry.getGame(any())).thenReturn(Game())
+        whenever(gameRegistry.getDefendingPlayer(any())).thenReturn(Player())
+
+        whenever(gameRegistry.game).thenReturn(Game())
      }
 
     // region new
@@ -87,36 +89,32 @@ class GameServiceTest {
 
     // region attack
     @Test
-    fun `attack retrieves given game`() {
-        gameService.attack(143, 0, Coordinate(0, 0))
+    fun `attack determines defending player`() {
+        gameService.attack(143, 123, Coordinate(0, 0))
 
-        verify(gameRegistry).getGame(143)
+        verify(gameRegistry).getDefendingPlayer(123)
     }
 
     @Test
     fun `attack hits board of defending player`() {
-        val attackingPlayerId = 2
         val defendingPlayer = Player(id = 1)
-        val attackingPlayer = Player(id = attackingPlayerId)
-        val game = Game(defendingPlayer, attackingPlayer)
 
-        whenever(gameRegistry.getGame(any())).thenReturn(game)
+        whenever(gameRegistry.getDefendingPlayer(any())).thenReturn(defendingPlayer)
 
         val coordinate = Coordinate(1, 2)
-        gameService.attack(0, attackingPlayerId, coordinate)
+        gameService.attack(0, 2, coordinate)
 
         verify(playerService).hitBoard(defendingPlayer, coordinate)
     }
 
     @Test
-    fun `attack updates and returns board for defending player`() {
+    fun `attack updates defending player`() {
         val expectedPlayer = Player(board = Board(gridOf(4)), id = 789)
         whenever(playerService.hitBoard(any(), any())).thenReturn(expectedPlayer)
 
-        val attack = gameService.attack(123, 0, Coordinate(1, 1))
+        gameService.attack(123, 0, Coordinate(1, 1))
 
         verify(gameRegistry).updatePlayer(expectedPlayer)
-        assertThat(attack).isEqualTo(expectedPlayer.board)
     }
 
     @Test
@@ -142,19 +140,53 @@ class GameServiceTest {
     fun `attack updates activePlayerId if there is no winner yet`() {
         whenever(playerService.isDefeated(any())).thenReturn(false)
 
-        gameService.attack(0, 12, Coordinate(0, 0))
+        gameService.attack(1233, 12, Coordinate(0, 0))
 
         verify(gameRegistry).changeTurn()
     }
-    // endregion
 
     @Test
-    fun `getWinner returns winner from game registry`() {
+    fun `attack returns defending board`() {
+        val expectedPlayer = Player(board = Board(gridOf(4)), id = 789)
+        whenever(playerService.hitBoard(any(), any())).thenReturn(expectedPlayer)
+
+        val newBoard = gameService.attack(123, 0, Coordinate(1, 1))
+
+        assertThat(newBoard).isEqualTo(expectedPlayer.board)
+    }
+    // endregion
+
+    // region getWinner
+    @Test
+    fun `getWinner requests active game`() {
+        gameService.getWinner()
+
+        verify(gameRegistry).game
+    }
+
+    @Test
+    fun `getWinner returns winner`() {
         val winner = Player(board = Board(gridOf(2)))
         whenever(gameRegistry.game).thenReturn(Game(winner = winner))
 
         assertThat(gameService.getWinner()).isEqualTo(winner)
+    }
+    // endregion
+
+    // region getActivePlayerId
+    @Test
+    fun `getActivePlayerId requests active game`() {
+        gameService.getActivePlayerId()
 
         verify(gameRegistry).game
     }
+
+    @Test
+    fun `getActivePlayerId returns active player id`() {
+        val activePlayerId = 789
+        whenever(gameRegistry.game).thenReturn(Game(activePlayerId = activePlayerId))
+
+        assertThat(gameService.getActivePlayerId()).isEqualTo(activePlayerId)
+    }
+    // endregion
 }

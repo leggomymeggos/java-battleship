@@ -21,4 +21,10 @@ export class GameApi {
             baseURL: GameApi.baseUrl,
         }).then((response) => response.data);
     }
+
+    static fetchActivePlayer() {
+        return axios.get(`/games/0/players/active`, {
+            baseURL: GameApi.baseUrl,
+        }).then((response) => response.data);
+    }
 }

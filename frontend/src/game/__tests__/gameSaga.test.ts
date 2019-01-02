@@ -54,6 +54,18 @@ describe("attack", () => {
             type: "FETCH_WINNER"
         }));
     });
+
+    it("dispatches action to get active player", () => {
+        const generator = gameSaga.attack(0, new Coordinate(1, 2));
+
+        generator.next();
+        generator.next({grid: []});
+        generator.next();
+
+        expect(generator.next().value).toEqual(put({
+            type: "FETCH_ACTIVE_PLAYER"
+        }));
+    });
 });
 
 describe("checkWinner", () => {
@@ -80,5 +92,24 @@ describe("checkWinner", () => {
         generator.next();
 
         expect(generator.next(false).value).toBeUndefined();
+    });
+});
+
+describe("checkActivePlayer", () => {
+    it("calls api to get active player", () => {
+        const generator = gameSaga.checkActivePlayer();
+
+        expect(generator.next().value).toEqual(call(GameApi.fetchActivePlayer));
+    });
+
+    it("dispatches active player", () => {
+        const generator = gameSaga.checkActivePlayer();
+
+        generator.next();
+
+        expect(generator.next(123).value).toEqual(put({
+            type: "ACTIVE_PLAYER_UPDATED",
+            payload: 123
+        }));
     });
 });

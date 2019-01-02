@@ -63,4 +63,18 @@ class GameRegistryTest {
         gameRegistry.changeTurn()
         assertThat(gameRegistry.game.activePlayerId).isEqualTo(humanPlayer.id)
     }
+
+    @Test
+    fun `getDefendingPlayer returns defending player on the game`() {
+        val humanPlayer = Player(id = 123)
+        val computerPlayer = Player(id = 456)
+
+        gameRegistry.game = Game(humanPlayer, computerPlayer)
+
+        var defendingPlayer = gameRegistry.getDefendingPlayer(computerPlayer.id)
+        assertThat(defendingPlayer).isEqualTo(humanPlayer)
+
+        defendingPlayer = gameRegistry.getDefendingPlayer(humanPlayer.id)
+        assertThat(defendingPlayer).isEqualTo(computerPlayer)
+    }
 }

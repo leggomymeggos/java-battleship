@@ -26,6 +26,12 @@ class GameRegistry {
         return game
     }
 
+    fun changeTurn() {
+        val nextActivePlayer = getDefendingPlayer(game.activePlayerId).id
+
+        game = game.copy(activePlayerId = nextActivePlayer)
+    }
+
     fun updatePlayer(player: Player) {
         game = when (player.id) {
             game.computerPlayer.id -> game.copy(computerPlayer = player)
@@ -33,12 +39,10 @@ class GameRegistry {
         }
     }
 
-    fun changeTurn() { // eventually with gameId
-        val nextActivePlayer = when (game.activePlayerId) {
-            game.computerPlayer.id -> game.humanPlayer.id
-            else -> game.computerPlayer.id
+    fun getDefendingPlayer(attackingPlayerId: Int): Player {
+        return when (attackingPlayerId) {
+            game.computerPlayer.id -> game.humanPlayer
+            else -> game.computerPlayer
         }
-
-        game = game.copy(activePlayerId = nextActivePlayer)
     }
 }

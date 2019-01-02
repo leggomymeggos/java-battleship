@@ -70,7 +70,7 @@ class GameControllerTest {
         val coordinate = Coordinate(9, 10)
         controller.attackBoard(123, 456, coordinate)
 
-        verify(gameService).attack(123, 456,coordinate)
+        verify(gameService).attack(123, 456, coordinate)
     }
 
     @Test
@@ -104,6 +104,29 @@ class GameControllerTest {
         whenever(gameService.getWinner()).thenReturn(player)
 
         assertThat(controller.fetchWinner()).isEqualTo(player)
+    }
+    // endregion
+
+    // region fetchActivePlayer
+    @Test
+    fun `fetchActivePlayer mapping`() {
+        mockMvc.perform(get("/games/0/players/active"))
+                .andExpect(status().isOk)
+    }
+
+    @Test
+    fun `fetchActivePlayer requests active player`() {
+        controller.fetchActivePlayer()
+
+        verify(gameService).getActivePlayerId()
+    }
+
+    @Test
+    fun `fetchActivePlayer returns fetched winner`() {
+
+        whenever(gameService.getActivePlayerId()).thenReturn(123)
+
+        assertThat(controller.fetchActivePlayer()).isEqualTo(123)
     }
     // endregion
 }

@@ -5,7 +5,9 @@ export const GameActions = {
     NEW_GAME: "NEW_GAME",
     NEW_GAME_CREATED: "NEW_GAME_CREATED",
     FETCH_WINNER: "FETCH_WINNER",
+    FETCH_ACTIVE_PLAYER: "FETCH_ACTIVE_PLAYER",
     GAME_WON: "GAME_WON",
+    ACTIVE_PLAYER_UPDATED: "ACTIVE_PLAYER_UPDATED",
 };
 
 export const createNewGame =
@@ -22,9 +24,19 @@ export const gameWon =
         return payload
     });
 
+export const fetchActivePlayer =
+    createAction(GameActions.FETCH_ACTIVE_PLAYER);
+
+export const activePlayerUpdated =
+    createAction(GameActions.ACTIVE_PLAYER_UPDATED, (payload: number) => {
+        return payload
+    });
+
 export default {
     createNewGame,
     newGameCreated,
     fetchWinner,
+    fetchActivePlayer,
+    activePlayerUpdated,
     gameWon
 }

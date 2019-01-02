@@ -43,4 +43,15 @@ describe("gameApi", () => {
             expect(response).toEqual(true);
         });
     });
+
+    describe("fetching active player", () => {
+        it("returns response data", async () => {
+            mock.onGet("http://localhost:8081/games/0/players/active")
+                .reply(200, "active player!");
+
+            const response = await GameApi.fetchActivePlayer();
+
+            expect(response).toEqual("active player!");
+        });
+    });
 });

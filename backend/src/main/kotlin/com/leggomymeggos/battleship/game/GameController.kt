@@ -35,4 +35,12 @@ class GameController(val gameService: GameService) {
     fun fetchWinner(): Player? {
         return gameService.getWinner()
     }
+
+    @RequestMapping(
+            value = ["/{gameId}/players/active"],
+            method = [RequestMethod.GET]
+    )
+    fun fetchActivePlayer(): Int {
+        return gameService.getActivePlayerId()
+    }
 }
