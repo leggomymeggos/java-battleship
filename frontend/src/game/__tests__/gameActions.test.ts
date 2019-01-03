@@ -23,7 +23,11 @@ describe("newGameCreated", () => {
 
 describe("fetchWinner", () => {
     it("returns FETCH_WINNER action", () => {
+<<<<<<< HEAD
         expect(actions.fetchWinner(303)).toEqual({type: GameActions.FETCH_WINNER, gameId: 303})
+=======
+        expect(actions.fetchWinner(303)).toEqual({type: GameActions.FETCH_WINNER, payload: 303})
+>>>>>>> More than one game can be played at once! Across tabs/browsers, that is
     });
 });
 
@@ -41,7 +45,11 @@ describe("fetchActivePlayer", () => {
     it("returns FETCH_ACTIVE_PLAYER action", () => {
         expect(actions.fetchActivePlayer(42)).toEqual({
             type: GameActions.FETCH_ACTIVE_PLAYER,
+<<<<<<< HEAD
             gameId: 42
+=======
+            payload: 42
+>>>>>>> More than one game can be played at once! Across tabs/browsers, that is
         })
     });
 });
