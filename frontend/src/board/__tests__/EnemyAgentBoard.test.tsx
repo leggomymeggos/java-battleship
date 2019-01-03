@@ -3,9 +3,9 @@ jest.mock("../boardActions");
 import {shallow} from "enzyme";
 import * as React from "react";
 import {EnemyAgentBoard, BoardProps, mapStateToProps} from "../EnemyAgentBoard";
-import {Tile} from "../../domain/Tile";
+import {Tile} from "../../domain/tile";
 import {GameState} from "../../game/gameReducer";
-import {Agent, AgentState} from "../../agent/Agent";
+import {Agent, AgentState} from "../../domain/agent";
 
 describe("EnemyAgentBoard", () => {
     let defaultProps: BoardProps;
@@ -79,9 +79,8 @@ describe("mapStateToProps", () => {
             sunkenShips: []
         };
         gameReducer = {
-            winner: null,
-            humanPlayer: null,
-            computerPlayer: null
+            id: 123,
+            winner: null
         }
     });
 

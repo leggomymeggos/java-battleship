@@ -13,20 +13,20 @@ export function* fetchGame(): any {
     }
 }
 
-export function* attack(attackingPlayerId: number, coordinate: Coordinate): any {
+export function* attack(gameId: number, attackingPlayerId: number, coordinate: Coordinate): any {
     try {
-        const newBoard = yield call(GameApi.attack, attackingPlayerId, coordinate);
+        const newBoard = yield call(GameApi.attack, gameId, attackingPlayerId, coordinate);
         yield put(boardHitSuccess(newBoard));
-        yield put(fetchWinner());
-        yield put(fetchActivePlayer())
+        yield put(fetchWinner(gameId));
+        yield put(fetchActivePlayer(gameId))
     } catch (e) {
         console.error(e)
     }
 }
 
-export function* checkWinner(): any {
+export function* checkWinner(gameId: number): any {
     try {
-        const winner = yield call(GameApi.fetchWinner);
+        const winner = yield call(GameApi.fetchWinner, gameId);
         if (!winner) {
             return;
         }
@@ -36,9 +36,9 @@ export function* checkWinner(): any {
     }
 }
 
-export function* checkActivePlayer(): any {
+export function* checkActivePlayer(gameId: number): any {
     try {
-        const activePlayerId = yield call(GameApi.fetchActivePlayer);
+        const activePlayerId = yield call(GameApi.fetchActivePlayer, gameId);
         yield put(activePlayerUpdated(activePlayerId))
     } catch (e) {
         console.error(e)
@@ -51,10 +51,12 @@ export function* fetchGameSaga(): any {
 
 export function* attackSaga(): any {
     yield takeEvery(BoardActions.BOARD_HIT, (action: Action<any>) => {
-        return attack(1, action.payload);
+        return attack(action.payload.gameId, 1, action.payload.coordinates);
     });
 }
 
 export function* checkWinnerSaga(): any {
-    yield takeEvery(GameActions.FETCH_WINNER, checkWinner);
+    yield takeEvery(GameActions.FETCH_WINNER, (action: Action<any>) => {
+        return checkWinner(action.payload);
+    });
 }

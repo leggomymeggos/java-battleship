@@ -1,4 +1,4 @@
-import {Tile} from "../domain/Tile";
+import {Tile} from "./tile";
 
 export class Agent {
     id: number;

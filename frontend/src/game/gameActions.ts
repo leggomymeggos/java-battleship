@@ -1,5 +1,6 @@
 import {createAction} from "redux-actions";
-import {Agent} from "../agent/Agent";
+import {Agent} from "../domain/agent";
+import {Game} from "../domain/game";
 
 export const GameActions = {
     NEW_GAME: "NEW_GAME",
@@ -14,18 +15,16 @@ export const createNewGame =
     createAction(GameActions.NEW_GAME);
 
 export const newGameCreated =
-    createAction(GameActions.NEW_GAME_CREATED, (payload: {computerPlayer: Agent, humanPlayer: Agent}) => payload);
+    createAction(GameActions.NEW_GAME_CREATED, (payload: Game) => payload);
 
 export const fetchWinner =
-    createAction(GameActions.FETCH_WINNER);
+    createAction(GameActions.FETCH_WINNER, (payload: number) => payload);
 
 export const gameWon =
-    createAction(GameActions.GAME_WON, (payload: Agent) => {
-        return payload
-    });
+    createAction(GameActions.GAME_WON, (payload: Agent) => payload);
 
 export const fetchActivePlayer =
-    createAction(GameActions.FETCH_ACTIVE_PLAYER);
+    createAction(GameActions.FETCH_ACTIVE_PLAYER, (payload: number) => payload);
 
 export const activePlayerUpdated =
     createAction(GameActions.ACTIVE_PLAYER_UPDATED, (payload: number) => {

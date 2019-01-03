@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Tile} from "../../domain/Tile";
+import {Tile} from "../../domain/tile";
 import {Coordinate} from "../boardActions";
 
 interface IPlayerBoardTileProps {

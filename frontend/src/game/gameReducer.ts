@@ -1,17 +1,15 @@
 import {Action, handleActions} from "redux-actions";
 import {GameActions} from "./gameActions";
-import {Agent} from "../agent/Agent";
+import {Agent} from "../domain/agent";
 
 export type GameState = {
+    id: number;
     winner: Agent;
-    humanPlayer: Agent;
-    computerPlayer: Agent;
 }
 
 export const initialState: GameState = {
+    id: -1,
     winner: null,
-    humanPlayer: null,
-    computerPlayer: null
 };
 
 const gameReducer = handleActions({
@@ -19,6 +17,13 @@ const gameReducer = handleActions({
         return {
             ...state,
             winner: action.payload
+        }
+    },
+    [GameActions.NEW_GAME_CREATED]: (state: GameState, action: Action<any>) => {
+        return {
+            ...state,
+            id: action.payload.id,
+            winner: null
         }
     }
 }, initialState);

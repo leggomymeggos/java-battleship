@@ -5,17 +5,19 @@ import org.springframework.stereotype.Component
 
 @Component
 class GameRegistry {
-    lateinit var game: Game
+    val games = mutableMapOf<Int, Game>()
 
-    fun setWinner(winnerId: Int) {
+    fun setWinner(gameId: Int, winnerId: Int) {
+        val game = getGame(gameId)
         val winner = when (winnerId) {
             game.computerPlayer.id -> game.computerPlayer
             else -> game.humanPlayer
         }
-        game = game.copy(winner = winner)
+        games[gameId] = game.copy(winner = winner)
     }
 
-    fun getPlayer(playerId: Int): Player {
+    fun getPlayer(gameId: Int, playerId: Int): Player {
+        val game = getGame(gameId)
         return when (playerId) {
             game.computerPlayer.id -> game.computerPlayer
             else -> game.humanPlayer
@@ -23,26 +25,33 @@ class GameRegistry {
     }
 
     fun getGame(gameId: Int): Game {
-        return game
+        return games[gameId] ?: TODO()
     }
 
-    fun changeTurn() {
-        val nextActivePlayer = getDefendingPlayer(game.activePlayerId).id
+    fun changeTurn(gameId: Int) {
+        val game = getGame(gameId)
+        val nextActivePlayer = getDefendingPlayer(gameId, game.activePlayerId).id
 
-        game = game.copy(activePlayerId = nextActivePlayer)
+        games[gameId] = game.copy(activePlayerId = nextActivePlayer)
     }
 
-    fun updatePlayer(player: Player) {
-        game = when (player.id) {
+    fun updatePlayer(gameId: Int, player: Player) {
+        val game = getGame(gameId)
+        games[gameId] = when (player.id) {
             game.computerPlayer.id -> game.copy(computerPlayer = player)
             else -> game.copy(humanPlayer = player)
         }
     }
 
-    fun getDefendingPlayer(attackingPlayerId: Int): Player {
+    fun getDefendingPlayer(gameId: Int, attackingPlayerId: Int): Player {
+        val game = getGame(gameId)
         return when (attackingPlayerId) {
             game.computerPlayer.id -> game.humanPlayer
             else -> game.computerPlayer
         }
+    }
+
+    fun register(game: Game) {
+        games[game.id] = game
     }
 }

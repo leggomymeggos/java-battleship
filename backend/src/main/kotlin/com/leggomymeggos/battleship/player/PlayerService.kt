@@ -12,7 +12,7 @@ class PlayerService(val boardService: BoardService) {
     fun initPlayer(): Player {
         val board = boardService.initBoard()
 
-        return Player(id = Random().nextInt(10), board = board)
+        return Player(id = Random().nextInt(Int.MAX_VALUE), board = board)
     }
 
     fun setShips(player: Player): Player {

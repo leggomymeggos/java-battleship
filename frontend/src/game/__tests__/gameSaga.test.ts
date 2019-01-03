@@ -1,6 +1,6 @@
 jest.mock("../gameApi");
 
-import {Tile} from "../../domain/Tile";
+import {Tile} from "../../domain/tile";
 import * as gameSaga from "../gameSaga";
 import {GameApi} from "../gameApi";
 import {call, put} from "redux-saga/effects";
@@ -28,13 +28,13 @@ describe("fetchGame", () => {
 describe("attack", () => {
     it("calls api to attack", () => {
         let coordinate = new Coordinate(0, 0);
-        const generator = gameSaga.attack(2, coordinate);
+        const generator = gameSaga.attack(123,2, coordinate);
 
-        expect(generator.next().value).toEqual(call(GameApi.attack, 2, coordinate));
+        expect(generator.next().value).toEqual(call(GameApi.attack, 123, 2, coordinate));
     });
 
     it("triggers action to update board", () => {
-        const generator = gameSaga.attack(0, new Coordinate(1, 2));
+        const generator = gameSaga.attack(0, 0, new Coordinate(1, 2));
 
         generator.next();
 
@@ -45,38 +45,40 @@ describe("attack", () => {
     });
 
     it("dispatches action to check for winner", () => {
-        const generator = gameSaga.attack(0, new Coordinate(1, 2));
+        const generator = gameSaga.attack(374, 0, new Coordinate(1, 2));
 
         generator.next();
         generator.next({grid: []});
 
         expect(generator.next().value).toEqual(put({
-            type: "FETCH_WINNER"
+            type: "FETCH_WINNER",
+            payload: 374
         }));
     });
 
     it("dispatches action to get active player", () => {
-        const generator = gameSaga.attack(0, new Coordinate(1, 2));
+        const generator = gameSaga.attack(456, 0, new Coordinate(1, 2));
 
         generator.next();
         generator.next({grid: []});
         generator.next();
 
         expect(generator.next().value).toEqual(put({
-            type: "FETCH_ACTIVE_PLAYER"
+            type: "FETCH_ACTIVE_PLAYER",
+            payload: 456
         }));
     });
 });
 
 describe("checkWinner", () => {
     it("calls api to check winner", () => {
-        const generator = gameSaga.checkWinner();
+        const generator = gameSaga.checkWinner(123);
 
-        expect(generator.next().value).toEqual(call(GameApi.fetchWinner));
+        expect(generator.next().value).toEqual(call(GameApi.fetchWinner, 123));
     });
 
     it("dispatches winner", () => {
-        const generator = gameSaga.checkWinner();
+        const generator = gameSaga.checkWinner(0);
 
         generator.next();
 
@@ -87,7 +89,7 @@ describe("checkWinner", () => {
     });
 
     it("does nothing if there is no winner", () => {
-        const generator = gameSaga.checkWinner();
+        const generator = gameSaga.checkWinner(0);
 
         generator.next();
 
@@ -97,13 +99,13 @@ describe("checkWinner", () => {
 
 describe("checkActivePlayer", () => {
     it("calls api to get active player", () => {
-        const generator = gameSaga.checkActivePlayer();
+        const generator = gameSaga.checkActivePlayer(709);
 
-        expect(generator.next().value).toEqual(call(GameApi.fetchActivePlayer));
+        expect(generator.next().value).toEqual(call(GameApi.fetchActivePlayer, 709));
     });
 
     it("dispatches active player", () => {
-        const generator = gameSaga.checkActivePlayer();
+        const generator = gameSaga.checkActivePlayer(0);
 
         generator.next();
 

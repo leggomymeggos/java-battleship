@@ -1,7 +1,7 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {GameState} from "../game/gameReducer";
-import {Agent} from "./Agent";
+import {Agent} from "../domain/agent";
 
 export interface IAgentDataPropsFromStore {
     winner: Agent;

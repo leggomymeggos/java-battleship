@@ -1,7 +1,7 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import BoardTile from "./tile/EnemyAgentBoardTile";
-import {Agent} from "../agent/Agent";
+import {Agent} from "../domain/agent";
 
 export interface IBoardPropsFromStore {
     id: number

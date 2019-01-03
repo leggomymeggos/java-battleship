@@ -10,20 +10,20 @@ export class GameApi {
         }).then((response) => response.data);
     }
 
-    static fetchWinner() {
-        return axios.get("/games/0/winner", {
+    static fetchWinner(gameId: number) {
+        return axios.get(`/games/${gameId}/winner`, {
             baseURL: GameApi.baseUrl,
         }).then((response) => response.data);
     }
 
-    static attack(attackingPlayerId: number, coordinate: Coordinate) {
-        return axios.put(`/games/0/attack?attackerId=${attackingPlayerId}`, coordinate, {
+    static attack(gameId: number, attackingPlayerId: number, coordinate: Coordinate) {
+        return axios.put(`/games/${gameId}/attack?attackerId=${attackingPlayerId}`, coordinate, {
             baseURL: GameApi.baseUrl,
         }).then((response) => response.data);
     }
 
-    static fetchActivePlayer() {
-        return axios.get(`/games/0/players/active`, {
+    static fetchActivePlayer(gameId: number) {
+        return axios.get(`/games/${gameId}/players/active`, {
             baseURL: GameApi.baseUrl,
         }).then((response) => response.data);
     }

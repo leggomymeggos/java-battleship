@@ -1,16 +1,19 @@
 import {BoardActions, boardHit, boardHitSuccess} from "../boardActions";
-import {Tile} from "../../domain/Tile";
+import {Tile} from "../../domain/tile";
 
 describe("boardHit", () => {
     it("returns BOARD_HIT action", () => {
-        expect(boardHit({
+        expect(boardHit(123, {
             x: 1,
             y: 2
         })).toEqual({
             type: BoardActions.BOARD_HIT,
             payload: {
-                x: 1,
-                y: 2
+                gameId: 123,
+                coordinates: {
+                    x: 1,
+                    y: 2
+                }
             }
         });
     });

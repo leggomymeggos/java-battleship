@@ -3,7 +3,7 @@ import * as React from "react";
 
 import {AgentData, AgentDataProps, mapStateToProps} from "../AgentData";
 import {GameState} from "../../game/gameReducer";
-import {Agent} from "../Agent";
+import {Agent} from "../../domain/agent";
 
 describe("Agent Data", () => {
     let props: AgentDataProps;
@@ -36,9 +36,8 @@ describe("Agent Data", () => {
 describe("mapStateToProps", () => {
     it("maps winner", () => {
         let gameReducer: GameState = {
+            id: -2,
             winner: null,
-            humanPlayer: null,
-            computerPlayer: null,
         };
         let props = mapStateToProps({
             gameReducer
@@ -46,9 +45,8 @@ describe("mapStateToProps", () => {
         expect(props.winner).toBeFalsy();
 
         gameReducer = {
+            id: -2,
             winner: new Agent(),
-            humanPlayer: null,
-            computerPlayer: null,
         };
         props = mapStateToProps({
             gameReducer

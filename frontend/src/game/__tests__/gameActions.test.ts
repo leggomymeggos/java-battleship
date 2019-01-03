@@ -1,6 +1,7 @@
 import actions, {GameActions} from "../gameActions";
-import {Tile} from "../../domain/Tile";
-import {Agent} from "../../agent/Agent";
+import {Tile} from "../../domain/tile";
+import {Agent} from "../../domain/agent";
+import {Game} from "../../domain/game";
 
 describe("createNewGame", () => {
     it("returns NEW_GAME action", () => {
@@ -12,16 +13,17 @@ describe("createNewGame", () => {
 
 describe("newGameCreated", () => {
     it("returns NEW_GAME_CREATED action", () => {
-        expect(actions.newGameCreated({computerPlayer: new Agent(), humanPlayer: new Agent()})).toEqual({
+        let game = new Game();
+        expect(actions.newGameCreated(game)).toEqual({
             type: GameActions.NEW_GAME_CREATED,
-            payload: {computerPlayer: new Agent(), humanPlayer: new Agent()}
+            payload: game
         });
     });
 });
 
 describe("fetchWinner", () => {
     it("returns FETCH_WINNER action", () => {
-        expect(actions.fetchWinner()).toEqual({type: GameActions.FETCH_WINNER})
+        expect(actions.fetchWinner(303)).toEqual({type: GameActions.FETCH_WINNER, gameId: 303})
     });
 });
 
@@ -37,8 +39,9 @@ describe("gameWon", () => {
 
 describe("fetchActivePlayer", () => {
     it("returns FETCH_ACTIVE_PLAYER action", () => {
-        expect(actions.fetchActivePlayer()).toEqual({
-            type: GameActions.FETCH_ACTIVE_PLAYER
+        expect(actions.fetchActivePlayer(42)).toEqual({
+            type: GameActions.FETCH_ACTIVE_PLAYER,
+            gameId: 42
         })
     });
 });

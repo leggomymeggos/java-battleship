@@ -1,7 +1,7 @@
 import {Action, handleActions} from "redux-actions";
 import {GameActions} from "../game/gameActions";
 import {BoardActions} from "../board/boardActions";
-import {AgentState} from "./Agent";
+import {AgentState} from "../domain/agent";
 
 export const initialState: AgentState = {
     id: -1,

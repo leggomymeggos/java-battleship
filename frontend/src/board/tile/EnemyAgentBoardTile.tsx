@@ -2,7 +2,7 @@ import * as React from "react";
 import {connect, Dispatch} from "react-redux";
 import {bindActionCreators} from "redux";
 import boardActions, {Coordinate} from "../boardActions";
-import {Tile} from "../../domain/Tile";
+import {Tile} from "../../domain/tile";
 import {targetHitIndicator, targetMissIndicator} from "./tileIndicators";
 
 export interface IBoardTilePropsFromActions {
@@ -11,13 +11,17 @@ export interface IBoardTilePropsFromActions {
     };
 }
 
+export interface IBoardTilePropsFromStore {
+    gameId: number;
+}
+
 export interface IBoardTilePropsFromParent {
     tile: Tile,
     winner: boolean,
     coordinates: Coordinate
 }
 
-export type BoardTileProps = IBoardTilePropsFromParent & IBoardTilePropsFromActions;
+export type BoardTileProps = IBoardTilePropsFromParent & IBoardTilePropsFromActions & IBoardTilePropsFromStore;
 
 export class EnemyAgentBoardTile extends React.Component<BoardTileProps> {
     public render() {
@@ -27,7 +31,7 @@ export class EnemyAgentBoardTile extends React.Component<BoardTileProps> {
                         if (tile.hit || this.props.winner) {
                             return;
                         }
-                        this.props.actions.boardHit(this.props.coordinates);
+                        this.props.actions.boardHit(this.props.gameId, this.props.coordinates);
                     }}>
             {EnemyAgentBoardTile.tileIndicator(tile)}
         </div>;
@@ -82,5 +86,11 @@ export const mapDispatchToProps = (dispatch: Dispatch<{}>): IBoardTilePropsFromA
     }
 };
 
-export default connect(null, mapDispatchToProps)(EnemyAgentBoardTile);
+export const mapStateToProps = (state: any): IBoardTilePropsFromStore => {
+    return {
+        gameId: state.gameReducer.id
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EnemyAgentBoardTile);
 

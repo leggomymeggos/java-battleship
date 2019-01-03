@@ -1,8 +1,8 @@
 import {GameActions} from "../../game/gameActions";
-import {Tile} from "../../domain/Tile";
+import {Tile} from "../../domain/tile";
 import {BoardActions} from "../../board/boardActions";
 import playerAgentReducer, {initialState} from "../playerAgentReducer";
-import {AgentState} from "../Agent";
+import {AgentState} from "../../domain/agent";
 
 describe("playerAgentReducer", () => {
     it("has an initial state", () => {

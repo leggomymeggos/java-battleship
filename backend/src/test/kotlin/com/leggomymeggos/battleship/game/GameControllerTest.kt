@@ -47,7 +47,7 @@ class GameControllerTest {
 
     @Test
     fun `newGame returns a new game`() {
-        val game = Game(Player())
+        val game = Game(0, Player())
         whenever(gameService.new()).thenReturn(game)
 
         val actual = controller.newGame()
@@ -93,17 +93,17 @@ class GameControllerTest {
 
     @Test
     fun `fetchWinner requests winner`() {
-        controller.fetchWinner()
+        controller.fetchWinner(123)
 
-        verify(gameService).getWinner()
+        verify(gameService).getWinner(123)
     }
 
     @Test
     fun `fetchWinner returns fetched winner`() {
         val player = Player(id = 123)
-        whenever(gameService.getWinner()).thenReturn(player)
+        whenever(gameService.getWinner(201)).thenReturn(player)
 
-        assertThat(controller.fetchWinner()).isEqualTo(player)
+        assertThat(controller.fetchWinner(201)).isEqualTo(player)
     }
     // endregion
 
@@ -116,17 +116,17 @@ class GameControllerTest {
 
     @Test
     fun `fetchActivePlayer requests active player`() {
-        controller.fetchActivePlayer()
+        controller.fetchActivePlayer(10)
 
-        verify(gameService).getActivePlayerId()
+        verify(gameService).getActivePlayerId(10)
     }
 
     @Test
     fun `fetchActivePlayer returns fetched winner`() {
 
-        whenever(gameService.getActivePlayerId()).thenReturn(123)
+        whenever(gameService.getActivePlayerId(44)).thenReturn(123)
 
-        assertThat(controller.fetchActivePlayer()).isEqualTo(123)
+        assertThat(controller.fetchActivePlayer(44)).isEqualTo(123)
     }
     // endregion
 }

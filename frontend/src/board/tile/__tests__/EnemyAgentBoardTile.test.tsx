@@ -2,8 +2,8 @@ jest.mock("../../boardActions");
 
 import {shallow} from "enzyme";
 import * as React from "react";
-import {Tile} from "../../../domain/Tile";
-import {EnemyAgentBoardTile, BoardTileProps} from "../EnemyAgentBoardTile";
+import {Tile} from "../../../domain/tile";
+import {EnemyAgentBoardTile, BoardTileProps, mapStateToProps} from "../EnemyAgentBoardTile";
 
 describe("EnemyAgentBoardTile", () => {
     let defaultProps: BoardTileProps;
@@ -15,9 +15,10 @@ describe("EnemyAgentBoardTile", () => {
         };
 
         defaultProps = {
+            gameId: 321,
             winner: false,
             tile: new Tile(),
-            coordinates: {x:0, y: 0},
+            coordinates: {x: 0, y: 0},
             actions: mockActions,
         }
     });
@@ -108,6 +109,7 @@ describe("EnemyAgentBoardTile", () => {
         it("calls 'boardHit' with the coordinates", () => {
             const props = {
                 ...defaultProps,
+                gameId: 403,
                 coordinates: {
                     x: 421,
                     y: 153
@@ -118,15 +120,16 @@ describe("EnemyAgentBoardTile", () => {
 
             subject.find(".board__tile").get(0).props.onClick();
 
-            expect(mockActions.boardHit).toHaveBeenCalledWith({
-                x: 421,
-                y: 153
-            })
+            expect(mockActions.boardHit).toHaveBeenCalledWith(
+                403,
+                {x: 421, y: 153}
+            )
         });
 
         it("does not call 'boardHit' action if the tile has already been hit", () => {
             const props = {
                 ...defaultProps,
+                gameId: 123,
                 tile: new Tile(null, true),
                 coordinates: {
                     x: 421,
@@ -158,5 +161,16 @@ describe("EnemyAgentBoardTile", () => {
 
             expect(mockActions.boardHit).not.toHaveBeenCalled()
         });
+    });
+});
+
+describe("mapStateToProps", () => {
+    it("maps the gameId", () => {
+        const state = mapStateToProps({
+            gameReducer: {
+                id: 103
+            }
+        });
+        expect(state.gameId).toEqual(103)
     });
 });

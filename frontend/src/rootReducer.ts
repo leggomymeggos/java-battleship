@@ -2,7 +2,7 @@ import {combineReducers} from "redux";
 import gameReducer, {GameState} from "./game/gameReducer";
 import enemyAgentReducer from "./agent/enemyAgentReducer";
 import playerAgentReducer from "./agent/playerAgentReducer";
-import {AgentState} from "./agent/Agent";
+import {AgentState} from "./domain/agent";
 
 export type rootState = {
     gameReducer: GameState;

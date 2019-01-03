@@ -1,7 +1,7 @@
 import {PlayerAgentBoardTile, PlayerBoardTileProps} from "../PlayerAgentBoardTile";
 import {shallow} from "enzyme";
 import * as React from "react";
-import {Tile} from "../../../domain/Tile";
+import {Tile} from "../../../domain/tile";
 
 describe("PlayerAgentBoardTile", () => {
     let defaultProps: PlayerBoardTileProps;

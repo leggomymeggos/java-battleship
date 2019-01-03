@@ -35,4 +35,3 @@ describe("mapDispatchToProps", () => {
         expect(createNewGame).toHaveBeenCalled()
     });
 });
-
