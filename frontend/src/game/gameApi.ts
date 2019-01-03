@@ -2,7 +2,7 @@ import axios from "axios";
 import {Coordinate} from "../board/boardActions";
 
 export class GameApi {
-    private static baseUrl = "http://localhost:8081";
+    private static baseUrl = process.env.BASE_URL;
 
     public static newGame() {
         return axios.get("/games/new", {
