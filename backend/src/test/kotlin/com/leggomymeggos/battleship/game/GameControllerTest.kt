@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import org.springframework.test.web.servlet.setup.MockMvcBuilders
+import org.springframework.test.web.servlet.setup.MockMvcBuilders.*
 
 class GameControllerTest {
 
@@ -28,7 +28,7 @@ class GameControllerTest {
     fun setup() {
         gameService = mock()
         controller = GameController(gameService)
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).build()
+        mockMvc = standaloneSetup(controller).build()
     }
 
     // region newGame
