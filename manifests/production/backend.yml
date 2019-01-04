@@ -1,0 +1,10 @@
+---
+applications:
+- name: battleship-backend
+  memory: 1G
+  instances: 1
+  buildpacks:
+  - java_buildpack
+  routes:
+  - route: battleship-backend.cfapps.io
+  path: ../../backend/build/libs/battleship-0.0.1-SNAPSHOT.jar

@@ -1,0 +1,10 @@
+---
+applications:
+- name: battleship-frontend
+  memory: 1G
+  instances: 1
+  buildpacks:
+  - staticfile_buildpack
+  routes:
+  - route: www.leggomymeggos.com
+  path: ../../frontend/
