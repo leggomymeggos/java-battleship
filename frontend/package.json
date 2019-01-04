@@ -6,10 +6,10 @@
   "scripts": {
     "test": "jest",
     "build:local": "webpack --env local --mode development",
-    "build:dev": "webpack --env dev",
-    "build:prod": "webpack --env prod --mode production",
     "start:local": "webpack-dev-server --env local --mode development",
-    "start:dev": "webpack-dev-server --env dev",
+    "build:dev": "webpack --env dev --mode development",
+    "start:dev": "webpack-dev-server --env dev --mode development",
+    "build:prod": "webpack --env prod --mode production",
     "start:prod": "webpack-dev-server --env prod --mode production"
   },
   "jest": {
@@ -40,7 +40,7 @@
     "axios": "^0.18.0",
     "dotenv-webpack": "^1.6.0",
     "lodash": "^4.17.11",
-    "npm": "^5.8.0",
+    "npm": "^6.5.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.7",
@@ -49,7 +49,7 @@
     "redux-actions": "^2.3.0",
     "redux-saga": "^0.16.0",
     "redux-thunk": "^2.2.0",
-    "webpack": "^4.2.0",
+    "webpack": "^4.28.3",
     "webpack-merge": "^4.1.5"
   },
   "devDependencies": {
@@ -64,9 +64,9 @@
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "file-loader": "^2.0.0",
-    "image-webpack-loader": "^4.3.1",
+    "image-webpack-loader": "^4.6.0",
     "jest": "^22.4.3",
-    "node-sass": "^4.7.2",
+    "node-sass": "^4.11.0",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "react-test-renderer": "^16.2.0",
     "sass-loader": "^6.0.7",
@@ -77,6 +77,6 @@
     "typescript": "^2.7.2",
     "url-loader": "^1.1.1",
     "webpack-cli": "^2.0.13",
-    "webpack-dev-server": "^3.1.1"
+    "webpack-dev-server": "^3.1.14"
   }
 }
