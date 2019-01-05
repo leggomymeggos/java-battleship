@@ -11,7 +11,7 @@ describe("gameApi", () => {
 
     describe("getting a new game", () => {
         it("returns the response data", async () => {
-            mock.onGet("http://localhost:8081/games/new")
+            mock.onGet("http://example.com/games/new")
                 .reply(200,  "game!");
 
             const response = await GameApi.newGame();
@@ -24,7 +24,7 @@ describe("gameApi", () => {
         it("returns response data", async () => {
             let coordinate = new Coordinate(1, 2);
 
-            mock.onPut("http://localhost:8081/games/11/attack?attackerId=2", coordinate)
+            mock.onPut("http://example.com/games/11/attack?attackerId=2", coordinate)
                 .reply(200,  "game!");
 
             const response = await GameApi.attack(11, 2, coordinate);
@@ -35,7 +35,7 @@ describe("gameApi", () => {
 
     describe("fetching winner", () => {
         it("returns response data", async () => {
-            mock.onGet("http://localhost:8081/games/1010/winner")
+            mock.onGet("http://example.com/games/1010/winner")
                 .reply(200, true);
 
             const response = await GameApi.fetchWinner(1010);
@@ -46,7 +46,7 @@ describe("gameApi", () => {
 
     describe("fetching active player", () => {
         it("returns response data", async () => {
-            mock.onGet("http://localhost:8081/games/3829/players/active")
+            mock.onGet("http://example.com/games/3829/players/active")
                 .reply(200, "active player!");
 
             const response = await GameApi.fetchActivePlayer(3829);
