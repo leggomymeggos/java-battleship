@@ -17,12 +17,10 @@ describe("playerAgentReducer", () => {
         const state = playerAgentReducer(initialState, {
             type: GameActions.NEW_GAME_CREATED,
             payload: {
-                computerPlayer: {
-                    id: 123, board: {grid: [[new Tile()], [new Tile()]], sunkenShips: ["none yet"]}
-                },
-                humanPlayer: {
-                    id: 789, board: {grid: [[new Tile()], [new Tile()], [new Tile()]], sunkenShips: ["super ships sunk"]}
-                }
+                players: [
+                    {id: 789, board: {grid: [[new Tile()], [new Tile()], [new Tile()]], sunkenShips: ["super ships sunk"]}},
+                    {id: 123, board: {grid: [[new Tile()], [new Tile()]], sunkenShips: ["none yet"]}}
+                ],
             }
         });
 

@@ -68,8 +68,7 @@ class GameServiceTest {
 
         val game = argumentCaptor.firstValue
 
-        assertThat(game.humanPlayer).isEqualTo(player)
-        assertThat(game.computerPlayer).isEqualTo(player2)
+        assertThat(game.players).isEqualTo(listOf(player, player2))
         assertThat(game.activePlayerId).isEqualTo(player.id)
     }
 
@@ -83,9 +82,8 @@ class GameServiceTest {
 
         val game = gameService.new()
 
-        assertThat(game.humanPlayer).isEqualTo(player)
-        assertThat(game.computerPlayer).isEqualTo(player2)
-        assertThat(game.activePlayerId).isEqualTo(1)
+        assertThat(game.players).isEqualTo(listOf(player, player2))
+        assertThat(game.activePlayerId).isEqualTo(player.id)
     }
     // endregion
 

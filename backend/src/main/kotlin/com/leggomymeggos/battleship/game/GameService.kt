@@ -21,8 +21,7 @@ class GameService(val playerService: PlayerService, val gameRegistry: GameRegist
                 }
 
         val game = Game(
-                humanPlayer = humanPlayer,
-                computerPlayer = computerPlayer,
+                players = listOf(humanPlayer, computerPlayer),
                 activePlayerId = humanPlayer.id
         )
         gameRegistry.register(game)

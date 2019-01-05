@@ -9,19 +9,13 @@ class GameRegistry {
 
     fun setWinner(gameId: Int, winnerId: Int) {
         val game = getGame(gameId)
-        val winner = when (winnerId) {
-            game.computerPlayer.id -> game.computerPlayer
-            else -> game.humanPlayer
-        }
+        val winner = getPlayer(gameId, winnerId)
         games[gameId] = game.copy(winner = winner)
     }
 
     fun getPlayer(gameId: Int, playerId: Int): Player {
         val game = getGame(gameId)
-        return when (playerId) {
-            game.computerPlayer.id -> game.computerPlayer
-            else -> game.humanPlayer
-        }
+        return game.players.first { it.id == playerId }
     }
 
     fun getGame(gameId: Int): Game {
@@ -37,18 +31,18 @@ class GameRegistry {
 
     fun updatePlayer(gameId: Int, player: Player) {
         val game = getGame(gameId)
-        games[gameId] = when (player.id) {
-            game.computerPlayer.id -> game.copy(computerPlayer = player)
-            else -> game.copy(humanPlayer = player)
-        }
+
+        val players = game.players.toMutableList()
+        players.removeIf { it.id == player.id }
+        players.add(player)
+
+        games[gameId] = game.copy(players = players)
     }
 
     fun getDefendingPlayer(gameId: Int, attackingPlayerId: Int): Player {
         val game = getGame(gameId)
-        return when (attackingPlayerId) {
-            game.computerPlayer.id -> game.humanPlayer
-            else -> game.computerPlayer
-        }
+
+        return game.players.filterNot { it.id == attackingPlayerId }.first()
     }
 
     fun register(game: Game) {

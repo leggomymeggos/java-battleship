@@ -14,9 +14,9 @@ const enemyAgentReducer = handleActions({
     [GameActions.NEW_GAME_CREATED]: (state: AgentState, action: Action<any>) => {
         return {
             ...state,
-            id: action.payload.computerPlayer.id,
-            grid: action.payload.computerPlayer.board.grid,
-            sunkenShips: action.payload.computerPlayer.board.sunkenShips
+            id: action.payload.players[1].id,
+            grid: action.payload.players[1].board.grid,
+            sunkenShips: action.payload.players[1].board.sunkenShips
         }
     },
     [BoardActions.BOARD_HIT_SUCCESS]: (state: AgentState, action: Action<any>) => {

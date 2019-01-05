@@ -42,7 +42,7 @@ class GameRegistryTest {
         val gameId = 101
         val humanPlayer = Player(id = 123)
         val computerPlayer = Player(id = 456)
-        gameRegistry.register(Game(gameId, humanPlayer, computerPlayer))
+        gameRegistry.register(Game(id = gameId, players = listOf(humanPlayer, computerPlayer)))
 
         gameRegistry.setWinner(gameId, 123)
         assertThat(gameRegistry.getGame(gameId).winner).isEqualTo(humanPlayer)
@@ -56,7 +56,7 @@ class GameRegistryTest {
         val gameId = 493
         val humanPlayer = Player(id = 444)
         val computerPlayer = Player(id = 222)
-        gameRegistry.register(Game(gameId, humanPlayer, computerPlayer))
+        gameRegistry.register(Game(id = gameId, players = listOf(humanPlayer, computerPlayer)))
 
         assertThat(gameRegistry.getPlayer(gameId, 444)).isEqualTo(humanPlayer)
         assertThat(gameRegistry.getPlayer(gameId, 222)).isEqualTo(computerPlayer)
@@ -67,12 +67,12 @@ class GameRegistryTest {
         val gameId = 493
         val humanPlayer = Player(id = 123, board = Board(gridOf(2)))
         val computerPlayer = Player(id = 456)
-        gameRegistry.register(Game(id = gameId, humanPlayer = humanPlayer, computerPlayer = computerPlayer))
+        gameRegistry.register(Game(id = gameId, players = listOf(humanPlayer, computerPlayer)))
 
         val updatedPlayer = Player(id = 123, board = Board(gridOf(1)))
         gameRegistry.updatePlayer(gameId, updatedPlayer)
 
-        assertThat(gameRegistry.getGame(gameId).humanPlayer).isEqualTo(updatedPlayer)
+        assertThat(gameRegistry.getGame(gameId).players).containsExactlyInAnyOrder(computerPlayer, updatedPlayer)
     }
 
     @Test
@@ -81,7 +81,11 @@ class GameRegistryTest {
         val humanPlayer = Player(id = 123)
         val computerPlayer = Player(id = 456)
 
-        gameRegistry.register(Game(gameId, humanPlayer, computerPlayer, humanPlayer.id))
+        gameRegistry.register(Game(
+                id = gameId,
+                players = listOf(humanPlayer, computerPlayer),
+                activePlayerId = humanPlayer.id
+        ))
 
         gameRegistry.changeTurn(gameId)
         assertThat(gameRegistry.getGame(gameId).activePlayerId).isEqualTo(computerPlayer.id)
@@ -96,7 +100,7 @@ class GameRegistryTest {
         val humanPlayer = Player(id = 123)
         val computerPlayer = Player(id = 456)
 
-        gameRegistry.register(Game(gameId, humanPlayer, computerPlayer))
+        gameRegistry.register(Game(id = gameId, players = listOf(humanPlayer, computerPlayer)))
 
         var defendingPlayer = gameRegistry.getDefendingPlayer(gameId, computerPlayer.id)
         assertThat(defendingPlayer).isEqualTo(humanPlayer)

@@ -47,7 +47,7 @@ class GameControllerTest {
 
     @Test
     fun `newGame returns a new game`() {
-        val game = Game(0, Player())
+        val game = Game(id = 0, players = listOf(Player()))
         whenever(gameService.new()).thenReturn(game)
 
         val actual = controller.newGame()
