@@ -8,10 +8,10 @@ class BoardService {
         return Board(gridOf(10))
     }
 
-    fun addShip(board: Board, ship: Ship, coordinate: Coordinate, direction: Direction): Board {
+    fun addShip(board: Board, ship: Ship, coordinate: Coordinate, orientation: Orientation): Board {
         val newGrid = board.grid.toMutableList().apply {
-            when (direction) {
-                Direction.HORIZONTAL -> {
+            when (orientation) {
+                Orientation.HORIZONTAL -> {
                     val normalizedCoordinate = coordinate.normalizeForHorizontalPlacement(this, ship)
                     if (containsNoShipsInHorizontalPlacement(normalizedCoordinate, ship)) {
                         addShipHorizontally(normalizedCoordinate, ship)
@@ -19,7 +19,7 @@ class BoardService {
                         println("invalid horizontal placement for $ship at $normalizedCoordinate for board ${board.grid.map { it.map { col -> col.ship } }}")
                     }
                 }
-                Direction.VERTICAL -> {
+                Orientation.VERTICAL -> {
                     val normalizedCoordinate = coordinate.normalizeForVerticalPlacement(this, ship)
                     if (containsNoShipsInVerticalPlacement(normalizedCoordinate, ship)) {
                         addShipVertically(normalizedCoordinate, ship)
@@ -45,37 +45,37 @@ class BoardService {
         return hitBoard
     }
 
-    fun addShipRandomly(board: Board, ship: Ship, direction: Direction): Board {
-        val coordinate = randomValidCoordinate(board, ship, direction)
-        return addShip(board, ship, coordinate, direction)
+    fun addShipRandomly(board: Board, ship: Ship, orientation: Orientation): Board {
+        val coordinate = randomValidCoordinate(board, ship, orientation)
+        return addShip(board, ship, coordinate, orientation)
     }
 
-    tailrec fun randomValidCoordinate(board: Board, ship: Ship, direction: Direction): Coordinate {
+    tailrec fun randomValidCoordinate(board: Board, ship: Ship, orientation: Orientation): Coordinate {
         val randomCoordinate = board.grid
                 .mapIndexed { yIndex, row ->
                     row.mapIndexed { xIndex, _ ->
                         Coordinate(xIndex, yIndex)
                     }.select {
-                        when (direction) {
-                            Direction.HORIZONTAL -> it.isValidHorizontalCoordinate(board.grid, ship)
-                            Direction.VERTICAL -> it.isValidVerticalCoordinate(board.grid, ship)
+                        when (orientation) {
+                            Orientation.HORIZONTAL -> it.isValidHorizontalCoordinate(board.grid, ship)
+                            Orientation.VERTICAL -> it.isValidVerticalCoordinate(board.grid, ship)
                         }
                     }
                 }.flatten().random()
 
-        val normalizedCoordinate = when (direction) {
-            Direction.HORIZONTAL -> randomCoordinate.normalizeForHorizontalPlacement(board.grid, ship)
-            Direction.VERTICAL -> randomCoordinate.normalizeForVerticalPlacement(board.grid, ship)
+        val normalizedCoordinate = when (orientation) {
+            Orientation.HORIZONTAL -> randomCoordinate.normalizeForHorizontalPlacement(board.grid, ship)
+            Orientation.VERTICAL -> randomCoordinate.normalizeForVerticalPlacement(board.grid, ship)
         }
 
-        val isValidCoordinate = when (direction) {
-            Direction.HORIZONTAL -> board.grid.containsNoShipsInHorizontalPlacement(normalizedCoordinate, ship)
-            Direction.VERTICAL -> board.grid.containsNoShipsInVerticalPlacement(normalizedCoordinate, ship)
+        val isValidCoordinate = when (orientation) {
+            Orientation.HORIZONTAL -> board.grid.containsNoShipsInHorizontalPlacement(normalizedCoordinate, ship)
+            Orientation.VERTICAL -> board.grid.containsNoShipsInVerticalPlacement(normalizedCoordinate, ship)
         }
 
         return when {
             isValidCoordinate -> randomCoordinate
-            else -> randomValidCoordinate(board, ship, direction)
+            else -> randomValidCoordinate(board, ship, orientation)
         }
     }
 

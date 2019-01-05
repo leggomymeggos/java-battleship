@@ -1,6 +1,6 @@
 package com.leggomymeggos.battleship.board
 
-import com.leggomymeggos.battleship.board.Direction.*
+import com.leggomymeggos.battleship.board.Orientation.*
 import com.leggomymeggos.battleship.board.Ship.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
@@ -59,7 +59,7 @@ class BoardServiceTest {
     }
 
     @Test
-    fun `addShip considers direction`() {
+    fun `addShip considers orientation`() {
         val grid = gridOf(4)
         val board = Board(grid)
 
@@ -223,11 +223,11 @@ class BoardServiceTest {
     // region addShipRandomly
     @Test
     fun `addShipRandomly always adds all ships`() {
-        val randomBoard = boardService.addShipRandomly(Board(gridOf(10)), DESTROYER, Direction.values().random()).run {
-            boardService.addShipRandomly(this, CRUISER, Direction.values().random()).run {
-                boardService.addShipRandomly(this, SUBMARINE, Direction.values().random()).run {
-                    boardService.addShipRandomly(this, BATTLESHIP, Direction.values().random()).run {
-                        boardService.addShipRandomly(this, AIRCRAFT_CARRIER, Direction.values().random())
+        val randomBoard = boardService.addShipRandomly(Board(gridOf(10)), DESTROYER, Orientation.values().random()).run {
+            boardService.addShipRandomly(this, CRUISER, Orientation.values().random()).run {
+                boardService.addShipRandomly(this, SUBMARINE, Orientation.values().random()).run {
+                    boardService.addShipRandomly(this, BATTLESHIP, Orientation.values().random()).run {
+                        boardService.addShipRandomly(this, AIRCRAFT_CARRIER, Orientation.values().random())
                     }
                 }
             }

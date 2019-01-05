@@ -2,7 +2,7 @@ package com.leggomymeggos.battleship.player
 
 import com.leggomymeggos.battleship.board.BoardService
 import com.leggomymeggos.battleship.board.Coordinate
-import com.leggomymeggos.battleship.board.Direction
+import com.leggomymeggos.battleship.board.Orientation
 import com.leggomymeggos.battleship.board.Ship.*
 import org.springframework.stereotype.Service
 import java.util.*
@@ -16,11 +16,11 @@ class PlayerService(val boardService: BoardService) {
     }
 
     fun setShips(player: Player): Player {
-        val board = boardService.addShip(player.board, CRUISER, Coordinate(0, 0), Direction.HORIZONTAL).run {
-            boardService.addShip(this, SUBMARINE, Coordinate(2, 6), Direction.HORIZONTAL).run {
-                boardService.addShip(this, AIRCRAFT_CARRIER, Coordinate(5, 3), Direction.HORIZONTAL).run {
-                    boardService.addShip(this, DESTROYER, Coordinate(0, 9), Direction.VERTICAL).run {
-                        boardService.addShip(this, BATTLESHIP, Coordinate(9, 9), Direction.VERTICAL)
+        val board = boardService.addShip(player.board, CRUISER, Coordinate(0, 0), Orientation.HORIZONTAL).run {
+            boardService.addShip(this, SUBMARINE, Coordinate(2, 6), Orientation.HORIZONTAL).run {
+                boardService.addShip(this, AIRCRAFT_CARRIER, Coordinate(5, 3), Orientation.HORIZONTAL).run {
+                    boardService.addShip(this, DESTROYER, Coordinate(0, 9), Orientation.VERTICAL).run {
+                        boardService.addShip(this, BATTLESHIP, Coordinate(9, 9), Orientation.VERTICAL)
                     }
                 }
             }
@@ -41,11 +41,11 @@ class PlayerService(val boardService: BoardService) {
     }
 
     fun randomlySetShips(player: Player): Player {
-        val board = boardService.addShipRandomly(player.board, CRUISER, Direction.values().random()).run {
-            boardService.addShipRandomly(this, SUBMARINE, Direction.values().random()).run {
-                boardService.addShipRandomly(this, AIRCRAFT_CARRIER, Direction.values().random()).run {
-                    boardService.addShipRandomly(this, DESTROYER, Direction.values().random()).run {
-                        boardService.addShipRandomly(this, BATTLESHIP, Direction.values().random())
+        val board = boardService.addShipRandomly(player.board, CRUISER, Orientation.values().random()).run {
+            boardService.addShipRandomly(this, SUBMARINE, Orientation.values().random()).run {
+                boardService.addShipRandomly(this, AIRCRAFT_CARRIER, Orientation.values().random()).run {
+                    boardService.addShipRandomly(this, DESTROYER, Orientation.values().random()).run {
+                        boardService.addShipRandomly(this, BATTLESHIP, Orientation.values().random())
                     }
                 }
             }
