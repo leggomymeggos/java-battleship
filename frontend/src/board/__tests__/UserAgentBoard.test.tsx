@@ -24,7 +24,7 @@ describe("UserAgentBoard", () => {
     it("has a grid", () => {
         const subject = shallow(<UserAgentBoard {...defaultProps} />);
 
-        expect(subject.find(".player--board__grid").exists()).toBeTruthy();
+        expect(subject.find(".user--board__grid").exists()).toBeTruthy();
     });
 
     describe("tiles", () => {
