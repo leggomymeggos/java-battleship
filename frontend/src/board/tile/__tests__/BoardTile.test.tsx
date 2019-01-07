@@ -109,12 +109,12 @@ describe("BoardTile", () => {
             });
         });
 
-        describe("self agent specific styling", () => {
+        describe("user agent specific styling", () => {
             let props: BoardTileProps;
             beforeEach(() => {
                 props = {
                     ...defaultProps,
-                    agentType: AgentType.SELF
+                    agentType: AgentType.USER
                 };
             });
 
@@ -181,10 +181,10 @@ describe("BoardTile", () => {
                 expect(subject.find(".clicked").exists()).toBeFalsy();
             });
 
-            it("does not add 'clicked' for self agent type", () => {
+            it("does not add 'clicked' for user agent type", () => {
                 props = {
                     ...props,
-                    agentType: AgentType.SELF,
+                    agentType: AgentType.USER,
                     tile: new Tile(null, true)
                 };
                 let subject = shallow(<BoardTile {...props}/>);
@@ -192,7 +192,7 @@ describe("BoardTile", () => {
 
                 props = {
                     ...props,
-                    agentType: AgentType.SELF,
+                    agentType: AgentType.USER,
                     gameOver: true
                 };
                 subject = shallow(<BoardTile {...props}/>);

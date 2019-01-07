@@ -4,7 +4,7 @@ import AgentData from "../agent/AgentData";
 import gameActions from "./gameActions";
 import {connect, Dispatch} from "react-redux";
 import {bindActionCreators} from "redux";
-import PlayerBoard from "../board/PlayerAgentBoard";
+import PlayerBoard from "../board/UserAgentBoard";
 
 interface IGamePropsFromActions {
     actions: {

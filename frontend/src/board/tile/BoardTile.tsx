@@ -31,7 +31,7 @@ export default class BoardTile extends React.Component<BoardTileProps> {
     private className(): string {
         let className = "board__tile";
         className += " " + this.classNameForCoordinate();
-        if (this.props.agentType != AgentType.SELF && (this.props.tile.hit || this.props.gameOver)) {
+        if (this.props.agentType != AgentType.USER && (this.props.tile.hit || this.props.gameOver)) {
             className += " clicked";
         }
         return className
@@ -40,7 +40,7 @@ export default class BoardTile extends React.Component<BoardTileProps> {
     private classNameForCoordinate(): string {
         let tile = this.props.tile;
 
-        if (this.props.agentType == AgentType.SELF && tile.ship != null) {
+        if (this.props.agentType == AgentType.USER && tile.ship != null) {
             return "occupied"
         } else {
             return this.addOcean()
@@ -78,5 +78,5 @@ export default class BoardTile extends React.Component<BoardTileProps> {
 }
 
 export enum AgentType {
-    SELF, ENEMY, NONE
+    USER, ENEMY, NONE
 }
