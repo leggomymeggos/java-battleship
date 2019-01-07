@@ -25,8 +25,10 @@ export type BoardTileProps = IBoardTilePropsFromParent & IBoardTilePropsFromActi
 
 export class EnemyAgentBoardTile extends React.Component<BoardTileProps> {
     public render() {
+        console.error("replace me with boardTile!!!");
         const tile = this.props.tile;
         return <div className={this.className()}
+            // pass in function
                     onClick={() => {
                         if (tile.hit || this.props.winner) {
                             return;
