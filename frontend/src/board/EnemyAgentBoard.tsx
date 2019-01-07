@@ -1,16 +1,25 @@
 import * as React from "react";
-import {connect} from "react-redux";
-import BoardTile from "./tile/EnemyAgentBoardTile";
+import {connect, Dispatch} from "react-redux";
+import {bindActionCreators} from "redux";
 import {Agent} from "../domain/agent";
+import BoardTile, {AgentType} from "./tile/BoardTile";
+import boardActions from "./boardActions";
 
 export interface IBoardPropsFromStore {
     id: number
+    gameId: number,
     grid: any[][];
     sunkenShips: string[];
     winner: Agent;
 }
 
-export type BoardProps = IBoardPropsFromStore;
+export interface IBoardPropsFromActions {
+    actions: {
+        boardHit: any;
+    };
+}
+
+export type BoardProps = IBoardPropsFromStore & IBoardPropsFromActions;
 
 export class EnemyAgentBoard extends React.Component<BoardProps> {
     private alphabet = [...Array(26)]
@@ -49,10 +58,15 @@ export class EnemyAgentBoard extends React.Component<BoardProps> {
         return <div className="target--board__grid">{
             this.props.grid.map((value, rowIndex) => {
                 return value.map((tile, columnIndex) => {
+                    const coordinate = {x: columnIndex, y: rowIndex};
                     return <BoardTile key={EnemyAgentBoard.getKey()}
                                       tile={tile}
-                                      winner={this.props.winner != null}
-                                      coordinates={{x: columnIndex, y: rowIndex}}
+                                      tileClicked={() => {
+                                          this.props.actions.boardHit(this.props.gameId, coordinate);
+                                      }}
+                                      agentType={AgentType.ENEMY}
+                                      gameOver={this.props.winner != null}
+                                      coordinate={coordinate}
                     />
                 })
             })
@@ -68,7 +82,17 @@ export const mapStateToProps = (state: any): IBoardPropsFromStore => {
     return {
         ...state.enemyAgentReducer,
         winner: state.gameReducer.winner,
+        gameId: state.gameReducer.id,
     }
 };
 
-export default connect(mapStateToProps)(EnemyAgentBoard);
+export const mapDispatchToProps = (dispatch: Dispatch<{}>): IBoardPropsFromActions => {
+    return {
+        actions: bindActionCreators({
+            ...boardActions,
+        }, dispatch)
+    }
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(EnemyAgentBoard);

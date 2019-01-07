@@ -11,7 +11,7 @@ export type PlayerBoardTileProps = IPlayerBoardTileProps;
 
 export class PlayerAgentBoardTile extends React.Component<PlayerBoardTileProps> {
     public render() {
-        console.error("replace me with boardTile!!!");
+        console.error("playerAgentBoardTile", "replace me with boardTile!!!");
         return <div className={this.className()}/>;
     }
 

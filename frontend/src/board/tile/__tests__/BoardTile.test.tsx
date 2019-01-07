@@ -16,7 +16,7 @@ describe("BoardTile", () => {
 
         defaultProps = {
             tile: new Tile(),
-            coordinates: {x: 0, y: 0},
+            coordinate: {x: 0, y: 0},
             agentType: AgentType.NONE,
             gameOver: false,
             tileClicked: () => {
@@ -29,7 +29,7 @@ describe("BoardTile", () => {
             it("rotates by -155 if both coordinates are odd", () => {
                 const props = {
                     ...defaultProps,
-                    coordinates: {
+                    coordinate: {
                         x: 421,
                         y: 153
                     }
@@ -44,7 +44,7 @@ describe("BoardTile", () => {
             it("rotates by -155 if both coordinates are even", () => {
                 const props = {
                     ...defaultProps,
-                    coordinates: {
+                    coordinate: {
                         x: 494,
                         y: 1528
                     }
@@ -59,7 +59,7 @@ describe("BoardTile", () => {
             it("rotates by 62 if one coordinate is even and one is odd", () => {
                 const props = {
                     ...defaultProps,
-                    coordinates: {
+                    coordinate: {
                         x: 499,
                         y: 1528
                     }
@@ -202,41 +202,33 @@ describe("BoardTile", () => {
     });
 
     describe("clicking a tile", () => {
-        it("calls tileClicked with the coordinates", () => {
+        it("calls tileClicked function", () => {
             const tileClicked = jest.fn();
             const props = {
                 ...defaultProps,
-                tileClicked,
-                coordinates: {
-                    x: 421,
-                    y: 153
-                }
+                tileClicked
             };
 
             const subject = shallow(<BoardTile {...props}/>);
 
             subject.find(".board__tile").get(0).props.onClick();
 
-            expect(tileClicked).toHaveBeenCalledWith({x: 421, y: 153})
+            expect(tileClicked).toHaveBeenCalled();
         });
 
         it("does not call tileClicked function if the tile has already been hit", () => {
             const tileClicked = jest.fn();
             const props = {
                 ...defaultProps,
-                tileClicked: tileClicked,
-                tile: new Tile(null, true),
-                coordinates: {
-                    x: 421,
-                    y: 153
-                }
+                tileClicked,
+                tile: new Tile(null, true)
             };
 
             const subject = shallow(<BoardTile {...props}/>);
 
             subject.find(".board__tile").get(0).props.onClick();
 
-            expect(tileClicked).not.toHaveBeenCalled()
+            expect(tileClicked).not.toHaveBeenCalled();
         });
     });
 });

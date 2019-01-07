@@ -14,7 +14,7 @@ describe("PlayerAgentBoardTile", () => {
     });
 
     describe("tiles styling", () => {
-        it("rotates by -155 if both coordinates are even", () => {
+        it("rotates by -155 if both coordinate are even", () => {
             const props = {
                 ...defaultProps,
                 coordinates: {
@@ -29,7 +29,7 @@ describe("PlayerAgentBoardTile", () => {
             expect(subject.find("._62").exists()).toBeFalsy();
         });
 
-        it("rotates by -155 if both coordinates are odd", () => {
+        it("rotates by -155 if both coordinate are odd", () => {
             const props = {
                 ...defaultProps,
                 coordinates: {

@@ -6,9 +6,9 @@ import {Coordinate} from "../boardActions";
 interface IBoardTilePropsFromParent {
     tile: Tile,
     gameOver: boolean,
-    coordinates: Coordinate,
+    coordinate: Coordinate,
     agentType: AgentType,
-    tileClicked: (coordinate: Coordinate) => void,
+    tileClicked: () => void,
 }
 
 export type BoardTileProps = IBoardTilePropsFromParent
@@ -16,13 +16,12 @@ export type BoardTileProps = IBoardTilePropsFromParent
 export default class BoardTile extends React.Component<BoardTileProps> {
     public render() {
         const tile = this.props.tile;
-        const coordinate = this.props.coordinates;
 
         return <div
             className={this.className()}
             onClick={() => {
                 if (!tile.hit) {
-                    this.props.tileClicked(coordinate)
+                    this.props.tileClicked()
                 }
             }}>
             {BoardTile.tileIndicator(tile)}
@@ -49,7 +48,7 @@ export default class BoardTile extends React.Component<BoardTileProps> {
     }
 
     private addOcean() {
-        let {x, y} = this.props.coordinates;
+        let {x, y} = this.props.coordinate;
         const rowEven = x % 2 == 0;
         const columnEven = y % 2 == 0;
 

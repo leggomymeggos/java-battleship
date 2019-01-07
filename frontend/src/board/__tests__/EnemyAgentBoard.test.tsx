@@ -3,8 +3,9 @@ jest.mock("../boardActions");
 import {shallow} from "enzyme";
 import * as React from "react";
 import {EnemyAgentBoard, BoardProps, mapStateToProps} from "../EnemyAgentBoard";
-import {Tile} from "../../domain/tile";
+import BoardTile, {AgentType} from "../tile/BoardTile";
 import {GameState} from "../../game/gameReducer";
+import {Tile} from "../../domain/tile";
 import {Agent, AgentState} from "../../domain/agent";
 
 describe("EnemyAgentBoard", () => {
@@ -13,9 +14,13 @@ describe("EnemyAgentBoard", () => {
     beforeEach(() => {
         defaultProps = {
             id: 1,
+            gameId: 2,
             grid: [[]],
             sunkenShips: [],
             winner: null,
+            actions: {
+                boardHit: jest.fn()
+            }
         }
     });
 
@@ -25,17 +30,94 @@ describe("EnemyAgentBoard", () => {
         expect(subject.find(".target--board__grid").exists()).toBeTruthy();
     });
 
-    it("renders each tile", () => {
-        let tile = new Tile();
-        const props = {
-            ...defaultProps,
-            grid: [[tile, tile], [tile, tile]],
-        };
-        const subject = shallow(<EnemyAgentBoard {...props} />);
+    describe("tiles", () => {
+        it("renders each tile", () => {
+            let tile = new Tile();
+            const props = {
+                ...defaultProps,
+                grid: [[tile, tile], [tile, tile]],
+            };
+            const subject = shallow(<EnemyAgentBoard {...props} />);
 
-        const tiles = subject.find("Connect(EnemyAgentBoardTile)");
+            const tiles = subject.find("BoardTile");
 
-        expect(tiles).toHaveLength(4);
+            expect(tiles).toHaveLength(4);
+        });
+
+        it("passes coordinates to BoardTile", () => {
+            let tile = new Tile();
+            const props = {
+                ...defaultProps,
+                grid: [[tile, tile], [tile, tile]],
+            };
+            const subject = shallow(<EnemyAgentBoard {...props} />);
+
+            const tiles = subject.find("BoardTile");
+
+            expect(tiles.get(0).props.coordinate).toEqual({x: 0, y: 0});
+            expect(tiles.get(1).props.coordinate).toEqual({x: 1, y: 0});
+            expect(tiles.get(2).props.coordinate).toEqual({x: 0, y: 1});
+            expect(tiles.get(3).props.coordinate).toEqual({x: 1, y: 1});
+        });
+
+        it("passes agent type to BoardTile", () => {
+            const props = {
+                ...defaultProps,
+                grid: [[new Tile()]],
+            };
+            const subject = shallow(<EnemyAgentBoard {...props} />);
+
+            const tiles = subject.find("BoardTile");
+
+            expect(tiles.get(0).props.agentType).toEqual(AgentType.ENEMY)
+        });
+
+        it("sets gameOver to true if there is a winner", () => {
+            const props = {
+                ...defaultProps,
+                winner: new Agent(),
+                grid: [[new Tile()]],
+            };
+            const subject = shallow(<EnemyAgentBoard {...props} />);
+
+            const tiles = subject.find("BoardTile");
+
+            expect(tiles.get(0).props.gameOver).toBeTruthy();
+        });
+
+        it("sets gameOver to false if there is not a winner", () => {
+            const props: BoardProps = {
+                ...defaultProps,
+                winner: null,
+                grid: [[new Tile()]],
+            };
+            const subject = shallow(<EnemyAgentBoard {...props} />);
+
+            const tiles = subject.find("BoardTile");
+
+            expect(tiles.get(0).props.gameOver).toBeFalsy();
+        });
+
+        it("calls boardHit action on tile clicked", () => {
+            let tile = new Tile();
+            const props = {
+                ...defaultProps,
+                gameId: 123,
+                grid: [[tile, tile], [tile, tile]],
+            };
+            const subject = shallow(<EnemyAgentBoard {...props} />);
+
+            const tiles = subject.find("BoardTile");
+
+            tiles.get(0).props.tileClicked();
+            expect(props.actions.boardHit).toBeCalledWith(123, {x: 0, y: 0});
+            tiles.get(1).props.tileClicked();
+            expect(props.actions.boardHit).toBeCalledWith(123, {x: 1, y: 0});
+            tiles.get(2).props.tileClicked();
+            expect(props.actions.boardHit).toBeCalledWith(123, {x: 0, y: 1});
+            tiles.get(3).props.tileClicked();
+            expect(props.actions.boardHit).toBeCalledWith(123, {x: 0, y: 1});
+        });
     });
 
     it("has coordinate row labels", () => {
