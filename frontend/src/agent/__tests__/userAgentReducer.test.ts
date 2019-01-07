@@ -1,10 +1,10 @@
 import {GameActions} from "../../game/gameActions";
 import {Tile} from "../../domain/tile";
 import {BoardActions} from "../../board/boardActions";
-import playerAgentReducer, {initialState} from "../playerAgentReducer";
+import userAgentReducer, {initialState} from "../userAgentReducer";
 import {AgentState} from "../../domain/agent";
 
-describe("playerAgentReducer", () => {
+describe("userAgentReducer", () => {
     it("has an initial state", () => {
         expect(initialState).toEqual({
             id: -1,
@@ -14,7 +14,7 @@ describe("playerAgentReducer", () => {
     });
 
     it("handles NEW_GAME_CREATED action", () => {
-        const state = playerAgentReducer(initialState, {
+        const state = userAgentReducer(initialState, {
             type: GameActions.NEW_GAME_CREATED,
             payload: {
                 players: [
@@ -39,7 +39,7 @@ describe("playerAgentReducer", () => {
             };
 
             let board = {grid: [[new Tile()]]};
-            const state = playerAgentReducer(prevState, {type: BoardActions.PLAYER_BOARD_HIT_SUCCESS, payload: board});
+            const state = userAgentReducer(prevState, {type: BoardActions.PLAYER_BOARD_HIT_SUCCESS, payload: board});
 
             expect(state.grid).toEqual(board.grid);
         });
@@ -52,7 +52,7 @@ describe("playerAgentReducer", () => {
             };
 
             let board = {grid: [[new Tile()]], sunkenShips: ["the battleship"]};
-            const state = playerAgentReducer(prevState, {type: BoardActions.PLAYER_BOARD_HIT_SUCCESS, payload: board});
+            const state = userAgentReducer(prevState, {type: BoardActions.PLAYER_BOARD_HIT_SUCCESS, payload: board});
 
             expect(state.sunkenShips).toEqual(["the battleship"]);
         });
@@ -65,7 +65,7 @@ describe("playerAgentReducer", () => {
             };
 
             let board = {id: 456, grid: [[new Tile()]], sunkenShips: ["the battleship"]};
-            const state = playerAgentReducer(prevState, {type: BoardActions.PLAYER_BOARD_HIT_SUCCESS, payload: board});
+            const state = userAgentReducer(prevState, {type: BoardActions.PLAYER_BOARD_HIT_SUCCESS, payload: board});
 
             expect(state.id).toEqual(1);
         });

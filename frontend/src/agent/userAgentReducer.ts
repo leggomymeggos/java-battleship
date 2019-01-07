@@ -10,7 +10,7 @@ export const initialState: AgentState = {
 };
 
 
-const playerAgentReducer = handleActions({
+const userAgentReducer = handleActions({
     [GameActions.NEW_GAME_CREATED]: (state: AgentState, action: Action<any>) => {
         return {
             ...state,
@@ -28,4 +28,4 @@ const playerAgentReducer = handleActions({
     },
 }, initialState);
 
-export default playerAgentReducer;
+export default userAgentReducer;

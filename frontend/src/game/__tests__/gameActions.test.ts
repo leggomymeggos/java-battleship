@@ -29,10 +29,10 @@ describe("fetchWinner", () => {
 
 describe("gameWon", () => {
     it("returns GAME_WON action", () => {
-        const player = new Agent(1, {grid: [[new Tile()]], sunkenShips: [""]});
-        expect(actions.gameWon(player)).toEqual({
+        const agent = new Agent(1, {grid: [[new Tile()]], sunkenShips: [""]});
+        expect(actions.gameWon(agent)).toEqual({
             type: GameActions.GAME_WON,
-            payload: player
+            payload: agent
         });
     });
 });

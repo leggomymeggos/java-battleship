@@ -18,7 +18,7 @@ export class UserAgentBoard extends React.Component<BoardProps> {
         .map((_, index) => String.fromCharCode(index + 97));
 
     public render() {
-        return <div className="player--board">
+        return <div className="user--board">
             {this.renderColumnLabels()}
             <div className="board__grid-and-row-labels-container">
                 {this.renderRowLabels()}
@@ -46,7 +46,7 @@ export class UserAgentBoard extends React.Component<BoardProps> {
     }
 
     private renderGrid() {
-        return <div className="player--board__grid">{
+        return <div className="user--board__grid">{
             this.props.grid.map((value, rowIndex) => {
                 return value.map((tile, columnIndex) => {
                     return <BoardTile key={UserAgentBoard.getKey()}
@@ -69,7 +69,7 @@ export class UserAgentBoard extends React.Component<BoardProps> {
 
 export const mapStateToProps = (state: any): IBoardPropsFromStore => {
     return {
-        ...state.playerAgentReducer,
+        ...state.userAgentReducer,
         winner: state.gameReducer.winner,
         gameId: state.gameReducer.id,
     }

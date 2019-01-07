@@ -129,9 +129,9 @@ describe("UserAgentBoard", () => {
 });
 
 describe("mapStateToProps", () => {
-    let playerAgentReducer: AgentState, gameReducer: GameState;
+    let userAgentReducer: AgentState, gameReducer: GameState;
     beforeEach(() => {
-        playerAgentReducer = {
+        userAgentReducer = {
             id: 0,
             grid: [],
             sunkenShips: []
@@ -143,26 +143,26 @@ describe("mapStateToProps", () => {
     });
 
     it("maps grid", () => {
-        playerAgentReducer = {
+        userAgentReducer = {
             id: 0,
             grid: [[new Tile()], [new Tile()]],
             sunkenShips: []
         };
         const props = mapStateToProps({
-            playerAgentReducer,
+            userAgentReducer,
             gameReducer
         });
         expect(props.grid).toEqual([[new Tile()], [new Tile()]]);
     });
 
     it("maps sunken ships", () => {
-        playerAgentReducer = {
-            ...playerAgentReducer,
+        userAgentReducer = {
+            ...userAgentReducer,
             sunkenShips: ["battleship", "aircraft carrier"]
         };
         const props = mapStateToProps({
             id: 0,
-            playerAgentReducer,
+            userAgentReducer,
             gameReducer
         });
         expect(props.sunkenShips).toEqual(["battleship", "aircraft carrier"]);
@@ -170,7 +170,7 @@ describe("mapStateToProps", () => {
 
     it("maps winner", () => {
         const props = mapStateToProps({
-            playerAgentReducer,
+            userAgentReducer,
             gameReducer: {
                 ...gameReducer,
                 winner: new Agent()

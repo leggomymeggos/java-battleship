@@ -104,12 +104,12 @@ $player-tile-dimension: $player-board-dimension/10;
   }
 }
 
-.player--board {
+.user--board {
   width: $player-board-dimension + $player-tile-dimension + 17px;
   height: $player-board-dimension + $player-tile-dimension + 17px;
 }
 
-.player--board__grid {
+.user--board__grid {
   @extend .board__grid;
   width: $player-board-dimension + 10px;
   height: $player-board-dimension + 10px;
