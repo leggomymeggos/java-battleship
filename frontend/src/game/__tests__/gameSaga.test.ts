@@ -106,7 +106,7 @@ describe("checkActivePlayer", () => {
     });
 
     it("dispatches active player", () => {
-        const generator = gameSaga.checkActivePlayer(0);
+        const generator = gameSaga.checkActivePlayer(100);
 
         generator.next();
 
