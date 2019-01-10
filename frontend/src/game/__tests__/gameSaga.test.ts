@@ -3,8 +3,9 @@ jest.mock("../gameApi");
 import {Tile} from "../../domain/tile";
 import * as gameSaga from "../gameSaga";
 import {GameApi} from "../gameApi";
+import {GameActions} from "../gameActions";
 import {call, put} from "redux-saga/effects";
-import {Coordinate} from "../../board/boardActions";
+import {BoardActions, Coordinate} from "../../board/boardActions";
 
 describe("fetchGame", () => {
     it("calls api to get game", () => {
@@ -18,9 +19,9 @@ describe("fetchGame", () => {
 
         generator.next();
 
-        expect(generator.next({computerPlayer: {board: {grid: [[new Tile()]]}}}).value).toEqual(put({
-            type: "NEW_GAME_CREATED",
-            payload: {computerPlayer: {board: {grid: [[new Tile()]]}}}
+        expect(generator.next({board: {grid: [[new Tile()]]}}).value).toEqual(put({
+            type: GameActions.NEW_GAME_CREATED,
+            payload: {board: {grid: [[new Tile()]]}}
         }));
     });
 });
@@ -28,7 +29,7 @@ describe("fetchGame", () => {
 describe("attack", () => {
     it("calls api to attack", () => {
         let coordinate = new Coordinate(0, 0);
-        const generator = gameSaga.attack(123,2, coordinate);
+        const generator = gameSaga.attack(123, 2, coordinate);
 
         expect(generator.next().value).toEqual(call(GameApi.attack, 123, 2, coordinate));
     });
@@ -39,7 +40,7 @@ describe("attack", () => {
         generator.next();
 
         expect(generator.next({grid: [[new Tile()]]}).value).toEqual(put({
-            type: "BOARD_HIT_SUCCESS",
+            type: BoardActions.BOARD_HIT_SUCCESS,
             payload: {grid: [[new Tile()]]}
         }));
     });
@@ -51,8 +52,8 @@ describe("attack", () => {
         generator.next({grid: []});
 
         expect(generator.next().value).toEqual(put({
-            type: "FETCH_WINNER",
-            payload: 374
+            payload: 374,
+            type: GameActions.FETCH_WINNER
         }));
     });
 
@@ -64,7 +65,7 @@ describe("attack", () => {
         generator.next();
 
         expect(generator.next().value).toEqual(put({
-            type: "FETCH_ACTIVE_PLAYER",
+            type: GameActions.FETCH_ACTIVE_PLAYER,
             payload: 456
         }));
     });
@@ -83,7 +84,7 @@ describe("checkWinner", () => {
         generator.next();
 
         expect(generator.next(true).value).toEqual(put({
-            type: "GAME_WON",
+            type: GameActions.GAME_WON,
             payload: true
         }));
     });
@@ -110,8 +111,11 @@ describe("checkActivePlayer", () => {
         generator.next();
 
         expect(generator.next(123).value).toEqual(put({
-            type: "ACTIVE_PLAYER_UPDATED",
-            payload: 123
+            type: GameActions.ACTIVE_PLAYER_UPDATED,
+            payload: {
+                gameId: 100,
+                activePlayerId: 123
+            }
         }));
     });
 });

@@ -2,8 +2,8 @@ package com.leggomymeggos.battleship.game
 
 import com.leggomymeggos.battleship.board.Board
 import com.leggomymeggos.battleship.board.Coordinate
-import com.leggomymeggos.battleship.player.Player
-import com.leggomymeggos.battleship.player.PlayerService
+import com.leggomymeggos.battleship.agent.Player
+import com.leggomymeggos.battleship.agent.PlayerService
 import org.springframework.stereotype.Service
 
 @Service
@@ -37,7 +37,6 @@ class GameService(val playerService: PlayerService, val gameRegistry: GameRegist
                         this
                     }
                 }
-
         if (playerService.isDefeated(defendingPlayer)) {
             gameRegistry.setWinner(gameId, attackingPlayerId)
         } else {
@@ -53,5 +52,9 @@ class GameService(val playerService: PlayerService, val gameRegistry: GameRegist
 
     fun getActivePlayerId(gameId: Int): Int {
         return gameRegistry.getGame(gameId).activePlayerId
+    }
+
+    fun getDefendingBoard(gameId: Int, attackingPlayerId: Int): Board {
+        return gameRegistry.getDefendingPlayer(gameId, attackingPlayerId).board
     }
 }

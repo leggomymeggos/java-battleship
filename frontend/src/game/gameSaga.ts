@@ -9,7 +9,7 @@ export function* fetchGame(): any {
         const game = yield call(GameApi.newGame);
         yield put(newGameCreated(game));
     } catch (e) {
-        console.error(e)
+        console.error(e);
     }
 }
 
@@ -18,7 +18,7 @@ export function* attack(gameId: number, attackingPlayerId: number, coordinate: C
         const newBoard = yield call(GameApi.attack, gameId, attackingPlayerId, coordinate);
         yield put(boardHitSuccess(newBoard));
         yield put(fetchWinner(gameId));
-        yield put(fetchActivePlayer(gameId))
+        yield put(fetchActivePlayer(gameId));
     } catch (e) {
         console.error(e)
     }
@@ -39,7 +39,7 @@ export function* checkWinner(gameId: number): any {
 export function* checkActivePlayer(gameId: number): any {
     try {
         const activePlayerId = yield call(GameApi.fetchActivePlayer, gameId);
-        yield put(activePlayerUpdated(activePlayerId))
+        yield put(activePlayerUpdated({gameId, activePlayerId}))
     } catch (e) {
         console.error(e)
     }
@@ -58,5 +58,11 @@ export function* attackSaga(): any {
 export function* checkWinnerSaga(): any {
     yield takeEvery(GameActions.FETCH_WINNER, (action: Action<any>) => {
         return checkWinner(action.payload);
+    });
+}
+
+export function* fetchActivePlayerSaga(): any {
+    yield takeEvery(GameActions.FETCH_ACTIVE_PLAYER, (action: Action<any>) => {
+        return checkActivePlayer(action.payload);
     });
 }

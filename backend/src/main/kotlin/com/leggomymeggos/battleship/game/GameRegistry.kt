@@ -1,6 +1,6 @@
 package com.leggomymeggos.battleship.game
 
-import com.leggomymeggos.battleship.player.Player
+import com.leggomymeggos.battleship.agent.Player
 import org.springframework.stereotype.Component
 
 @Component

@@ -3,8 +3,8 @@ package com.leggomymeggos.battleship.game
 import com.leggomymeggos.battleship.board.Board
 import com.leggomymeggos.battleship.board.Coordinate
 import com.leggomymeggos.battleship.board.gridOf
-import com.leggomymeggos.battleship.player.Player
-import com.leggomymeggos.battleship.player.PlayerService
+import com.leggomymeggos.battleship.agent.Player
+import com.leggomymeggos.battleship.agent.PlayerService
 import com.nhaarman.mockito_kotlin.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
@@ -187,6 +187,24 @@ class GameServiceTest {
         whenever(gameRegistry.getGame(any())).thenReturn(Game(activePlayerId = activePlayerId))
 
         assertThat(gameService.getActivePlayerId(0)).isEqualTo(activePlayerId)
+    }
+    // endregion
+
+    // region getDefendingBoard
+    @Test
+    fun `getDefendingBoard gets the defending player`() {
+        gameService.getDefendingBoard(123, 890)
+
+        verify(gameRegistry).getDefendingPlayer(123, 890)
+    }
+
+    @Test
+    fun `getDefendingBoard returns the defending board`() {
+        whenever(gameRegistry.getDefendingPlayer(any(), any()))
+                .thenReturn(Player(board = Board(gridOf(2))))
+
+        val board = gameService.getDefendingBoard(0, 0)
+        assertThat(board).isEqualTo(Board(gridOf(2)))
     }
     // endregion
 }

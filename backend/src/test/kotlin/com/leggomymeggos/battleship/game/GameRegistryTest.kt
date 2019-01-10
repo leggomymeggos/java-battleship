@@ -2,7 +2,7 @@ package com.leggomymeggos.battleship.game
 
 import com.leggomymeggos.battleship.board.Board
 import com.leggomymeggos.battleship.board.gridOf
-import com.leggomymeggos.battleship.player.Player
+import com.leggomymeggos.battleship.agent.Player
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test

@@ -19,7 +19,7 @@ const userAgentReducer = handleActions({
             sunkenShips: action.payload.players[0].board.sunkenShips
         }
     },
-    [BoardActions.PLAYER_BOARD_HIT_SUCCESS]: (state: AgentState, action: Action<any>) => {
+    [BoardActions.USER_BOARD_HIT_SUCCESS]: (state: AgentState, action: Action<any>) => {
         return {
             ...state,
             grid: action.payload.grid,

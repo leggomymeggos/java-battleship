@@ -5,6 +5,7 @@ import {Coordinate} from "../../board/boardActions";
 
 describe("gameApi", () => {
     let mock: MockAdapter;
+
     beforeEach(() => {
         mock = new MockAdapter(axios);
     });

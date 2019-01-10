@@ -3,7 +3,7 @@ import {Tile} from "../domain/tile";
 
 export const BoardActions = {
     BOARD_HIT_SUCCESS: "BOARD_HIT_SUCCESS",
-    PLAYER_BOARD_HIT_SUCCESS: "PLAYER_BOARD_HIT_SUCCESS",
+    USER_BOARD_HIT_SUCCESS: "USER_BOARD_HIT_SUCCESS",
     BOARD_HIT: "BOARD_HIT"
 };
 
@@ -17,16 +17,17 @@ export class Coordinate {
     }
 }
 
-export const boardHit = createAction(BoardActions.BOARD_HIT, (
-    gameId: number, coordinates: Coordinate
-) => {
+export const boardHit = createAction(BoardActions.BOARD_HIT, (gameId: number, coordinates: Coordinate) => {
     return {gameId, coordinates}
 });
 
 export const boardHitSuccess =
     createAction(BoardActions.BOARD_HIT_SUCCESS, (board: { grid: Tile[][], sunkenShips: string[] }) => board);
 
+export const userBoardHitSuccess = createAction(BoardActions.USER_BOARD_HIT_SUCCESS, (board: { grid: Tile[][], sunkenShips: string[]; }) => board);
+
 export default {
     boardHitSuccess,
+    userBoardHitSuccess,
     boardHit
 }

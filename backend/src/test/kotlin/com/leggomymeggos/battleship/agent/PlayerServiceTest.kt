@@ -1,4 +1,4 @@
-package com.leggomymeggos.battleship.player
+package com.leggomymeggos.battleship.agent
 
 import com.leggomymeggos.battleship.board.*
 import com.leggomymeggos.battleship.board.Ship.*

@@ -48,9 +48,9 @@ describe("fetchActivePlayer", () => {
 
 describe("activePlayerUpdated", () => {
     it("returns ACTIVE_PLAYER_UPDATED action", () => {
-        expect(actions.activePlayerUpdated(123)).toEqual({
+        expect(actions.activePlayerUpdated({gameId: 123, activePlayerId: 456})).toEqual({
             type: GameActions.ACTIVE_PLAYER_UPDATED,
-            payload: 123
+            payload: {gameId: 123, activePlayerId: 456}
         })
     });
 });

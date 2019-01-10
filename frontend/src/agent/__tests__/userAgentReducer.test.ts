@@ -29,7 +29,7 @@ describe("userAgentReducer", () => {
         expect(state.sunkenShips).toEqual(["super ships sunk"]);
     });
 
-    describe("PLAYER_BOARD_HIT_SUCCESS", () => {
+    describe("USER_BOARD_HIT_SUCCESS", () => {
         it("updates the hit tile", () => {
             const prevState = {
                 grid: [
@@ -39,7 +39,7 @@ describe("userAgentReducer", () => {
             };
 
             let board = {grid: [[new Tile()]]};
-            const state = userAgentReducer(prevState, {type: BoardActions.PLAYER_BOARD_HIT_SUCCESS, payload: board});
+            const state = userAgentReducer(prevState, {type: BoardActions.USER_BOARD_HIT_SUCCESS, payload: board});
 
             expect(state.grid).toEqual(board.grid);
         });
@@ -52,7 +52,7 @@ describe("userAgentReducer", () => {
             };
 
             let board = {grid: [[new Tile()]], sunkenShips: ["the battleship"]};
-            const state = userAgentReducer(prevState, {type: BoardActions.PLAYER_BOARD_HIT_SUCCESS, payload: board});
+            const state = userAgentReducer(prevState, {type: BoardActions.USER_BOARD_HIT_SUCCESS, payload: board});
 
             expect(state.sunkenShips).toEqual(["the battleship"]);
         });
@@ -65,7 +65,7 @@ describe("userAgentReducer", () => {
             };
 
             let board = {id: 456, grid: [[new Tile()]], sunkenShips: ["the battleship"]};
-            const state = userAgentReducer(prevState, {type: BoardActions.PLAYER_BOARD_HIT_SUCCESS, payload: board});
+            const state = userAgentReducer(prevState, {type: BoardActions.USER_BOARD_HIT_SUCCESS, payload: board});
 
             expect(state.id).toEqual(1);
         });

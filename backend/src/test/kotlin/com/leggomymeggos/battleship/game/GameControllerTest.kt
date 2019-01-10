@@ -3,7 +3,7 @@ package com.leggomymeggos.battleship.game
 import com.leggomymeggos.battleship.board.Board
 import com.leggomymeggos.battleship.board.Coordinate
 import com.leggomymeggos.battleship.board.gridOf
-import com.leggomymeggos.battleship.player.Player
+import com.leggomymeggos.battleship.agent.Player
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify

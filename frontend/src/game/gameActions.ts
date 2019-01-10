@@ -27,7 +27,7 @@ export const fetchActivePlayer =
     createAction(GameActions.FETCH_ACTIVE_PLAYER, (payload: number) => payload);
 
 export const activePlayerUpdated =
-    createAction(GameActions.ACTIVE_PLAYER_UPDATED, (payload: number) => {
+    createAction(GameActions.ACTIVE_PLAYER_UPDATED, (payload: { gameId: number, activePlayerId: number }) => {
         return payload
     });
 
