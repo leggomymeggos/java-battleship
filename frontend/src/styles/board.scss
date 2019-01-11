@@ -94,14 +94,6 @@ $player-tile-dimension: $player-board-dimension/10;
       cursor: pointer;
     }
   }
-
-  .aimed__hit--image {
-    stroke: $hit-indicator;
-  }
-
-  .aimed__miss--image {
-    stroke: $miss-indicator;
-  }
 }
 
 .user--board {
@@ -128,4 +120,12 @@ $player-tile-dimension: $player-board-dimension/10;
     background: darkgray;
     border-color: gray;
   }
+}
+
+.aimed__hit--image {
+  stroke: $hit-indicator;
+}
+
+.aimed__miss--image {
+  stroke: $miss-indicator;
 }
