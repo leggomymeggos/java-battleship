@@ -118,6 +118,21 @@ describe("EnemyAgentBoard", () => {
             tiles.get(3).props.tileClicked();
             expect(props.actions.boardHit).toBeCalledWith(123, {x: 0, y: 1});
         });
+
+        it("does not call boardHit action if the game is over", () => {
+            const props = {
+                ...defaultProps,
+                gameId: 123,
+                winner: new Agent(),
+                grid: [[new Tile()]],
+            };
+            const subject = shallow(<EnemyAgentBoard {...props} />);
+
+            const tiles = subject.find("BoardTile");
+
+            tiles.get(0).props.tileClicked();
+            expect(props.actions.boardHit).not.toBeCalled();
+        });
     });
 
     it("has coordinate row labels", () => {

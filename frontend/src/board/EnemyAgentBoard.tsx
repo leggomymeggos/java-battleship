@@ -55,6 +55,7 @@ export class EnemyAgentBoard extends React.Component<BoardProps> {
     }
 
     private renderGrid() {
+        const gameOver = this.props.winner != null;
         return <div className="target--board__grid">{
             this.props.grid.map((value, rowIndex) => {
                 return value.map((tile, columnIndex) => {
@@ -62,10 +63,12 @@ export class EnemyAgentBoard extends React.Component<BoardProps> {
                     return <BoardTile key={EnemyAgentBoard.getKey()}
                                       tile={tile}
                                       tileClicked={() => {
-                                          this.props.actions.boardHit(this.props.gameId, coordinate);
+                                          if (!gameOver) {
+                                              this.props.actions.boardHit(this.props.gameId, coordinate);
+                                          }
                                       }}
                                       agentType={AgentType.ENEMY}
-                                      gameOver={this.props.winner != null}
+                                      gameOver={gameOver}
                                       coordinate={coordinate}
                     />
                 })
