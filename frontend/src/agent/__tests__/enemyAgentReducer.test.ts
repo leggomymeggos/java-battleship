@@ -29,7 +29,7 @@ describe("enemyAgentReducer", () => {
         expect(state.sunkenShips).toEqual(["none yet"]);
     });
 
-    describe("BOARD_HIT_SUCCESS", () => {
+    describe("OPPONENT_BOARD_HIT_SUCCESS", () => {
         it("updates the hit tile", () => {
             const prevState = {
                 grid: [
@@ -39,7 +39,10 @@ describe("enemyAgentReducer", () => {
             };
 
             let board = {grid: [[new Tile()]]};
-            const state = enemyAgentReducer(prevState, {type: BoardActions.BOARD_HIT_SUCCESS, payload: {board}});
+            const state = enemyAgentReducer(prevState, {
+                type: BoardActions.OPPONENT_BOARD_HIT_SUCCESS,
+                payload: {board}
+            });
 
             expect(state.grid).toEqual(board.grid);
         });
@@ -52,7 +55,10 @@ describe("enemyAgentReducer", () => {
             };
 
             let board = {grid: [[new Tile()]], sunkenShips: ["the battleship"]};
-            const state = enemyAgentReducer(prevState, {type: BoardActions.BOARD_HIT_SUCCESS, payload: {board}});
+            const state = enemyAgentReducer(prevState, {
+                type: BoardActions.OPPONENT_BOARD_HIT_SUCCESS,
+                payload: {board}
+            });
 
             expect(state.sunkenShips).toEqual(["the battleship"]);
         });
@@ -65,7 +71,10 @@ describe("enemyAgentReducer", () => {
             };
 
             let board = {id: 456, grid: [[new Tile()]], sunkenShips: ["the battleship"]};
-            const state = enemyAgentReducer(prevState, {type: BoardActions.BOARD_HIT_SUCCESS, payload: {board}});
+            const state = enemyAgentReducer(prevState, {
+                type: BoardActions.OPPONENT_BOARD_HIT_SUCCESS,
+                payload: {board}
+            });
 
             expect(state.id).toEqual(1);
         });

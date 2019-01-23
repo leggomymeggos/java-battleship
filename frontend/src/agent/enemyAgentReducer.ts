@@ -19,7 +19,7 @@ const enemyAgentReducer = handleActions({
             sunkenShips: action.payload.players[1].board.sunkenShips
         }
     },
-    [BoardActions.BOARD_HIT_SUCCESS]: (state: AgentState, action: Action<any>) => {
+    [BoardActions.OPPONENT_BOARD_HIT_SUCCESS]: (state: AgentState, action: Action<any>) => {
         return {
             ...state,
             grid: action.payload.board.grid,

@@ -2,7 +2,7 @@ import {createAction} from "redux-actions";
 import {Tile} from "../domain/tile";
 
 export const BoardActions = {
-    BOARD_HIT_SUCCESS: "BOARD_HIT_SUCCESS",
+    OPPONENT_BOARD_HIT_SUCCESS: "OPPONENT_BOARD_HIT_SUCCESS",
     USER_BOARD_HIT_SUCCESS: "USER_BOARD_HIT_SUCCESS",
     BOARD_HIT: "BOARD_HIT"
 };
@@ -21,8 +21,8 @@ export const boardHit = createAction(BoardActions.BOARD_HIT, (gameId: number, co
     return {gameId, coordinates}
 });
 
-export const boardHitSuccess =
-    createAction(BoardActions.BOARD_HIT_SUCCESS, (gameId: number, board: { grid: Tile[][], sunkenShips: string[] }) => {
+export const opponentBoardHitSuccess =
+    createAction(BoardActions.OPPONENT_BOARD_HIT_SUCCESS, (gameId: number, board: { grid: Tile[][], sunkenShips: string[] }) => {
         return {gameId, board}
     });
 
@@ -31,7 +31,7 @@ export const userBoardHitSuccess = createAction(BoardActions.USER_BOARD_HIT_SUCC
 });
 
 export default {
-    boardHitSuccess,
+    opponentBoardHitSuccess,
     userBoardHitSuccess,
     boardHit
 }

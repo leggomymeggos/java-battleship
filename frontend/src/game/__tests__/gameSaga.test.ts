@@ -40,7 +40,7 @@ describe("attack", () => {
         generator.next();
 
         expect(generator.next({grid: [[new Tile()]]}).value).toEqual(put({
-            type: BoardActions.BOARD_HIT_SUCCESS,
+            type: BoardActions.OPPONENT_BOARD_HIT_SUCCESS,
             payload: {
                 gameId: 123,
                 board: {grid: [[new Tile()]]}

@@ -1,7 +1,7 @@
 import {call, put, takeEvery} from "redux-saga/effects";
 import {GameApi} from "./gameApi";
-import {activePlayerUpdated, fetchActivePlayer, fetchWinner, GameActions, gameWon, newGameCreated} from "./gameActions";
-import {Coordinate, boardHitSuccess, BoardActions} from "../board/boardActions";
+import {activePlayerUpdated, GameActions, gameWon, newGameCreated} from "./gameActions";
+import {BoardActions, Coordinate, opponentBoardHitSuccess} from "../board/boardActions";
 import {Action} from "redux-actions";
 
 export function* fetchGame(): any {
@@ -16,7 +16,7 @@ export function* fetchGame(): any {
 export function* attack(gameId: number, attackingPlayerId: number, coordinate: Coordinate): any {
     try {
         const newBoard = yield call(GameApi.attack, gameId, attackingPlayerId, coordinate);
-        yield put(boardHitSuccess(gameId, newBoard));
+        yield put(opponentBoardHitSuccess(gameId, newBoard));
     } catch (e) {
         console.error(e)
     }
@@ -54,13 +54,13 @@ export function* attackSaga(): any {
 }
 
 export function* fetchActivePlayerSaga(): any {
-    yield takeEvery([BoardActions.BOARD_HIT_SUCCESS, BoardActions.USER_BOARD_HIT_SUCCESS], (action: Action<any>) => {
+    yield takeEvery([BoardActions.OPPONENT_BOARD_HIT_SUCCESS, BoardActions.USER_BOARD_HIT_SUCCESS], (action: Action<any>) => {
         return checkActivePlayer(action.payload.gameId);
     });
 }
 
 export function* checkWinnerSaga(): any {
-    yield takeEvery([BoardActions.BOARD_HIT_SUCCESS, BoardActions.USER_BOARD_HIT_SUCCESS], (action: Action<any>) => {
+    yield takeEvery([BoardActions.OPPONENT_BOARD_HIT_SUCCESS, BoardActions.USER_BOARD_HIT_SUCCESS], (action: Action<any>) => {
         return checkWinner(action.payload.gameId);
     })
 }

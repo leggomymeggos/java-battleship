@@ -1,4 +1,4 @@
-import {BoardActions, boardHit, boardHitSuccess} from "../boardActions";
+import {BoardActions, boardHit, opponentBoardHitSuccess} from "../boardActions";
 import {Tile} from "../../domain/tile";
 
 describe("boardHit", () => {
@@ -19,10 +19,10 @@ describe("boardHit", () => {
     });
 });
 
-describe("boardHitSuccess", () => {
-    it("returns BOARD_HIT_SUCCESS action", () => {
-        expect(boardHitSuccess(1, {grid: [[new Tile()]], sunkenShips: ["one"]})).toEqual({
-            type: BoardActions.BOARD_HIT_SUCCESS,
+describe("opponentBoardHitSuccess", () => {
+    it("returns OPPONENT_BOARD_HIT_SUCCESS action", () => {
+        expect(opponentBoardHitSuccess(1, {grid: [[new Tile()]], sunkenShips: ["one"]})).toEqual({
+            type: BoardActions.OPPONENT_BOARD_HIT_SUCCESS,
             payload: {
                 gameId: 1,
                 board: {grid: [[new Tile()]], sunkenShips: ["one"]}
