@@ -19,7 +19,9 @@ describe("takeTurn", () => {
 
         expect(generator.next("sure did hit the board").value).toEqual(put({
             type: BoardActions.USER_BOARD_HIT_SUCCESS,
-            payload: "sure did hit the board"
+            payload: {
+                gameId: 123, board: "sure did hit the board"
+            }
         }));
     });
 });

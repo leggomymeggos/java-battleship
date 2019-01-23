@@ -35,38 +35,16 @@ describe("attack", () => {
     });
 
     it("triggers action to update board", () => {
-        const generator = gameSaga.attack(0, 0, new Coordinate(1, 2));
+        const generator = gameSaga.attack(123, 0, new Coordinate(1, 2));
 
         generator.next();
 
         expect(generator.next({grid: [[new Tile()]]}).value).toEqual(put({
             type: BoardActions.BOARD_HIT_SUCCESS,
-            payload: {grid: [[new Tile()]]}
-        }));
-    });
-
-    it("dispatches action to check for winner", () => {
-        const generator = gameSaga.attack(374, 0, new Coordinate(1, 2));
-
-        generator.next();
-        generator.next({grid: []});
-
-        expect(generator.next().value).toEqual(put({
-            payload: 374,
-            type: GameActions.FETCH_WINNER
-        }));
-    });
-
-    it("dispatches action to get active player", () => {
-        const generator = gameSaga.attack(456, 0, new Coordinate(1, 2));
-
-        generator.next();
-        generator.next({grid: []});
-        generator.next();
-
-        expect(generator.next().value).toEqual(put({
-            type: GameActions.FETCH_ACTIVE_PLAYER,
-            payload: 456
+            payload: {
+                gameId: 123,
+                board: {grid: [[new Tile()]]}
+            }
         }));
     });
 });

@@ -9,7 +9,7 @@ let enemyAgentId: number = -1;
 export function* takeTurn(gameId: number, attackerId: number): any {
     try {
         const newBoard = yield call(EnemyAgentApi.attack, gameId, attackerId);
-        yield put(userBoardHitSuccess(newBoard));
+        yield put(userBoardHitSuccess(gameId, newBoard));
     } catch (e) {
         console.error(e);
     }

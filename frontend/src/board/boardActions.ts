@@ -22,9 +22,13 @@ export const boardHit = createAction(BoardActions.BOARD_HIT, (gameId: number, co
 });
 
 export const boardHitSuccess =
-    createAction(BoardActions.BOARD_HIT_SUCCESS, (board: { grid: Tile[][], sunkenShips: string[] }) => board);
+    createAction(BoardActions.BOARD_HIT_SUCCESS, (gameId: number, board: { grid: Tile[][], sunkenShips: string[] }) => {
+        return {gameId, board}
+    });
 
-export const userBoardHitSuccess = createAction(BoardActions.USER_BOARD_HIT_SUCCESS, (board: { grid: Tile[][], sunkenShips: string[]; }) => board);
+export const userBoardHitSuccess = createAction(BoardActions.USER_BOARD_HIT_SUCCESS, (gameId: number, board: { grid: Tile[][], sunkenShips: string[]; }) => {
+    return {gameId, board}
+});
 
 export default {
     boardHitSuccess,
