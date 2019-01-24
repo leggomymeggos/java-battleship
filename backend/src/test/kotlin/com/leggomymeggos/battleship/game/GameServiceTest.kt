@@ -29,7 +29,7 @@ class GameServiceTest {
         whenever(gameRegistry.getDefendingPlayer(any(), any())).thenReturn(Player())
 
         whenever(gameRegistry.getGame(any())).thenReturn(Game())
-     }
+    }
 
     // region new
     @Test
@@ -92,7 +92,14 @@ class GameServiceTest {
     fun `attack determines defending player`() {
         gameService.attack(143, 123, Coordinate(0, 0))
 
-        verify(gameRegistry).getDefendingPlayer(143,123)
+        verify(gameRegistry).getDefendingPlayer(143, 123)
+    }
+
+    @Test
+    fun `attack requests the active game`() {
+        gameService.attack(809, 0, Coordinate(0, 0))
+
+        verify(gameRegistry).getGame(809)
     }
 
     @Test
@@ -133,7 +140,7 @@ class GameServiceTest {
 
         gameService.attack(100, 12, Coordinate(0, 0))
 
-        verify(gameRegistry).setWinner(100,12)
+        verify(gameRegistry).setWinner(100, 12)
     }
 
     @Test
@@ -153,6 +160,30 @@ class GameServiceTest {
         val newBoard = gameService.attack(123, 0, Coordinate(1, 1))
 
         assertThat(newBoard).isEqualTo(expectedPlayer.board)
+    }
+
+    @Test
+    fun `attack does nothing if the game is already won`() {
+        whenever(gameRegistry.getGame(any())).thenReturn(Game(winner = Player()))
+
+        gameService.attack(123, 545, Coordinate(0, 0))
+
+        verify(playerService, never()).hitBoard(any(), any())
+        verify(gameRegistry, never()).updatePlayer(any(), any())
+        verify(playerService, never()).isDefeated(any())
+        verify(gameRegistry, never()).changeTurn(any())
+        verify(gameRegistry, never()).setWinner(any(), any())
+    }
+
+    @Test
+    fun `attack returns the defending player's unchanged board if the game is already won`() {
+        whenever(gameRegistry.getGame(any())).thenReturn(Game(winner = Player()))
+        val board = Board(gridOf(4))
+        whenever(gameRegistry.getDefendingPlayer(any(), any())).thenReturn(Player(board = board))
+
+        val result = gameService.attack(123, 545, Coordinate(0, 0))
+
+        assertThat(result).isSameAs(board)
     }
     // endregion
 

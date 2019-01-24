@@ -31,19 +31,26 @@ class GameService(val playerService: PlayerService, val gameRegistry: GameRegist
 
     fun attack(gameId: Int, attackingPlayerId: Int, coordinate: Coordinate): Board {
         val defendingPlayer = gameRegistry.getDefendingPlayer(gameId, attackingPlayerId)
+
+        if (gameRegistry.getGame(gameId).winner != null) {
+            return defendingPlayer.board
+        }
+
+        val attackedPlayer = defendingPlayer
                 .run {
                     playerService.hitBoard(this, coordinate).run {
                         gameRegistry.updatePlayer(gameId, this)
                         this
                     }
                 }
-        if (playerService.isDefeated(defendingPlayer)) {
+
+        if (playerService.isDefeated(attackedPlayer)) {
             gameRegistry.setWinner(gameId, attackingPlayerId)
         } else {
             gameRegistry.changeTurn(gameId)
         }
 
-        return defendingPlayer.board
+        return attackedPlayer.board
     }
 
     fun getWinner(gameId: Int): Player? {
