@@ -15,6 +15,16 @@ resources:
       branch: master
       uri: {{git-url}}
       private_key: {{private-repo-key}}
+
+  - name: cf-dev
+    type: cf
+    source:
+      api: https://api.run.pivotal.io
+      username: {{cf-username}}
+      password: {{cf-password}}
+      organization: {{cf-org}}
+      space: development
+      skip_cert_check: false
 #
 #- name: production-code
 #  type: git
@@ -30,14 +40,14 @@ jobs:
       - get: source-code
         trigger: true
       - task: backend-tests
-        file: source-code/concourse/backend-tests/task.yml
+        file: source-code/concourse/backend/tests/task.yml
 
   - name: frontend-tests
     plan:
       - get: source-code
         trigger: true
       - task: frontend-tests
-        file: source-code/concourse/frontend-tests/task.yml
+        file: source-code/concourse/frontend/tests/task.yml
 
   - name: bump-version
     plan:
@@ -49,21 +59,32 @@ jobs:
       - put: version
         params: { file: version/number }
 
-#  - name: deploy-dev
+  - name: deploy-backend-dev
+    plan:
+      - get: source-code
+        trigger: true
+        passed: [bump-version]
+      - task: build-backend-dev
+        file: source-code/concourse/backend/build-dev/task.yml
+      - put: cf-dev
+        params:
+          manifest: source-code/manifests/development/backend.yml
+
+#  - name: deploy-frontend-dev
 #    plan:
 #      - get: source-code
 #        trigger: true
 #        passed: [bump-version]
-#      - task: deploy-dev
-#        file: source-code/concourse/deploy-dev/task.yml
+#      - task: build-frontend-dev
+#        file: source-code/concourse/frontend/build-dev/task.yml
 #
 #  - name: tag-prerelease
 #    plan:
 #      - get: source-code
 #        trigger: true
-#        passed: [deploy-dev]
+#        passed: [deploy-frontend-dev, deploy-backend-dev]
 #      - get: version
-#        passed: [deploy-dev]
+#        passed: [deploy-frontend-dev, deploy-backend-dev]
 #      - put: source-code
 #        params:
 #          repository: source-code
@@ -75,7 +96,7 @@ jobs:
 #      - get: version
 #      - get: production-code
 #      - task: deploy-prod
-#        file: source-code/deploy-prod/task.yml
+#        file: production-code/deploy-prod/task.yml
 #
 #  - name: tag-release
 #    plan:

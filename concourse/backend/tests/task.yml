@@ -10,4 +10,4 @@ inputs:
   - name: source-code
 
 run:
-  path: source-code/concourse/backend-tests/run.sh
+  path: source-code/concourse/backend/tests/run.sh
