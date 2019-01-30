@@ -9,5 +9,8 @@ image_resource:
 inputs:
   - name: source-code
 
+outputs:
+  - name: build-output
+
 run:
   path: source-code/concourse/backend/build-dev/run.sh
