@@ -70,13 +70,16 @@ jobs:
         params:
           manifest: build-output/manifests/development/backend.yml
 
-#  - name: deploy-frontend-dev
-#    plan:
-#      - get: source-code
-#        trigger: true
-#        passed: [bump-version]
-#      - task: build-frontend-dev
-#        file: source-code/concourse/frontend/build-dev/task.yml
+  - name: deploy-frontend-dev
+    plan:
+      - get: source-code
+        trigger: true
+        passed: [bump-version]
+      - task: build-frontend-dev
+        file: source-code/concourse/frontend/build-dev/task.yml
+      - put: cf-dev
+        params:
+          manifest: build-output/manifests/development/frontend.yml
 #
 #  - name: tag-prerelease
 #    plan:
