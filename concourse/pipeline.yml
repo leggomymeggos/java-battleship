@@ -25,18 +25,25 @@ resources:
 #    tag_filter: /*-beta\.*/
 
 jobs:
-  - name: unit-tests
+  - name: backend-tests
     plan:
       - get: source-code
         trigger: true
-      - task: unit-tests
-        file: source-code/concourse/unit-tests/task.yml
+      - task: backend-tests
+        file: source-code/concourse/backend-tests/task.yml
+
+  - name: frontend-tests
+    plan:
+      - get: source-code
+        trigger: true
+      - task: frontend-tests
+        file: source-code/concourse/frontend-tests/task.yml
 
 #  - name: bump-version
 #    plan:
 #      - get: source-code
 #      trigger: true
-#      passed: [unit-tests]
+#      passed: [backend-tests, frontend-tests]
 #      - get: version
 #        params: { bump: minor, pre: beta }
 #      - put: version
