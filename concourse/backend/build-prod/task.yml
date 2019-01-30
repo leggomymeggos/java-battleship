@@ -1,0 +1,16 @@
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: zenika/kotlin
+    tag: '1.3-jdk8'
+
+inputs:
+  - name: production-code
+
+outputs:
+  - name: build-output
+
+run:
+  path: production-code/concourse/backend/build-prod/run.sh
