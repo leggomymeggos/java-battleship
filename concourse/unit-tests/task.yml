@@ -3,7 +3,8 @@ platform: linux
 image_resource:
   type: docker-image
   source:
-    repository: openjdk
+    repository: zenika/kotlin
+    tag: '1.3-jdk8'
 
 inputs:
   - name: source-code
