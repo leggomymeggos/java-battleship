@@ -1,13 +1,13 @@
 resources:
-  #- name: version
-  #  type: semver
-  #  source:
-  #    initial_version: 0.1.0
-  #    driver: git
-  #    branch: version
-  #    file: number
-  #    uri: {{git-url}}
-  #    private_key: {{private-repo-key}}
+  - name: version
+    type: semver
+    source:
+      initial_version: 0.1.0
+      driver: git
+      branch: version
+      file: number
+      uri: {{git-url}}
+      private_key: {{private-repo-key}}
 
   - name: source-code
     type: git
@@ -39,16 +39,16 @@ jobs:
       - task: frontend-tests
         file: source-code/concourse/frontend-tests/task.yml
 
-#  - name: bump-version
-#    plan:
-#      - get: source-code
-#      trigger: true
-#      passed: [backend-tests, frontend-tests]
-#      - get: version
-#        params: { bump: minor, pre: beta }
-#      - put: version
-#        params: { file: version/number }
-#
+  - name: bump-version
+    plan:
+      - get: source-code
+        trigger: true
+        passed: [backend-tests, frontend-tests]
+      - get: version
+        params: { bump: minor, pre: beta }
+      - put: version
+        params: { file: version/number }
+
 #  - name: deploy-dev
 #    plan:
 #      - get: source-code
