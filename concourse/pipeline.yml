@@ -42,7 +42,7 @@ resources:
       branch: master
       uri: {{git-url}}
       private_key: {{private-repo-key}}
-      tag_filter: /*-beta\.*/
+      tag_filter: '*-beta\.*'
 
 jobs:
   - name: backend-tests
@@ -112,6 +112,7 @@ jobs:
     plan:
       - get: production-code
       - get: version
+        passed: [tag-prerelease]
       - task: build-backend-prod
         file: production-code/concourse/backend/build-prod/task.yml
       - put: cf-prod
@@ -122,6 +123,7 @@ jobs:
     plan:
       - get: production-code
       - get: version
+        passed: [tag-prerelease]
       - task: build-frontend-prod
         file: production-code/concourse/frontend/build-prod/task.yml
       - put: cf-prod

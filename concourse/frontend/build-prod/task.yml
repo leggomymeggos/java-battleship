@@ -12,4 +12,4 @@ outputs:
   - name: build-output
 
 run:
-  path: production-code/concourse/frontend/build-dev/run.sh
+  path: production-code/concourse/frontend/build-prod/run.sh
