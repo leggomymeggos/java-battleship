@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-cd backend && ./gradlew clean build &&
+cd source-code/backend && ./gradlew clean build &&
 cd ../frontend && npm test;
