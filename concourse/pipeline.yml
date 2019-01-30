@@ -64,6 +64,8 @@ jobs:
       - get: source-code
         trigger: true
         passed: [bump-version]
+      - get: version
+        passed: [bump-version]
       - task: build-backend-dev
         file: source-code/concourse/backend/build-dev/task.yml
       - put: cf-dev
@@ -75,25 +77,27 @@ jobs:
       - get: source-code
         trigger: true
         passed: [bump-version]
+      - get: version
+        passed: [bump-version]
       - task: build-frontend-dev
         file: source-code/concourse/frontend/build-dev/task.yml
       - put: cf-dev
         params:
           manifest: build-output/manifests/development/frontend.yml
-#
-#  - name: tag-prerelease
-#    plan:
-#      - get: source-code
-#        trigger: true
-#        passed: [deploy-frontend-dev, deploy-backend-dev]
-#      - get: version
-#        passed: [deploy-frontend-dev, deploy-backend-dev]
-#      - put: source-code
-#        params:
-#          repository: source-code
-#          tag: version/number
-#          only_tag: true
-#
+
+  - name: tag-prerelease
+    plan:
+      - get: source-code
+        trigger: true
+        passed: [deploy-frontend-dev, deploy-backend-dev]
+      - get: version
+        passed: [deploy-frontend-dev, deploy-backend-dev]
+      - put: source-code
+        params:
+          repository: source-code
+          tag: version/number
+          only_tag: true
+
 #  - name: deploy-prod
 #    plan:
 #      - get: version
