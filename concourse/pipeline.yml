@@ -1,0 +1,87 @@
+resources:
+  #- name: version
+  #  type: semver
+  #  source:
+  #    initial_version: 0.1.0
+  #    driver: git
+  #    branch: version
+  #    file: number
+  #    uri: {{git-url}}
+  #    private_key: {{private-repo-key}}
+
+  - name: source-code
+    type: git
+    source:
+      branch: master
+      uri: {{git-url}}
+      private_key: {{private-repo-key}}
+#
+#- name: production-code
+#  type: git
+#  source:
+#    branch: master
+#    uri: {{git-url}}
+#    private_key: {{private-repo-key}}
+#    tag_filter: /*-beta\.*/
+
+jobs:
+  - name: unit-tests
+    plan:
+      - get: source-code
+        trigger: true
+      - task: unit-tests
+        file: source-code/concourse/unit-tests/task.yml
+
+#  - name: bump-version
+#    plan:
+#      - get: source-code
+#      trigger: true
+#      passed: [unit-tests]
+#      - get: version
+#        params: { bump: minor, pre: beta }
+#      - put: version
+#        params: { file: version/number }
+#
+#  - name: deploy-dev
+#    plan:
+#      - get: source-code
+#        trigger: true
+#        passed: [bump-version]
+#      - task: deploy-dev
+#        file: source-code/concourse/deploy-dev/task.yml
+#
+#  - name: tag-prerelease
+#    plan:
+#      - get: source-code
+#        trigger: true
+#        passed: [deploy-dev]
+#      - get: version
+#        passed: [deploy-dev]
+#      - put: source-code
+#        params:
+#          repository: source-code
+#          tag: version/number
+#          only_tag: true
+#
+#  - name: deploy-prod
+#    plan:
+#      - get: version
+#      - get: production-code
+#      - task: deploy-prod
+#        file: source-code/deploy-prod/task.yml
+#
+#  - name: tag-release
+#    plan:
+#      - get: version
+#        trigger: true
+#        passed: [deploy-prod]
+#        params: { bump: final }
+#      - get: production-code
+#        passed: [deploy-prod]
+#      - put: production-code
+#        params:
+#          repository: production-code
+#          tag: version/number
+#          only_tag: true
+#      - put: version
+#        params: { file: version/number }

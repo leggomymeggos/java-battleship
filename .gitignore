@@ -9,3 +9,6 @@
 **/.gradle/**
 
 **/out/**
+
+concourse/secrets.*
+concourse/keys/
