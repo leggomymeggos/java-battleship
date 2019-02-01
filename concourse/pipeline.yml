@@ -112,7 +112,6 @@ jobs:
     plan:
       - get: production-code
       - get: version
-        passed: [tag-prerelease]
       - task: build-backend-prod
         file: production-code/concourse/backend/build-prod/task.yml
       - put: cf-prod
@@ -123,7 +122,6 @@ jobs:
     plan:
       - get: production-code
       - get: version
-        passed: [tag-prerelease]
       - task: build-frontend-prod
         file: production-code/concourse/frontend/build-prod/task.yml
       - put: cf-prod
@@ -143,5 +141,3 @@ jobs:
           repository: production-code
           tag: version/number
           only_tag: true
-      - put: version
-        params: { file: version/number }
