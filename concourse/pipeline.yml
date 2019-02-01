@@ -108,10 +108,30 @@ jobs:
           tag: version/number
           only_tag: true
 
-  - name: deploy-backend-prod
+  - name: deploy-prod
     plan:
       - get: production-code
       - get: version
+      - task: gather-prod-resources
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source: {repository: bash, tag: '4.4'}
+          run:
+            path: sh
+            args:
+              - -exc
+              - |
+                echo 'gathering prod resources'
+
+  - name: deploy-backend-prod
+    plan:
+      - get: production-code
+        passed: [deploy-prod]
+      - get: version
+        passed: [deploy-prod]
+        trigger: true
       - task: build-backend-prod
         file: production-code/concourse/backend/build-prod/task.yml
       - put: cf-prod
@@ -121,7 +141,10 @@ jobs:
   - name: deploy-frontend-prod
     plan:
       - get: production-code
+        passed: [deploy-prod]
       - get: version
+        passed: [deploy-prod]
+        trigger: true
       - task: build-frontend-prod
         file: production-code/concourse/frontend/build-prod/task.yml
       - put: cf-prod
