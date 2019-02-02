@@ -8,5 +8,16 @@ To generate concourse keys, run `./generate-keys --use-pem`
 Run `docker-compose up -d` to start concourse in the background. Check out [localhost:8082](http://localhost:8082) once it's started
 to make sure it's running properly.
 
+### Set pipelines
+There are two pipelines for this project - one that deploys to dev and one that deploys to production. Set the pipelines with
+```
+fly -t main set-pipeline -p battleship-dev -c pipeline-dev.yml -l secrets.yml
+```
+and
+```
+fly -t main set-pipeline -p battleship-prod -c pipeline-prod.yml -l secrets.yml
+```
+in the terminal
+
 ### Configuring concourse
 There's an excellent [tutorial by Stark & Wayne](https://concoursetutorial.com/) that should get you up and running 
