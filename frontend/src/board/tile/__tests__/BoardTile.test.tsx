@@ -141,12 +141,12 @@ describe("BoardTile", () => {
             });
         });
 
-        describe("enemy agent specific styling", () => {
+        describe("opposing agent specific styling", () => {
             let props: BoardTileProps;
             beforeEach(() => {
                 props = {
                     ...defaultProps,
-                    agentType: AgentType.ENEMY
+                    agentType: AgentType.OPPONENT
                 };
             });
 

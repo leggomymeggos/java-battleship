@@ -21,7 +21,7 @@ export interface IBoardPropsFromActions {
 
 export type BoardProps = IBoardPropsFromStore & IBoardPropsFromActions;
 
-export class EnemyAgentBoard extends React.Component<BoardProps> {
+export class OpposingAgentBoard extends React.Component<BoardProps> {
     private alphabet = [...Array(26)]
         .map((_, index) => String.fromCharCode(index + 97));
 
@@ -39,7 +39,7 @@ export class EnemyAgentBoard extends React.Component<BoardProps> {
         return <div className="board__labels column">
             <div className="board__label column"/>
             {this.props.grid[0].map((_, index) => {
-                return <div className="board__label column" key={EnemyAgentBoard.getKey()}>
+                return <div className="board__label column" key={OpposingAgentBoard.getKey()}>
                     {this.alphabet[index].toUpperCase()}
                 </div>
             })
@@ -47,9 +47,9 @@ export class EnemyAgentBoard extends React.Component<BoardProps> {
     }
 
     private renderRowLabels() {
-        return <div key={EnemyAgentBoard.getKey()} className="board__labels row">{
+        return <div key={OpposingAgentBoard.getKey()} className="board__labels row">{
             this.props.grid.map((value, rowIndex) => {
-                return <div key={EnemyAgentBoard.getKey()} className="board__label row">{rowIndex + 1}</div>
+                return <div key={OpposingAgentBoard.getKey()} className="board__label row">{rowIndex + 1}</div>
             })
         }</div>;
     }
@@ -60,14 +60,14 @@ export class EnemyAgentBoard extends React.Component<BoardProps> {
             this.props.grid.map((value, rowIndex) => {
                 return value.map((tile, columnIndex) => {
                     const coordinate = {x: columnIndex, y: rowIndex};
-                    return <BoardTile key={EnemyAgentBoard.getKey()}
+                    return <BoardTile key={OpposingAgentBoard.getKey()}
                                       tile={tile}
                                       tileClicked={() => {
                                           if (!gameOver) {
                                               this.props.actions.boardHit(this.props.gameId, coordinate);
                                           }
                                       }}
-                                      agentType={AgentType.ENEMY}
+                                      agentType={AgentType.OPPONENT}
                                       gameOver={gameOver}
                                       coordinate={coordinate}
                     />
@@ -83,7 +83,7 @@ export class EnemyAgentBoard extends React.Component<BoardProps> {
 
 export const mapStateToProps = (state: any): IBoardPropsFromStore => {
     return {
-        ...state.enemyAgentReducer,
+        ...state.opposingAgentReducer,
         winner: state.gameReducer.winner,
         gameId: state.gameReducer.id,
     }
@@ -98,4 +98,4 @@ export const mapDispatchToProps = (dispatch: Dispatch<{}>): IBoardPropsFromActio
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(EnemyAgentBoard);
+export default connect(mapStateToProps, mapDispatchToProps)(OpposingAgentBoard);

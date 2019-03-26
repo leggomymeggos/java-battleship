@@ -1,6 +1,6 @@
 import * as React from "react";
-import TargetBoard from "../board/EnemyAgentBoard";
-import AgentData from "../agent/EnemyAgentData";
+import TargetBoard from "../board/OpposingAgentBoard";
+import AgentData from "../agent/OpposingAgentData";
 import gameActions from "./gameActions";
 import {connect, Dispatch} from "react-redux";
 import {bindActionCreators} from "redux";

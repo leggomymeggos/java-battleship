@@ -43,10 +43,10 @@
   justify-content: center;
   align-items: center;
 
-  .agent__enemy--avatar {
+  .agent__opponent--avatar {
     height: 50px;
     width: 50px;
-    background: url("../images/enemy_agent_sprite_sheet.png");
+    background: url("../images/opposing_agent_sprite_sheet.png");
     background-origin: border-box;
 
     &.idle {
@@ -75,7 +75,7 @@
     }
   }
 
-  .agent__enemy--dialogue {
+  .agent__opponent--dialogue {
 
   }
 }

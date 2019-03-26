@@ -2,13 +2,13 @@ jest.mock("../boardActions");
 
 import {shallow} from "enzyme";
 import * as React from "react";
-import {EnemyAgentBoard, BoardProps, mapStateToProps} from "../EnemyAgentBoard";
+import {OpposingAgentBoard, BoardProps, mapStateToProps} from "../OpposingAgentBoard";
 import BoardTile, {AgentType} from "../tile/BoardTile";
 import {GameState} from "../../game/gameReducer";
 import {Tile} from "../../domain/tile";
 import {Agent, AgentState} from "../../domain/agent";
 
-describe("EnemyAgentBoard", () => {
+describe("OpposingAgentBoard", () => {
     let defaultProps: BoardProps;
 
     beforeEach(() => {
@@ -25,7 +25,7 @@ describe("EnemyAgentBoard", () => {
     });
 
     it("has a grid", () => {
-        const subject = shallow(<EnemyAgentBoard {...defaultProps} />);
+        const subject = shallow(<OpposingAgentBoard {...defaultProps} />);
 
         expect(subject.find(".target--board__grid").exists()).toBeTruthy();
     });
@@ -37,7 +37,7 @@ describe("EnemyAgentBoard", () => {
                 ...defaultProps,
                 grid: [[tile, tile], [tile, tile]],
             };
-            const subject = shallow(<EnemyAgentBoard {...props} />);
+            const subject = shallow(<OpposingAgentBoard {...props} />);
 
             const tiles = subject.find("BoardTile");
 
@@ -50,7 +50,7 @@ describe("EnemyAgentBoard", () => {
                 ...defaultProps,
                 grid: [[tile, tile], [tile, tile]],
             };
-            const subject = shallow(<EnemyAgentBoard {...props} />);
+            const subject = shallow(<OpposingAgentBoard {...props} />);
 
             const tiles = subject.find("BoardTile");
 
@@ -65,11 +65,11 @@ describe("EnemyAgentBoard", () => {
                 ...defaultProps,
                 grid: [[new Tile()]],
             };
-            const subject = shallow(<EnemyAgentBoard {...props} />);
+            const subject = shallow(<OpposingAgentBoard {...props} />);
 
             const tiles = subject.find("BoardTile");
 
-            expect(tiles.get(0).props.agentType).toEqual(AgentType.ENEMY)
+            expect(tiles.get(0).props.agentType).toEqual(AgentType.OPPONENT)
         });
 
         it("sets gameOver to true if there is a winner", () => {
@@ -78,7 +78,7 @@ describe("EnemyAgentBoard", () => {
                 winner: new Agent(),
                 grid: [[new Tile()]],
             };
-            const subject = shallow(<EnemyAgentBoard {...props} />);
+            const subject = shallow(<OpposingAgentBoard {...props} />);
 
             const tiles = subject.find("BoardTile");
 
@@ -91,7 +91,7 @@ describe("EnemyAgentBoard", () => {
                 winner: null,
                 grid: [[new Tile()]],
             };
-            const subject = shallow(<EnemyAgentBoard {...props} />);
+            const subject = shallow(<OpposingAgentBoard {...props} />);
 
             const tiles = subject.find("BoardTile");
 
@@ -105,7 +105,7 @@ describe("EnemyAgentBoard", () => {
                 gameId: 123,
                 grid: [[tile, tile], [tile, tile]],
             };
-            const subject = shallow(<EnemyAgentBoard {...props} />);
+            const subject = shallow(<OpposingAgentBoard {...props} />);
 
             const tiles = subject.find("BoardTile");
 
@@ -126,7 +126,7 @@ describe("EnemyAgentBoard", () => {
                 winner: new Agent(),
                 grid: [[new Tile()]],
             };
-            const subject = shallow(<EnemyAgentBoard {...props} />);
+            const subject = shallow(<OpposingAgentBoard {...props} />);
 
             const tiles = subject.find("BoardTile");
 
@@ -140,7 +140,7 @@ describe("EnemyAgentBoard", () => {
             ...defaultProps,
             grid: [[new Tile(), new Tile()], [new Tile(), new Tile()], [new Tile(), new Tile()]],
         };
-        const subject = shallow(<EnemyAgentBoard {...props} />);
+        const subject = shallow(<OpposingAgentBoard {...props} />);
 
         const rowLabels = subject.find(".board__label.row").map((item) => {
             return item.text();
@@ -156,7 +156,7 @@ describe("EnemyAgentBoard", () => {
             ...defaultProps,
             grid: [[new Tile(), new Tile()], [new Tile(), new Tile()], [new Tile(), new Tile()]],
         };
-        const subject = shallow(<EnemyAgentBoard {...props} />);
+        const subject = shallow(<OpposingAgentBoard {...props} />);
 
         const columnLabels = subject.find(".board__label.column").map((item) => {
             return item.text();
@@ -168,9 +168,9 @@ describe("EnemyAgentBoard", () => {
 });
 
 describe("mapStateToProps", () => {
-    let enemyAgentReducer: AgentState, gameReducer: GameState;
+    let opposingAgentReducer: AgentState, gameReducer: GameState;
     beforeEach(() => {
-        enemyAgentReducer = {
+        opposingAgentReducer = {
             id: 0,
             grid: [],
             sunkenShips: []
@@ -182,26 +182,26 @@ describe("mapStateToProps", () => {
     });
 
     it("maps grid", () => {
-        enemyAgentReducer = {
+        opposingAgentReducer = {
             id: 0,
             grid: [[new Tile()], [new Tile()]],
             sunkenShips: []
         };
         const props = mapStateToProps({
-            enemyAgentReducer,
+            opposingAgentReducer,
             gameReducer
         });
         expect(props.grid).toEqual([[new Tile()], [new Tile()]]);
     });
 
     it("maps sunken ships", () => {
-        enemyAgentReducer = {
-            ...enemyAgentReducer,
+        opposingAgentReducer = {
+            ...opposingAgentReducer,
             sunkenShips: ["battleship", "aircraft carrier"]
         };
         const props = mapStateToProps({
             id: 0,
-            enemyAgentReducer,
+            opposingAgentReducer,
             gameReducer
         });
         expect(props.sunkenShips).toEqual(["battleship", "aircraft carrier"]);
@@ -209,7 +209,7 @@ describe("mapStateToProps", () => {
 
     it("maps winner", () => {
         const props = mapStateToProps({
-            enemyAgentReducer,
+            opposingAgentReducer,
             gameReducer: {
                 ...gameReducer,
                 winner: new Agent()

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*
 class ComputerAgentController(val computerAgentService: ComputerAgentService) {
 
     @RequestMapping(
-            value = ["/{gameId}/enemy-attack"],
+            value = ["/{gameId}/opponent-attack"],
             method = [RequestMethod.GET]
     )
     fun attack(@PathVariable(name = "gameId") gameId: Int,

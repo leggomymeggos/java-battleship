@@ -1,6 +1,6 @@
 import {all} from "redux-saga/effects";
 import {checkWinnerSaga, fetchGameSaga, attackSaga, fetchActivePlayerSaga} from "./game/gameSaga";
-import {saveEnemyAgentIdSaga, takeTurnSaga} from "./agent/enemyAgentSaga";
+import {saveOpposingAgentIdSaga, takeTurnSaga} from "./agent/opposingAgentSaga";
 
 export default function* rootSaga() {
     yield all([
@@ -8,7 +8,7 @@ export default function* rootSaga() {
         attackSaga(),
         checkWinnerSaga(),
         fetchActivePlayerSaga(),
-        saveEnemyAgentIdSaga(),
+        saveOpposingAgentIdSaga(),
         takeTurnSaga()
     ])
 }

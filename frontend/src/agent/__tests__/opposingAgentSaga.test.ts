@@ -1,19 +1,19 @@
-jest.mock("../enemyAgentApi.ts");
+jest.mock("../opposingAgentApi.ts");
 
-import * as enemyAgentSaga from "../enemyAgentSaga";
+import * as opposingAgentSaga from "../opposingAgentSaga";
 import {call, put} from "redux-saga/effects";
-import {EnemyAgentApi} from "../enemyAgentApi";
+import {OpposingAgentApi} from "../opposingAgentApi";
 import {BoardActions} from "../../board/boardActions";
 
 describe("takeTurn", () => {
     it("calls attack api", () => {
-        const generator = enemyAgentSaga.takeTurn(123, 456);
+        const generator = opposingAgentSaga.takeTurn(123, 456);
 
-        expect(generator.next().value).toEqual(call(EnemyAgentApi.attack, 123, 456));
+        expect(generator.next().value).toEqual(call(OpposingAgentApi.attack, 123, 456));
     });
 
     it("triggers action to update board", () => {
-        const generator = enemyAgentSaga.takeTurn(123, 456);
+        const generator = opposingAgentSaga.takeTurn(123, 456);
 
         generator.next();
 

@@ -1,10 +1,10 @@
 import {GameActions} from "../../game/gameActions";
 import {Tile} from "../../domain/tile";
 import {BoardActions} from "../../board/boardActions";
-import enemyAgentReducer, {initialState} from "../enemyAgentReducer";
+import opposingAgentReducer, {initialState} from "../opposingAgentReducer";
 import {AgentState} from "../../domain/agent";
 
-describe("enemyAgentReducer", () => {
+describe("opposingAgentReducer", () => {
     it("has an initial state", () => {
         expect(initialState).toEqual({
             id: -1,
@@ -14,7 +14,7 @@ describe("enemyAgentReducer", () => {
     });
 
     it("handles NEW_GAME_CREATED action", () => {
-        const state = enemyAgentReducer(initialState, {
+        const state = opposingAgentReducer(initialState, {
             type: GameActions.NEW_GAME_CREATED,
             payload: {
                 players: [
@@ -39,7 +39,7 @@ describe("enemyAgentReducer", () => {
             };
 
             let board = {grid: [[new Tile()]]};
-            const state = enemyAgentReducer(prevState, {
+            const state = opposingAgentReducer(prevState, {
                 type: BoardActions.OPPONENT_BOARD_HIT_SUCCESS,
                 payload: {board}
             });
@@ -55,7 +55,7 @@ describe("enemyAgentReducer", () => {
             };
 
             let board = {grid: [[new Tile()]], sunkenShips: ["the battleship"]};
-            const state = enemyAgentReducer(prevState, {
+            const state = opposingAgentReducer(prevState, {
                 type: BoardActions.OPPONENT_BOARD_HIT_SUCCESS,
                 payload: {board}
             });
@@ -71,7 +71,7 @@ describe("enemyAgentReducer", () => {
             };
 
             let board = {id: 456, grid: [[new Tile()]], sunkenShips: ["the battleship"]};
-            const state = enemyAgentReducer(prevState, {
+            const state = opposingAgentReducer(prevState, {
                 type: BoardActions.OPPONENT_BOARD_HIT_SUCCESS,
                 payload: {board}
             });

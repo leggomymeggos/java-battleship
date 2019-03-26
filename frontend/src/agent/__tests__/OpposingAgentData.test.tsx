@@ -1,7 +1,7 @@
 import {shallow} from "enzyme";
 import * as React from "react";
 
-import {EnemyAgentData, AgentDataProps, mapStateToProps} from "../EnemyAgentData";
+import {OpposingAgentData, AgentDataProps, mapStateToProps} from "../OpposingAgentData";
 import {GameState} from "../../game/gameReducer";
 import {Agent, AgentState} from "../../domain/agent";
 
@@ -9,43 +9,43 @@ describe("Agent Data", () => {
     let props: AgentDataProps;
     beforeEach(() => {
         props = {
-            enemyAgentId: 0,
+            opposingAgentId: 0,
             winner: null
         }
     });
 
     it("asks if the player is ready to play", () => {
-        const subject = shallow(<EnemyAgentData {...props}/>);
+        const subject = shallow(<OpposingAgentData {...props}/>);
 
-        expect(subject.find(".agent__enemy--dialogue").text()).toContain("Hi! Ready to play?")
+        expect(subject.find(".agent__opponent--dialogue").text()).toContain("Hi! Ready to play?")
     });
 
     it("has an avatar for the computer", () => {
-        const subject = shallow(<EnemyAgentData {...props}/>);
+        const subject = shallow(<OpposingAgentData {...props}/>);
 
-        expect(subject.find(".agent__enemy--avatar").exists()).toBeTruthy();
+        expect(subject.find(".agent__opponent--avatar").exists()).toBeTruthy();
 
     });
 
     it("tells the user when they win", () => {
-        const subject = shallow(<EnemyAgentData {...props} winner={new Agent(123)} enemyAgentId={456}/>);
+        const subject = shallow(<OpposingAgentData {...props} winner={new Agent(123)} opposingAgentId={456}/>);
 
-        expect(subject.find(".agent__enemy--dialogue").text()).toContain("Oh no! You defeated me!")
+        expect(subject.find(".agent__opponent--dialogue").text()).toContain("Oh no! You defeated me!")
     });
 
     it("taunts the user when the computer win", () => {
-        const subject = shallow(<EnemyAgentData {...props} winner={new Agent(12)} enemyAgentId={12}/>);
+        const subject = shallow(<OpposingAgentData {...props} winner={new Agent(12)} opposingAgentId={12}/>);
 
-        expect(subject.find(".agent__enemy--dialogue").text()).toContain("Hahahaha!!! I have defeated you!!!")
+        expect(subject.find(".agent__opponent--dialogue").text()).toContain("Hahahaha!!! I have defeated you!!!")
     });
 });
 
 describe("mapStateToProps", () => {
-    let enemyAgentReducer: AgentState;
+    let opposingAgentReducer: AgentState;
     let gameReducer: GameState;
 
     beforeEach(() => {
-        enemyAgentReducer = {
+        opposingAgentReducer = {
             id: 0,
             grid: [],
             sunkenShips: []
@@ -62,7 +62,7 @@ describe("mapStateToProps", () => {
                 ...gameReducer,
                 winner: null
             },
-            enemyAgentReducer
+            opposingAgentReducer
         });
         expect(props.winner).toBeNull();
 
@@ -72,20 +72,20 @@ describe("mapStateToProps", () => {
                 ...gameReducer,
                 winner: agent
             },
-            enemyAgentReducer
+            opposingAgentReducer
         });
         expect(props.winner).toEqual(agent);
     });
 
-    it("maps enemyAgentId", () => {
+    it("maps opposingAgentId", () => {
         let props = mapStateToProps({
             gameReducer,
-            enemyAgentReducer: {
-                ...enemyAgentReducer,
+            opposingAgentReducer: {
+                ...opposingAgentReducer,
                 id: 123
             }
         });
 
-        expect(props.enemyAgentId).toEqual(123);
+        expect(props.opposingAgentId).toEqual(123);
     });
 });

@@ -1,8 +1,8 @@
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
-import {EnemyAgentApi} from "../enemyAgentApi";
+import {OpposingAgentApi} from "../opposingAgentApi";
 
-describe("enemyAgentApi", () => {
+describe("opposingAgentApi", () => {
     let mock: MockAdapter;
 
     beforeEach(() => {
@@ -11,10 +11,10 @@ describe("enemyAgentApi", () => {
 
     describe("attacking the board", () => {
         it("returns response data", async () => {
-            mock.onGet("http://example.com/games/123/enemy-attack?attackerId=456")
+            mock.onGet("http://example.com/games/123/opponent-attack?attackerId=456")
                 .reply(200, "new board!");
 
-            const response = await EnemyAgentApi.attack(123, 456);
+            const response = await OpposingAgentApi.attack(123, 456);
 
             expect(response).toEqual("new board!");
         });

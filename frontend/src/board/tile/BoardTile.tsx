@@ -78,5 +78,5 @@ export default class BoardTile extends React.Component<BoardTileProps> {
 }
 
 export enum AgentType {
-    USER, ENEMY, NONE
+    USER, OPPONENT, NONE
 }

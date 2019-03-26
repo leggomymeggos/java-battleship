@@ -10,7 +10,7 @@ export const initialState: AgentState = {
 };
 
 
-const enemyAgentReducer = handleActions({
+const opposingAgentReducer = handleActions({
     [GameActions.NEW_GAME_CREATED]: (state: AgentState, action: Action<any>) => {
         return {
             ...state,
@@ -28,4 +28,4 @@ const enemyAgentReducer = handleActions({
     },
 }, initialState);
 
-export default enemyAgentReducer;
+export default opposingAgentReducer;
