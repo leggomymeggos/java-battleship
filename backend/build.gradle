@@ -39,6 +39,10 @@ repositories {
     mavenCentral()
 }
 
+bootRun {
+    jvmArgs = ["-Dspring.output.ansi.enabled=ALWAYS"]
+}
+
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('com.fasterxml.jackson.module:jackson-module-kotlin')
@@ -49,3 +53,4 @@ dependencies {
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('org.assertj:assertj-core:3.10.0')
 }
+
