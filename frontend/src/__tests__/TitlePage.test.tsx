@@ -27,7 +27,8 @@ describe("TitlePage", () => {
     it("has a button for a new game", () => {
         const subject = shallow(<TitlePage {...defaultProps} />);
 
-        expect(subject.find('.title-page__new-game').text()).toEqual("New Game")
+        expect(subject.find('Link').prop('to')).toEqual("/game");
+        expect(subject.find('Link').childAt(0).text()).toEqual("New Game");
     });
 
     it("creates a new game when the 'new game' button is clicked", () => {
