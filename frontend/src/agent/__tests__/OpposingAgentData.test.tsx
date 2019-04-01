@@ -1,8 +1,8 @@
 import {shallow} from "enzyme";
 import * as React from "react";
 
-import {OpposingAgentData, AgentDataProps, mapStateToProps} from "../OpposingAgentData";
-import {GameState} from "../../game/gameReducer";
+import {AgentDataProps, mapStateToProps, OpposingAgentData} from "../OpposingAgentData";
+import {GameState, GameStatus} from "../../game/gameReducer";
 import {Agent, AgentState} from "../../domain/agent";
 
 describe("Agent Data", () => {
@@ -53,6 +53,7 @@ describe("mapStateToProps", () => {
         gameReducer = {
             id: 0,
             winner: null,
+            status: GameStatus.NONE
         };
     });
     

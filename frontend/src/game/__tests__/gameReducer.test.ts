@@ -1,5 +1,5 @@
-import gameReducer, {initialState} from "../gameReducer";
-import {gameWon, newGameCreated} from "../gameActions";
+import gameReducer, {GameStatus, initialState} from "../gameReducer";
+import {createNewGame, gameWon, newGameCreated} from "../gameActions";
 import {Agent} from "../../domain/agent";
 import {Game} from "../../domain/game";
 
@@ -8,7 +8,8 @@ describe("game reducer", () => {
         expect(initialState)
             .toEqual({
                 id: -1,
-                winner: null
+                winner: null,
+                status: GameStatus.NONE
             });
     });
 
@@ -17,6 +18,19 @@ describe("game reducer", () => {
         const gameState = gameReducer(initialState, gameWon(player));
 
         expect(gameState.winner).toBe(player);
+    });
+
+    it("updates status when the game is won", () => {
+        let player = new Agent(123);
+        const gameState = gameReducer(initialState, gameWon(player));
+
+        expect(gameState.status).toBe(GameStatus.GAME_OVER);
+    });
+
+    it("updates status when new game is requested", () => {
+        const gameState = gameReducer(initialState, createNewGame());
+
+        expect(gameState.status).toBe(GameStatus.IN_PROGRESS);
     });
 
     it("updates id when new game is created", () => {

@@ -4,14 +4,14 @@
                                                                    ${AnsiColor.BRIGHT_MAGENTA}<____|.----${AnsiColor.YELLOW}||
                                                                           .---''---,
                                                                            ;..__..'${AnsiColor.WHITE}    _...${Ansi.DEFAULT}
-                                                                         ,'/  ${AnsiColor.YELLOW};|${Ansi.DEFAULT}/${AnsiColor.WHITE}..--''    \${Ansi.DEFAULT}
-                                                                       ,'${AnsiColor.WHITE}_${Ansi.DEFAULT}/${AnsiColor.WHITE}.-${Ansi.DEFAULT}/${AnsiColor.YELLOW}':${AnsiColor.WHITE}            :
+                                                                         ,${AnsiColor.BRIGHT_GREEN}'${Ansi.DEFAULT}/  ${AnsiColor.YELLOW};|${Ansi.DEFAULT}/${AnsiColor.WHITE}..--''    \${Ansi.DEFAULT}
+                                                                       ,${AnsiColor.BRIGHT_GREEN}'${AnsiColor.WHITE}_${Ansi.DEFAULT}/${AnsiColor.WHITE}.-${Ansi.DEFAULT}/${AnsiColor.YELLOW}':${AnsiColor.WHITE}            :
                                                                   _..-'''${Ansi.DEFAULT}/  /  ${AnsiColor.YELLOW}|  ${AnsiColor.WHITE}\    \   ${AnsiColor.YELLOW}_|/|${Ansi.DEFAULT}
                                                                  ${AnsiColor.WHITE}\      ${Ansi.DEFAULT}/-./_ ${AnsiColor.WHITE}\${AnsiColor.YELLOW};${AnsiColor.WHITE}   \    \${AnsiColor.YELLOW},;'   \${Ansi.DEFAULT}
                                                                  ,${AnsiColor.WHITE}\    ${Ansi.DEFAULT}/ ${AnsiColor.WHITE}\${Ansi.DEFAULT}:  `:${AnsiColor.WHITE}\    \   ${AnsiColor.YELLOW}//    `:`.${Ansi.DEFAULT}
-                                                               ,'  ${AnsiColor.WHITE}\${Ansi.DEFAULT}  /-._;   | ${AnsiColor.WHITE}:    : ${AnsiColor.YELLOW}::    ,.   .${Ansi.DEFAULT}
-                                                             ,'     ${AnsiColor.WHITE}:${Ansi.DEFAULT}:   /`-._| ${AnsiColor.WHITE}|    | ${AnsiColor.YELLOW}|| ' :  `.`.)${Ansi.DEFAULT}
-                                                          ${AnsiColor.YELLOW}_${Ansi.DEFAULT},'       ${AnsiColor.WHITE}|${Ansi.DEFAULT};._:: ${AnsiColor.WHITE}|${Ansi.DEFAULT}  |${AnsiColor.WHITE} |    | ${AnsiColor.YELLOW}`|   :    `'${Ansi.DEFAULT}
+                                                               ,${AnsiColor.BRIGHT_GREEN}'  ${AnsiColor.WHITE}\${Ansi.DEFAULT}  /-._;   | ${AnsiColor.WHITE}:    : ${AnsiColor.YELLOW}::    ,.   .${Ansi.DEFAULT}
+                                                             ,${AnsiColor.BRIGHT_GREEN}'     ${AnsiColor.WHITE}:${Ansi.DEFAULT}:   /`-._| ${AnsiColor.WHITE}|    | ${AnsiColor.YELLOW}|| ' :  `.`.)${Ansi.DEFAULT}
+                                                          ${AnsiColor.YELLOW}_${Ansi.DEFAULT},${AnsiColor.BRIGHT_GREEN}'       ${AnsiColor.WHITE}|${Ansi.DEFAULT};._:: ${AnsiColor.WHITE}|${Ansi.DEFAULT}  |${AnsiColor.WHITE} |    | ${AnsiColor.YELLOW}`|   :    `'${Ansi.DEFAULT}
                                                         ${AnsiColor.YELLOW},'   `.${Ansi.DEFAULT}     /   |`-:_ ;${AnsiColor.WHITE} |    |  ${AnsiColor.YELLOW}|  : \${Ansi.DEFAULT}
                                                         ${AnsiColor.YELLOW}`--.   )${Ansi.DEFAULT}   /${AnsiColor.WHITE}|${Ansi.DEFAULT}-._:    :          ${AnsiColor.YELLOW}|   \ \${Ansi.DEFAULT}
                                                            ${AnsiColor.YELLOW}/  /${Ansi.DEFAULT}   :_${AnsiColor.WHITE}|${Ansi.DEFAULT}   ;`-._;   ${AnsiColor.WHITE}__..--'${AnsiColor.YELLOW};    : :${Ansi.DEFAULT}
@@ -20,7 +20,7 @@ ${AnsiColor.MAGENTA}    __          __  __  __          __    _              ${A
 ${AnsiColor.MAGENTA}   / /_  ____ _/ /_/ /_/ /__  _____/ /_  (_)___         ${AnsiColor.YELLOW}:  /   `'-'--'----'${AnsiColor.YELLOW}---------'          |${Ansi.DEFAULT}
 ${AnsiColor.MAGENTA}  / __ \/ __ `/ __/ __/ / _ \/ ___/ __ \/ / __ \        ${AnsiColor.YELLOW}| :     ${AnsiColor.CYAN}O${AnsiColor.YELLOW} ._${AnsiColor.CYAN}O${AnsiColor.YELLOW}   ${AnsiColor.CYAN}O${AnsiColor.YELLOW}_. ${AnsiColor.CYAN}O${AnsiColor.YELLOW} ._${AnsiColor.CYAN}O${AnsiColor.YELLOW}   ${AnsiColor.CYAN}O${AnsiColor.YELLOW}_.      ; ;
 ${AnsiColor.MAGENTA} / /_/ / /_/ / /_/ /_/ /  __(__  ) / / / / /_/ /        ${AnsiColor.YELLOW}: `.      ${AnsiColor.BRIGHT_RED}//    //    //    //     ${AnsiColor.YELLOW},' /${Ansi.DEFAULT}
-${AnsiColor.MAGENTA}/_.___/\__,_/\__/\__/_/\___/____/_/ /_/_/ .___/${AnsiColor.BLUE} ========${AnsiColor.YELLOW}` .______${AnsiColor.BRIGHT_RED}//${AnsiColor.YELLOW}____${AnsiColor.BRIGHT_RED}//${AnsiColor.YELLOW}____${AnsiColor.BRIGHT_RED}//${AnsiColor.YELLOW}____${AnsiColor.BRIGHT_RED}//${AnsiColor.YELLOW}_______,'${AnsiColor.BLUE}===========
+${AnsiColor.MAGENTA}/_.___/\__,_/\__/\__/_/\___/____/_/ /_/_/ .___/${AnsiColor.BLUE}=========${AnsiColor.YELLOW}` .______${AnsiColor.BRIGHT_RED}//${AnsiColor.YELLOW}____${AnsiColor.BRIGHT_RED}//${AnsiColor.YELLOW}____${AnsiColor.BRIGHT_RED}//${AnsiColor.YELLOW}____${AnsiColor.BRIGHT_RED}//${AnsiColor.YELLOW}_______,'${AnsiColor.BLUE}===========
       ~       ~~~       ~      ~~~     ${AnsiColor.MAGENTA}/_/${AnsiColor.BLUE} ~~     ~      ~~     ${AnsiColor.BRIGHT_RED}//    //${AnsiColor.BLUE}~   ${AnsiColor.BRIGHT_RED}//    //${AnsiColor.BLUE}          ~~      ~~
 ~~         ~      ~~       ~~       ~         ~~      ~~      ${AnsiColor.BRIGHT_RED}_//   _//   _//${AnsiColor.BLUE} ~ ${AnsiColor.BRIGHT_RED}_//${AnsiColor.BLUE}     ~        ~~~
     ~~      ~       ~~~         ~~        ~         ~        ${AnsiColor.BRIGHT_RED}/ /   / /   / /   / /${AnsiColor.BLUE}  ~      ~~      ~

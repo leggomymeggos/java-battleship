@@ -4,7 +4,7 @@ import {shallow} from "enzyme";
 import * as React from "react";
 import {OpposingAgentBoard, BoardProps, mapStateToProps} from "../OpposingAgentBoard";
 import BoardTile, {AgentType} from "../tile/BoardTile";
-import {GameState} from "../../game/gameReducer";
+import {GameState, GameStatus} from "../../game/gameReducer";
 import {Tile} from "../../domain/tile";
 import {Agent, AgentState} from "../../domain/agent";
 
@@ -177,7 +177,8 @@ describe("mapStateToProps", () => {
         };
         gameReducer = {
             id: 123,
-            winner: null
+            winner: null,
+            status: GameStatus.NONE
         }
     });
 

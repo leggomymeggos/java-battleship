@@ -1,25 +1,23 @@
 import * as React from "react";
+import {Redirect} from "react-router";
 import TargetBoard from "../board/OpposingAgentBoard";
 import AgentData from "../agent/OpposingAgentData";
-import gameActions from "./gameActions";
-import {connect, Dispatch} from "react-redux";
-import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
 import PlayerBoard from "../board/UserAgentBoard";
+import {GameStatus} from "./gameReducer";
 
-interface IGamePropsFromActions {
-    actions: {
-        createNewGame: any
-    }
+interface IGamePropsFromState {
+    status: GameStatus
 }
 
-export type GameProps = IGamePropsFromActions
+export type GameProps = IGamePropsFromState
 
 export class Game extends React.Component<GameProps> {
-    public componentWillMount() {
-        this.props.actions.createNewGame()
-    }
-
     public render() {
+        if (this.props.status === GameStatus.NONE) {
+            return <Redirect to={"/"}/>
+        }
+
         return <div className="game__content">
             <TargetBoard/>
             <div className="game__content__metadata">
@@ -33,12 +31,10 @@ export class Game extends React.Component<GameProps> {
     }
 }
 
-export const mapDispatchToProps = (dispatch: Dispatch<{}>): IGamePropsFromActions => {
+export const mapStateToProps = (state: { gameReducer: { status: GameStatus } }): IGamePropsFromState => {
     return {
-        actions: bindActionCreators({
-            ...gameActions
-        }, dispatch)
+        status: state.gameReducer.status
     }
 };
 
-export default connect(null, mapDispatchToProps)(Game);
+export default connect(mapStateToProps, null)(Game);

@@ -1,37 +1,45 @@
-jest.mock("../gameActions");
-
+import {GameStatus} from "../gameReducer";
 import {shallow} from "enzyme";
 import * as React from "react";
-import {Game, GameProps, mapDispatchToProps} from "../Game";
-import {createNewGame} from "../gameActions";
+import {Redirect} from "react-router";
+import {Game, GameProps, mapStateToProps} from "../Game";
+import TargetBoard from "../../board/OpposingAgentBoard";
+import AgentData from "../../agent/OpposingAgentData";
+import PlayerBoard from "../../board/UserAgentBoard";
 
 describe("Game", () => {
     let defaultProps: GameProps;
-    let mockActions: any;
 
     beforeEach(() => {
-        mockActions = {
-            createNewGame: jest.fn()
-        };
         defaultProps = {
-            actions: mockActions
+            status: GameStatus.NONE
         }
     });
 
-    it("gets a new board from the backend", () => {
-        shallow(<Game {...defaultProps}/>);
+    it("redirects to title page when there is no game", () => {
+        const subject = shallow(<Game {...defaultProps} />);
 
-        expect(mockActions.createNewGame).toHaveBeenCalled();
+        expect(subject.find(Redirect).prop("to")).toEqual("/");
+        expect(subject.find(TargetBoard).exists()).toBeFalsy();
+        expect(subject.find(AgentData).exists()).toBeFalsy();
+        expect(subject.find(PlayerBoard).exists()).toBeFalsy();
+    });
+
+    it("displays game information", () => {
+        [GameStatus.IN_PROGRESS, GameStatus.GAME_OVER].forEach((status: GameStatus) => {
+            const subject = shallow(<Game {...defaultProps} status={status}/>);
+
+            expect(subject.find(TargetBoard).exists()).toBeTruthy();
+            expect(subject.find(AgentData).exists()).toBeTruthy();
+            expect(subject.find(PlayerBoard).exists()).toBeTruthy();
+        });
     });
 });
 
-describe("mapDispatchToProps", () => {
-    it("maps createNewGame action", () => {
-        const dispatch = jest.fn();
-        const props = mapDispatchToProps(dispatch);
+describe("mapStateToProps", () => {
+    it("maps game status", () => {
+        const props = mapStateToProps({gameReducer: {status: GameStatus.IN_PROGRESS}});
 
-        props.actions.createNewGame();
-
-        expect(createNewGame).toHaveBeenCalled()
+        expect(props.status).toEqual(GameStatus.IN_PROGRESS)
     });
 });
