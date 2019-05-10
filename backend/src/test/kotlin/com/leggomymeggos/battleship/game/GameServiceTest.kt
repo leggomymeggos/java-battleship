@@ -73,6 +73,30 @@ class GameServiceTest {
     }
 
     @Test
+    fun `new adds game with easy difficulty`() {
+        gameService.new(Difficulty.EASY)
+
+        val argumentCaptor = argumentCaptor<Game>()
+        verify(gameRegistry).register(argumentCaptor.capture())
+
+        val game = argumentCaptor.firstValue
+
+        assertThat(game.difficulty).isEqualTo(Difficulty.EASY)
+    }
+
+    @Test
+    fun `new adds game with hard difficulty`() {
+        gameService.new(Difficulty.HARD)
+
+        val argumentCaptor = argumentCaptor<Game>()
+        verify(gameRegistry).register(argumentCaptor.capture())
+
+        val game = argumentCaptor.firstValue
+
+        assertThat(game.difficulty).isEqualTo(Difficulty.HARD)
+    }
+
+    @Test
     fun `new returns a game with ships and the humanPlayer active`() {
         val player = Player(id = 1, board = Board())
         val player2 = Player(id = 3, board = Board(gridOf(1)))

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 @Service
 class GameService(val playerService: PlayerService, val gameRegistry: GameRegistry) {
 
-    fun new(): Game {
+    fun new(difficulty: Difficulty = Difficulty.EASY): Game {
         val humanPlayer = playerService.initPlayer()
                 .copy(id = 1).run {
                     playerService.randomlySetShips(this)
@@ -22,7 +22,8 @@ class GameService(val playerService: PlayerService, val gameRegistry: GameRegist
 
         val game = Game(
                 players = listOf(humanPlayer, computerPlayer),
-                activePlayerId = humanPlayer.id
+                activePlayerId = humanPlayer.id,
+                difficulty = difficulty
         )
         gameRegistry.register(game)
 

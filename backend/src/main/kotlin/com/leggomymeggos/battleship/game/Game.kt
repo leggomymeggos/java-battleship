@@ -7,5 +7,6 @@ data class Game(
         val id: Int = Random().nextInt(Int.MAX_VALUE),
         val players: List<Player> = listOf(),
         val activePlayerId: Int = -1,
-        val winner: Player? = null
+        val winner: Player? = null,
+        val difficulty: Difficulty = Difficulty.EASY
 )
