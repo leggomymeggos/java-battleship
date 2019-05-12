@@ -3,13 +3,16 @@ import {Tile} from "../../domain/tile";
 
 describe("boardHit", () => {
     it("returns BOARD_HIT action", () => {
-        expect(boardHit(123, {
-            x: 1,
-            y: 2
-        })).toEqual({
+        expect(boardHit(123,
+            456,
+            {
+                x: 1,
+                y: 2
+            })).toEqual({
             type: BoardActions.BOARD_HIT,
             payload: {
                 gameId: 123,
+                attackerId: 456,
                 coordinates: {
                     x: 1,
                     y: 2

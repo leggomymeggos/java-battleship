@@ -17,8 +17,12 @@ export class Coordinate {
     }
 }
 
-export const boardHit = createAction(BoardActions.BOARD_HIT, (gameId: number, coordinates: Coordinate) => {
-    return {gameId, coordinates}
+export const boardHit = createAction(BoardActions.BOARD_HIT, (
+    gameId: number,
+    attackerId: number,
+    coordinates: Coordinate
+) => {
+    return {gameId, attackerId, coordinates}
 });
 
 export const opponentBoardHitSuccess =

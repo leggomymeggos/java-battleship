@@ -11,12 +11,12 @@ class GameService(val playerService: PlayerService, val gameRegistry: GameRegist
 
     fun new(difficulty: Difficulty = Difficulty.EASY): Game {
         val humanPlayer = playerService.initPlayer()
-                .copy(id = 1).run {
+                .run {
                     playerService.randomlySetShips(this)
                 }
 
         val computerPlayer = playerService.initPlayer()
-                .copy(id = 2).run {
+                .run {
                     playerService.randomlySetShips(this)
                 }
 

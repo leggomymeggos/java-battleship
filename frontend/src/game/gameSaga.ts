@@ -4,7 +4,7 @@ import {activePlayerUpdated, GameActions, gameWon, newGameCreated} from "./gameA
 import {BoardActions, Coordinate, opponentBoardHitSuccess} from "../board/boardActions";
 import {Action} from "redux-actions";
 
-export function* fetchGame(): any {
+export function* newGame(): any {
     try {
         const game = yield call(GameApi.newGame);
         yield put(newGameCreated(game));
@@ -43,13 +43,13 @@ export function* checkActivePlayer(gameId: number): any {
     }
 }
 
-export function* fetchGameSaga(): any {
-    yield takeEvery(GameActions.NEW_GAME, fetchGame);
+export function* newGameSaga(): any {
+    yield takeEvery(GameActions.NEW_GAME, newGame);
 }
 
 export function* attackSaga(): any {
     yield takeEvery(BoardActions.BOARD_HIT, (action: Action<any>) => {
-        return attack(action.payload.gameId, 1, action.payload.coordinates);
+        return attack(action.payload.gameId, action.payload.attackerId, action.payload.coordinates);
     });
 }
 

@@ -13,10 +13,9 @@ describe("OpposingAgentBoard", () => {
 
     beforeEach(() => {
         defaultProps = {
-            id: 1,
             gameId: 2,
             grid: [[]],
-            sunkenShips: [],
+            attackerId: 0,
             winner: null,
             actions: {
                 boardHit: jest.fn()
@@ -103,6 +102,7 @@ describe("OpposingAgentBoard", () => {
             const props = {
                 ...defaultProps,
                 gameId: 123,
+                attackerId: 789,
                 grid: [[tile, tile], [tile, tile]],
             };
             const subject = shallow(<OpposingAgentBoard {...props} />);
@@ -110,13 +110,13 @@ describe("OpposingAgentBoard", () => {
             const tiles = subject.find("BoardTile");
 
             tiles.get(0).props.tileClicked();
-            expect(props.actions.boardHit).toBeCalledWith(123, {x: 0, y: 0});
+            expect(props.actions.boardHit).toBeCalledWith(123, 789, {x: 0, y: 0});
             tiles.get(1).props.tileClicked();
-            expect(props.actions.boardHit).toBeCalledWith(123, {x: 1, y: 0});
+            expect(props.actions.boardHit).toBeCalledWith(123, 789, {x: 1, y: 0});
             tiles.get(2).props.tileClicked();
-            expect(props.actions.boardHit).toBeCalledWith(123, {x: 0, y: 1});
+            expect(props.actions.boardHit).toBeCalledWith(123, 789, {x: 0, y: 1});
             tiles.get(3).props.tileClicked();
-            expect(props.actions.boardHit).toBeCalledWith(123, {x: 0, y: 1});
+            expect(props.actions.boardHit).toBeCalledWith(123, 789, {x: 0, y: 1});
         });
 
         it("does not call boardHit action if the game is over", () => {
@@ -124,6 +124,7 @@ describe("OpposingAgentBoard", () => {
                 ...defaultProps,
                 gameId: 123,
                 winner: new Agent(),
+                attackerId: 456,
                 grid: [[new Tile()]],
             };
             const subject = shallow(<OpposingAgentBoard {...props} />);
@@ -168,9 +169,18 @@ describe("OpposingAgentBoard", () => {
 });
 
 describe("mapStateToProps", () => {
-    let opposingAgentReducer: AgentState, gameReducer: GameState;
+    let opposingAgentReducer: AgentState,
+        userAgentReducer: AgentState,
+        gameReducer: GameState,
+        state: any;
+
     beforeEach(() => {
         opposingAgentReducer = {
+            id: 0,
+            grid: [],
+            sunkenShips: []
+        };
+        userAgentReducer = {
             id: 0,
             grid: [],
             sunkenShips: []
@@ -179,6 +189,11 @@ describe("mapStateToProps", () => {
             id: 123,
             winner: null,
             status: GameStatus.NONE
+        };
+        state = {
+            gameReducer,
+            userAgentReducer,
+            opposingAgentReducer
         }
     });
 
@@ -189,28 +204,27 @@ describe("mapStateToProps", () => {
             sunkenShips: []
         };
         const props = mapStateToProps({
+            ...state,
             opposingAgentReducer,
-            gameReducer
         });
         expect(props.grid).toEqual([[new Tile()], [new Tile()]]);
     });
 
-    it("maps sunken ships", () => {
-        opposingAgentReducer = {
-            ...opposingAgentReducer,
-            sunkenShips: ["battleship", "aircraft carrier"]
+    it("maps attacker id", () => {
+        userAgentReducer = {
+            ...userAgentReducer,
+            id: 123,
         };
         const props = mapStateToProps({
-            id: 0,
-            opposingAgentReducer,
-            gameReducer
+            ...state,
+            userAgentReducer,
         });
-        expect(props.sunkenShips).toEqual(["battleship", "aircraft carrier"]);
+        expect(props.attackerId).toEqual(123);
     });
 
     it("maps winner", () => {
         const props = mapStateToProps({
-            opposingAgentReducer,
+            ...state,
             gameReducer: {
                 ...gameReducer,
                 winner: new Agent()

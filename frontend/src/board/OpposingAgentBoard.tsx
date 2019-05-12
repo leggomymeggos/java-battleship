@@ -3,19 +3,18 @@ import {connect, Dispatch} from "react-redux";
 import {bindActionCreators} from "redux";
 import {Agent} from "../domain/agent";
 import BoardTile, {AgentType} from "./tile/BoardTile";
-import boardActions from "./boardActions";
+import boardActions, {Coordinate} from "./boardActions";
 
 export interface IBoardPropsFromStore {
-    id: number
+    attackerId: number;
     gameId: number,
     grid: any[][];
-    sunkenShips: string[];
     winner: Agent;
 }
 
 export interface IBoardPropsFromActions {
     actions: {
-        boardHit: any;
+        boardHit: (gameId: number, attackerId: number, coordinate: Coordinate) => any;
     };
 }
 
@@ -64,7 +63,11 @@ export class OpposingAgentBoard extends React.Component<BoardProps> {
                                       tile={tile}
                                       tileClicked={() => {
                                           if (!gameOver) {
-                                              this.props.actions.boardHit(this.props.gameId, coordinate);
+                                              this.props.actions.boardHit(
+                                                  this.props.gameId,
+                                                  this.props.attackerId,
+                                                  coordinate
+                                              );
                                           }
                                       }}
                                       agentType={AgentType.OPPONENT}
@@ -83,9 +86,10 @@ export class OpposingAgentBoard extends React.Component<BoardProps> {
 
 export const mapStateToProps = (state: any): IBoardPropsFromStore => {
     return {
-        ...state.opposingAgentReducer,
+        grid: state.opposingAgentReducer.grid,
         winner: state.gameReducer.winner,
         gameId: state.gameReducer.id,
+        attackerId: state.userAgentReducer.id
     }
 };
 

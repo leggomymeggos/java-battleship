@@ -7,15 +7,15 @@ import {GameActions} from "../gameActions";
 import {call, put} from "redux-saga/effects";
 import {BoardActions, Coordinate} from "../../board/boardActions";
 
-describe("fetchGame", () => {
+describe("newGame", () => {
     it("calls api to get game", () => {
-        const generator = gameSaga.fetchGame();
+        const generator = gameSaga.newGame();
 
         expect(generator.next().value).toEqual(call(GameApi.newGame));
     });
 
     it("triggers action to set board", () => {
-        const generator = gameSaga.fetchGame();
+        const generator = gameSaga.newGame();
 
         generator.next();
 
