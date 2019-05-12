@@ -10,17 +10,18 @@ import org.springframework.stereotype.Service
 class GameService(val playerService: PlayerService, val gameRegistry: GameRegistry) {
 
     fun new(difficulty: Difficulty = Difficulty.EASY): Game {
-        val humanPlayer = playerService.initPlayer()
+        val newGame = Game()
+        val humanPlayer = playerService.initPlayer(newGame.id)
                 .run {
-                    playerService.randomlySetShips(this)
+                    playerService.randomlySetShips(newGame.id, this.id)
                 }
 
-        val computerPlayer = playerService.initPlayer()
+        val computerPlayer = playerService.initPlayer(newGame.id)
                 .run {
-                    playerService.randomlySetShips(this)
+                    playerService.randomlySetShips(newGame.id, this.id)
                 }
 
-        val game = Game(
+        val game = newGame.copy(
                 players = listOf(humanPlayer, computerPlayer),
                 activePlayerId = humanPlayer.id,
                 difficulty = difficulty
@@ -39,13 +40,13 @@ class GameService(val playerService: PlayerService, val gameRegistry: GameRegist
 
         val attackedPlayer = defendingPlayer
                 .run {
-                    playerService.hitBoard(this, coordinate).run {
+                    playerService.hitBoard(gameId, this.id, coordinate).run {
                         gameRegistry.updatePlayer(gameId, this)
                         this
                     }
                 }
 
-        if (playerService.isDefeated(attackedPlayer)) {
+        if (playerService.isDefeated(gameId, attackedPlayer.id)) {
             gameRegistry.setWinner(gameId, attackingPlayerId)
         } else {
             gameRegistry.changeTurn(gameId)

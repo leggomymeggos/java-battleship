@@ -8,15 +8,20 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class PlayerService(val boardService: BoardService) {
-    fun initPlayer(): Player {
+class PlayerService(val boardService: BoardService, val playerRegistry: PlayerRegistry) {
+    fun initPlayer(gameId: Int): Player {
         val board = boardService.initBoard()
+        val player = Player(id = Random().nextInt(Int.MAX_VALUE), board = board)
 
-        return Player(id = Random().nextInt(Int.MAX_VALUE), board = board)
+        playerRegistry.register(gameId, player)
+
+        return player
     }
 
-    fun setShips(player: Player): Player {
-        val board = boardService.addShip(player.board, CRUISER, Coordinate(0, 0), Orientation.HORIZONTAL).run {
+    fun setShips(gameId: Int, playerId: Int): Player {
+        val playerEntity = playerRegistry.getPlayer(gameId, playerId)
+
+        val board = boardService.addShip(playerEntity.board, CRUISER, Coordinate(0, 0), Orientation.HORIZONTAL).run {
             boardService.addShip(this, SUBMARINE, Coordinate(2, 6), Orientation.HORIZONTAL).run {
                 boardService.addShip(this, AIRCRAFT_CARRIER, Coordinate(5, 3), Orientation.HORIZONTAL).run {
                     boardService.addShip(this, DESTROYER, Coordinate(0, 9), Orientation.VERTICAL).run {
@@ -26,22 +31,34 @@ class PlayerService(val boardService: BoardService) {
             }
         }
 
-        return player.copy(board = board)
+        val player = Player(
+                playerEntity.id,
+                board
+        )
+        playerRegistry.updatePlayer(gameId, player)
+
+        return player
     }
 
-    fun hitBoard(player: Player, coordinate: Coordinate): Player {
-        val updatedBoard = boardService.hitTile(player.board, coordinate)
-        return player.copy(board = updatedBoard)
+    fun hitBoard(gameId: Int, playerId: Int, coordinate: Coordinate): Player {
+        val playerEntity = playerRegistry.getPlayer(gameId, playerId)
+        val updatedBoard = boardService.hitTile(playerEntity.board, coordinate)
+        val player = Player(playerEntity.id, updatedBoard)
+        playerRegistry.updatePlayer(gameId, player)
+        return player
     }
 
-    fun isDefeated(player: Player): Boolean {
+    fun isDefeated(gameId: Int, playerId: Int): Boolean {
+        val player = playerRegistry.getPlayer(gameId, playerId)
         val shipsOnBoard = player.board.grid.flatten().asSequence().filter { it.ship != null }.toSet()
 
         return shipsOnBoard.size == player.board.sunkenShips.size
     }
 
-    fun randomlySetShips(player: Player): Player {
-        val board = boardService.addShipRandomly(player.board, CRUISER, Orientation.values().random()).run {
+    fun randomlySetShips(gameId: Int, playerId: Int): Player {
+        val playerEntity = playerRegistry.getPlayer(gameId, playerId)
+
+        val board = boardService.addShipRandomly(playerEntity.board, CRUISER, Orientation.values().random()).run {
             boardService.addShipRandomly(this, SUBMARINE, Orientation.values().random()).run {
                 boardService.addShipRandomly(this, AIRCRAFT_CARRIER, Orientation.values().random()).run {
                     boardService.addShipRandomly(this, DESTROYER, Orientation.values().random()).run {
@@ -51,6 +68,12 @@ class PlayerService(val boardService: BoardService) {
             }
         }
 
-        return player.copy(board = board)
+        val player = Player(
+                playerEntity.id,
+                board
+        )
+        playerRegistry.updatePlayer(gameId, player)
+
+        return player
     }
 }

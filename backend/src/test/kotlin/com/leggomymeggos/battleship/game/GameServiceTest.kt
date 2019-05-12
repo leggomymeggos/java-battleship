@@ -22,9 +22,9 @@ class GameServiceTest {
         gameRegistry = mock()
         gameService = GameService(playerService, gameRegistry)
 
-        whenever(playerService.initPlayer()).thenReturn(Player())
-        whenever(playerService.randomlySetShips(any())).thenReturn(Player())
-        whenever(playerService.hitBoard(any(), any())).thenReturn(Player())
+        whenever(playerService.initPlayer(any())).thenReturn(Player())
+        whenever(playerService.randomlySetShips(any(), any())).thenReturn(Player())
+        whenever(playerService.hitBoard(any(), any(), any())).thenReturn(Player())
 
         whenever(gameRegistry.getDefendingPlayer(any(), any())).thenReturn(Player())
 
@@ -36,28 +36,28 @@ class GameServiceTest {
     fun `new requests two players from playerService`() {
         gameService.new()
 
-        verify(playerService, times(2)).initPlayer()
+        verify(playerService, times(2)).initPlayer(any())
     }
 
     @Test
     fun `new randomly sets ships`() {
         val player = Player(board = Board()).copy(id = 1)
         val player2 = Player(board = Board(gridOf(1))).copy(id = 2)
-        whenever(playerService.initPlayer())
+        whenever(playerService.initPlayer(any()))
                 .thenReturn(player)
                 .thenReturn(player2)
 
         gameService.new()
 
-        verify(playerService).randomlySetShips(player)
-        verify(playerService).randomlySetShips(player2)
+        verify(playerService).randomlySetShips(any(), eq(player.id))
+        verify(playerService).randomlySetShips(any(), eq(player2.id))
     }
 
     @Test
     fun `new adds game to game registry`() {
         val player = Player(board = Board())
         val player2 = Player(board = Board(gridOf(1)))
-        whenever(playerService.randomlySetShips(any()))
+        whenever(playerService.randomlySetShips(any(), any()))
                 .thenReturn(player)
                 .thenReturn(player2)
 
@@ -97,10 +97,21 @@ class GameServiceTest {
     }
 
     @Test
+    fun `new adds game with the same id as the players`() {
+        val game = gameService.new()
+
+        val captor = argumentCaptor<Int>()
+        verify(playerService, times(2)).initPlayer(captor.capture())
+
+        assertThat(game.id).isEqualTo(captor.firstValue)
+        assertThat(game.id).isEqualTo(captor.secondValue)
+    }
+
+    @Test
     fun `new returns a game with ships and the humanPlayer active`() {
         val player = Player(id = 1, board = Board())
         val player2 = Player(id = 3, board = Board(gridOf(1)))
-        whenever(playerService.randomlySetShips(any()))
+        whenever(playerService.randomlySetShips(any(), any()))
                 .thenReturn(player)
                 .thenReturn(player2)
 
@@ -133,15 +144,15 @@ class GameServiceTest {
         whenever(gameRegistry.getDefendingPlayer(any(), any())).thenReturn(defendingPlayer)
 
         val coordinate = Coordinate(1, 2)
-        gameService.attack(0, 2, coordinate)
+        gameService.attack(123, 2, coordinate)
 
-        verify(playerService).hitBoard(defendingPlayer, coordinate)
+        verify(playerService).hitBoard(123, defendingPlayer.id, coordinate)
     }
 
     @Test
     fun `attack updates defending player`() {
         val expectedPlayer = Player(board = Board(gridOf(4)), id = 789)
-        whenever(playerService.hitBoard(any(), any())).thenReturn(expectedPlayer)
+        whenever(playerService.hitBoard(any(), any(), any())).thenReturn(expectedPlayer)
 
         gameService.attack(123, 0, Coordinate(1, 1))
 
@@ -150,17 +161,17 @@ class GameServiceTest {
 
     @Test
     fun `attack checks winning player`() {
-        val player = Player(board = Board(gridOf(3)))
-        whenever(playerService.hitBoard(any(), any())).thenReturn(player)
+        val player = Player(board = Board(gridOf(3)), id = 890)
+        whenever(playerService.hitBoard(any(), any(), any())).thenReturn(player)
 
-        gameService.attack(0, 0, Coordinate(0, 0))
+        gameService.attack(123, 456, Coordinate(0, 0))
 
-        verify(playerService).isDefeated(player)
+        verify(playerService).isDefeated(123, 890)
     }
 
     @Test
     fun `attack sets winning player`() {
-        whenever(playerService.isDefeated(any())).thenReturn(true)
+        whenever(playerService.isDefeated(any(), any())).thenReturn(true)
 
         gameService.attack(100, 12, Coordinate(0, 0))
 
@@ -169,7 +180,7 @@ class GameServiceTest {
 
     @Test
     fun `attack updates activePlayerId if there is no winner yet`() {
-        whenever(playerService.isDefeated(any())).thenReturn(false)
+        whenever(playerService.isDefeated(any(), any())).thenReturn(false)
 
         gameService.attack(1233, 12, Coordinate(0, 0))
 
@@ -179,7 +190,7 @@ class GameServiceTest {
     @Test
     fun `attack returns defending board`() {
         val expectedPlayer = Player(board = Board(gridOf(4)), id = 789)
-        whenever(playerService.hitBoard(any(), any())).thenReturn(expectedPlayer)
+        whenever(playerService.hitBoard(any(), any(), any())).thenReturn(expectedPlayer)
 
         val newBoard = gameService.attack(123, 0, Coordinate(1, 1))
 
@@ -192,9 +203,9 @@ class GameServiceTest {
 
         gameService.attack(123, 545, Coordinate(0, 0))
 
-        verify(playerService, never()).hitBoard(any(), any())
+        verify(playerService, never()).hitBoard(any(), any(), any())
         verify(gameRegistry, never()).updatePlayer(any(), any())
-        verify(playerService, never()).isDefeated(any())
+        verify(playerService, never()).isDefeated(any(), any())
         verify(gameRegistry, never()).changeTurn(any())
         verify(gameRegistry, never()).setWinner(any(), any())
     }
