@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class PlayerService(val boardService: BoardService, val playerRegistry: PlayerRegistry) {
+class PlayerService(private val boardService: BoardService,
+                    private val playerRegistry: PlayerRegistry
+) {
     fun initPlayer(gameId: Int): Player {
         val board = boardService.initBoard()
         val player = Player(id = Random().nextInt(Int.MAX_VALUE), board = board)
@@ -75,5 +77,10 @@ class PlayerService(val boardService: BoardService, val playerRegistry: PlayerRe
         playerRegistry.updatePlayer(gameId, player)
 
         return player
+    }
+
+    fun getPlayer(gameId: Int, playerId: Int): Player {
+        val playerEntity = playerRegistry.getPlayer(gameId, playerId)
+        return Player(id = playerEntity.id, board = playerEntity.board)
     }
 }

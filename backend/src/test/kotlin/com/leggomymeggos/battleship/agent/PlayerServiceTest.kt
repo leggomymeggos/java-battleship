@@ -371,4 +371,24 @@ class PlayerServiceTest {
         assertThat(playerService.isDefeated(0, 0)).isFalse()
     }
     // endregion
+
+    // region getPlayer
+    @Test
+    fun `getPlayer gets player from registry`() {
+        playerService.getPlayer(2, 3)
+
+        verify(playerRegistry).getPlayer(2, 3)
+    }
+
+    @Test
+    fun `getPlayer returns player`() {
+        val board = Board(gridOf(3))
+        val player = PlayerEntity(id = 123, gameId = 0, board = board)
+        whenever(playerRegistry.getPlayer(any(), any())).thenReturn(player)
+
+        val result = playerService.getPlayer(0, 0)
+
+        assertThat(result).isEqualTo(Player(id = 123, board = board))
+    }
+    // endregion
 }

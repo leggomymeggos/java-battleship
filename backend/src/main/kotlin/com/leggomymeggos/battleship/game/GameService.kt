@@ -34,7 +34,7 @@ class GameService(val playerService: PlayerService, val gameRegistry: GameRegist
     fun attack(gameId: Int, attackingPlayerId: Int, coordinate: Coordinate): Board {
         val defendingPlayer = gameRegistry.getDefendingPlayer(gameId, attackingPlayerId)
 
-        if (gameRegistry.getGame(gameId).winner != null) {
+        if (gameRegistry.getGame(gameId).winnerId != -1) {
             return defendingPlayer.board
         }
 
@@ -56,7 +56,12 @@ class GameService(val playerService: PlayerService, val gameRegistry: GameRegist
     }
 
     fun getWinner(gameId: Int): Player? {
-        return gameRegistry.getGame(gameId).winner
+        val winnerId = gameRegistry.getGame(gameId).winnerId
+        if (winnerId == -1) {
+            return null
+        }
+
+        return playerService.getPlayer(gameId, winnerId)
     }
 
     fun getActivePlayerId(gameId: Int): Int {

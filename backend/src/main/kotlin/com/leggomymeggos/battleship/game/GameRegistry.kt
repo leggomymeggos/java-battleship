@@ -8,9 +8,11 @@ class GameRegistry {
     val games = mutableMapOf<Int, Game>()
 
     fun setWinner(gameId: Int, winnerId: Int) {
-        val game = getGame(gameId)
-        val winner = getPlayer(gameId, winnerId)
-        games[gameId] = game.copy(winner = winner)
+        val game = getGame(gameId = gameId)
+
+        if (game.players.map { it.id }.contains(winnerId)) {
+            games[gameId] = game.copy(winnerId = winnerId)
+        }
     }
 
     fun getPlayer(gameId: Int, playerId: Int): Player {

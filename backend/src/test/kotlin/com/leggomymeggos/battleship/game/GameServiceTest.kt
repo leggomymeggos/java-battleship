@@ -199,7 +199,7 @@ class GameServiceTest {
 
     @Test
     fun `attack does nothing if the game is already won`() {
-        whenever(gameRegistry.getGame(any())).thenReturn(Game(winner = Player()))
+        whenever(gameRegistry.getGame(any())).thenReturn(Game(winnerId = 9))
 
         gameService.attack(123, 545, Coordinate(0, 0))
 
@@ -212,7 +212,7 @@ class GameServiceTest {
 
     @Test
     fun `attack returns the defending player's unchanged board if the game is already won`() {
-        whenever(gameRegistry.getGame(any())).thenReturn(Game(winner = Player()))
+        whenever(gameRegistry.getGame(any())).thenReturn(Game(winnerId = 8))
         val board = Board(gridOf(4))
         whenever(gameRegistry.getDefendingPlayer(any(), any())).thenReturn(Player(board = board))
 
@@ -231,11 +231,31 @@ class GameServiceTest {
     }
 
     @Test
+    fun `getWinner requests player`() {
+        whenever(gameRegistry.getGame(any())).thenReturn(Game(winnerId = 123))
+
+        gameService.getWinner(489)
+
+        verify(playerService).getPlayer(489, 123)
+    }
+
+    @Test
     fun `getWinner returns winner`() {
         val winner = Player(board = Board(gridOf(2)))
-        whenever(gameRegistry.getGame(any())).thenReturn(Game(winner = winner))
+        whenever(gameRegistry.getGame(any())).thenReturn(Game(winnerId = 234))
+        whenever(playerService.getPlayer(any(), any())).thenReturn(winner)
 
         assertThat(gameService.getWinner(0)).isEqualTo(winner)
+    }
+
+    @Test
+    fun `getWinner returns null when there is no winner in the game`() {
+        whenever(gameRegistry.getGame(any())).thenReturn(Game(winnerId = -1))
+
+        val winner = gameService.getWinner(0)
+
+        verify(playerService, never()).getPlayer(any(), any())
+        assertThat(winner).isNull()
     }
     // endregion
 

@@ -37,19 +37,25 @@ class GameRegistryTest {
     }
     // endregion
 
+    // region setWinner
     @Test
     fun `setWinner sets winner on correct game based on id`() {
-        val gameId = 101
-        val humanPlayer = Player(id = 123)
-        val computerPlayer = Player(id = 456)
-        gameRegistry.register(Game(id = gameId, players = listOf(humanPlayer, computerPlayer)))
+        gameRegistry.register(Game(id = 123, players = listOf(Player(id = 3), Player(id = 2))))
 
-        gameRegistry.setWinner(gameId, 123)
-        assertThat(gameRegistry.getGame(gameId).winner).isEqualTo(humanPlayer)
-
-        gameRegistry.setWinner(gameId, 456)
-        assertThat(gameRegistry.getGame(gameId).winner).isEqualTo(computerPlayer)
+        gameRegistry.setWinner(123, 2)
+        assertThat(gameRegistry.getGame(123).winnerId).isEqualTo(2)
+        gameRegistry.setWinner(123, 3)
+        assertThat(gameRegistry.getGame(123).winnerId).isEqualTo(3)
     }
+
+    @Test
+    fun `setWinner does not set winner for a player that does not exist in the game`() {
+        gameRegistry.register(Game(id = 123, players = listOf(Player(id = 3), Player(id = 2))))
+
+        gameRegistry.setWinner(123, 52)
+        assertThat(gameRegistry.getGame(123).winnerId).isEqualTo(-1)
+    }
+    // endregion
 
     @Test
     fun `getPlayer returns player from game with given id`() {
