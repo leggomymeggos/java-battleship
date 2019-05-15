@@ -1,0 +1,33 @@
+
+.title-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  height: 100%;
+
+  .title-page__title {
+    font-family: 'Fredericka The Great', 'sans-serif';
+    font-size: 13em;
+    width: auto;
+    color: #008bc6;
+  }
+
+  .title-page__new-game {
+    width: auto;
+    font-family: 'VT323', 'sans-serif';
+    font-size: 1.8em;
+    margin: 1em 1em 8em;
+    padding: .6em .9em;
+    border: 2px solid black;
+    background-color: #8bc600;
+    border-radius: 1em;
+    color: white;
+    text-decoration: none;
+
+    &:hover {
+      background-color: #9de002;
+    }
+  }
+}

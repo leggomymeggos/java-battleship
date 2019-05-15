@@ -1,6 +1,15 @@
 @import 'patternfills';
 @import 'colors';
 @import 'board';
+@import 'title-page';
+
+html, body, #root {
+  height: 100%;
+}
+
+body, #root {
+  margin: 0;
+}
 
 @keyframes idle {
   100% {
