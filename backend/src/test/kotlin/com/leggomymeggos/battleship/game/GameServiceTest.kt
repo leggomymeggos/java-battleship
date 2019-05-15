@@ -25,10 +25,11 @@ class GameServiceTest {
         whenever(playerService.initPlayer(any())).thenReturn(Player())
         whenever(playerService.randomlySetShips(any(), any())).thenReturn(Player())
         whenever(playerService.hitBoard(any(), any(), any())).thenReturn(Player())
+        whenever(playerService.getPlayer(any(), any())).thenReturn(Player())
 
-        whenever(gameRegistry.getDefendingPlayer(any(), any())).thenReturn(Player())
+        whenever(gameRegistry.getDefendingPlayer(any(), any())).thenReturn(-1)
 
-        whenever(gameRegistry.getGame(any())).thenReturn(Game())
+        whenever(gameRegistry.getGame(any())).thenReturn(GameEntity())
     }
 
     // region new
@@ -55,28 +56,29 @@ class GameServiceTest {
 
     @Test
     fun `new adds game to game registry`() {
-        val player = Player(board = Board())
-        val player2 = Player(board = Board(gridOf(1)))
+        val player = Player(id = 123, board = Board())
+        val player2 = Player(id = 456, board = Board(gridOf(1)))
+
         whenever(playerService.randomlySetShips(any(), any()))
                 .thenReturn(player)
                 .thenReturn(player2)
 
         gameService.new()
 
-        val argumentCaptor = argumentCaptor<Game>()
+        val argumentCaptor = argumentCaptor<GameEntity>()
         verify(gameRegistry).register(argumentCaptor.capture())
 
         val game = argumentCaptor.firstValue
 
-        assertThat(game.players).isEqualTo(listOf(player, player2))
-        assertThat(game.activePlayerId).isEqualTo(player.id)
+        assertThat(game.playerIds).isEqualTo(listOf(123, 456))
+        assertThat(game.activePlayerId).isEqualTo(123)
     }
 
     @Test
     fun `new adds game with easy difficulty`() {
         gameService.new(Difficulty.EASY)
 
-        val argumentCaptor = argumentCaptor<Game>()
+        val argumentCaptor = argumentCaptor<GameEntity>()
         verify(gameRegistry).register(argumentCaptor.capture())
 
         val game = argumentCaptor.firstValue
@@ -88,7 +90,7 @@ class GameServiceTest {
     fun `new adds game with hard difficulty`() {
         gameService.new(Difficulty.HARD)
 
-        val argumentCaptor = argumentCaptor<Game>()
+        val argumentCaptor = argumentCaptor<GameEntity>()
         verify(gameRegistry).register(argumentCaptor.capture())
 
         val game = argumentCaptor.firstValue
@@ -118,13 +120,13 @@ class GameServiceTest {
         val game = gameService.new()
 
         assertThat(game.players).isEqualTo(listOf(player, player2))
-        assertThat(game.activePlayerId).isEqualTo(player.id)
+        assertThat(game.activePlayerId).isEqualTo(1)
     }
     // endregion
 
     // region attack
     @Test
-    fun `attack determines defending player`() {
+    fun `attack determines defending player id`() {
         gameService.attack(143, 123, Coordinate(0, 0))
 
         verify(gameRegistry).getDefendingPlayer(143, 123)
@@ -139,24 +141,12 @@ class GameServiceTest {
 
     @Test
     fun `attack hits board of defending player`() {
-        val defendingPlayer = Player(id = 1)
-
-        whenever(gameRegistry.getDefendingPlayer(any(), any())).thenReturn(defendingPlayer)
+        whenever(gameRegistry.getDefendingPlayer(any(), any())).thenReturn(3)
 
         val coordinate = Coordinate(1, 2)
         gameService.attack(123, 2, coordinate)
 
-        verify(playerService).hitBoard(123, defendingPlayer.id, coordinate)
-    }
-
-    @Test
-    fun `attack updates defending player`() {
-        val expectedPlayer = Player(board = Board(gridOf(4)), id = 789)
-        whenever(playerService.hitBoard(any(), any(), any())).thenReturn(expectedPlayer)
-
-        gameService.attack(123, 0, Coordinate(1, 1))
-
-        verify(gameRegistry).updatePlayer(123, expectedPlayer)
+        verify(playerService).hitBoard(123, 3, coordinate)
     }
 
     @Test
@@ -199,22 +189,30 @@ class GameServiceTest {
 
     @Test
     fun `attack does nothing if the game is already won`() {
-        whenever(gameRegistry.getGame(any())).thenReturn(Game(winnerId = 9))
+        whenever(gameRegistry.getGame(any())).thenReturn(GameEntity(winnerId = 9))
 
         gameService.attack(123, 545, Coordinate(0, 0))
 
         verify(playerService, never()).hitBoard(any(), any(), any())
-        verify(gameRegistry, never()).updatePlayer(any(), any())
         verify(playerService, never()).isDefeated(any(), any())
         verify(gameRegistry, never()).changeTurn(any())
         verify(gameRegistry, never()).setWinner(any(), any())
     }
 
     @Test
-    fun `attack returns the defending player's unchanged board if the game is already won`() {
-        whenever(gameRegistry.getGame(any())).thenReturn(Game(winnerId = 8))
+    fun `attack looks up the winner if the game is already won`() {
+        whenever(gameRegistry.getGame(any())).thenReturn(GameEntity(winnerId = 8))
+
+        gameService.attack(123, 545, Coordinate(0, 0))
+
+        verify(playerService).getPlayer(123, 8)
+    }
+
+    @Test
+    fun `attack returns the winner's unchanged board if the game is already won`() {
+        whenever(gameRegistry.getGame(any())).thenReturn(GameEntity(winnerId = 8))
         val board = Board(gridOf(4))
-        whenever(gameRegistry.getDefendingPlayer(any(), any())).thenReturn(Player(board = board))
+        whenever(playerService.getPlayer(any(), any())).thenReturn(Player(board = board))
 
         val result = gameService.attack(123, 545, Coordinate(0, 0))
 
@@ -232,7 +230,7 @@ class GameServiceTest {
 
     @Test
     fun `getWinner requests player`() {
-        whenever(gameRegistry.getGame(any())).thenReturn(Game(winnerId = 123))
+        whenever(gameRegistry.getGame(any())).thenReturn(GameEntity(winnerId = 123))
 
         gameService.getWinner(489)
 
@@ -242,7 +240,7 @@ class GameServiceTest {
     @Test
     fun `getWinner returns winner`() {
         val winner = Player(board = Board(gridOf(2)))
-        whenever(gameRegistry.getGame(any())).thenReturn(Game(winnerId = 234))
+        whenever(gameRegistry.getGame(any())).thenReturn(GameEntity(winnerId = 234))
         whenever(playerService.getPlayer(any(), any())).thenReturn(winner)
 
         assertThat(gameService.getWinner(0)).isEqualTo(winner)
@@ -250,7 +248,7 @@ class GameServiceTest {
 
     @Test
     fun `getWinner returns null when there is no winner in the game`() {
-        whenever(gameRegistry.getGame(any())).thenReturn(Game(winnerId = -1))
+        whenever(gameRegistry.getGame(any())).thenReturn(GameEntity(winnerId = -1))
 
         val winner = gameService.getWinner(0)
 
@@ -270,7 +268,7 @@ class GameServiceTest {
     @Test
     fun `getActivePlayerId returns active player id`() {
         val activePlayerId = 789
-        whenever(gameRegistry.getGame(any())).thenReturn(Game(activePlayerId = activePlayerId))
+        whenever(gameRegistry.getGame(any())).thenReturn(GameEntity(activePlayerId = activePlayerId))
 
         assertThat(gameService.getActivePlayerId(0)).isEqualTo(activePlayerId)
     }
@@ -278,16 +276,25 @@ class GameServiceTest {
 
     // region getDefendingBoard
     @Test
-    fun `getDefendingBoard gets the defending player`() {
+    fun `getDefendingBoard gets the defending player id`() {
         gameService.getDefendingBoard(123, 890)
 
         verify(gameRegistry).getDefendingPlayer(123, 890)
     }
 
     @Test
+    fun `getDefendingBoard gets the defending player`() {
+        whenever(gameRegistry.getDefendingPlayer(any(), any())).thenReturn(20)
+
+        gameService.getDefendingBoard(12, 90)
+
+        verify(playerService).getPlayer(12, 20)
+    }
+
+    @Test
     fun `getDefendingBoard returns the defending board`() {
-        whenever(gameRegistry.getDefendingPlayer(any(), any()))
-                .thenReturn(Player(board = Board(gridOf(2))))
+        whenever(gameRegistry.getDefendingPlayer(any(), any())).thenReturn(10)
+        whenever(playerService.getPlayer(any(), any())).thenReturn(Player(board = Board(gridOf(2))))
 
         val board = gameService.getDefendingBoard(0, 0)
         assertThat(board).isEqualTo(Board(gridOf(2)))

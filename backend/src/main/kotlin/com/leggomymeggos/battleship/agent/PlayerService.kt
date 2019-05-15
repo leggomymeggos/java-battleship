@@ -46,6 +46,7 @@ class PlayerService(private val boardService: BoardService,
         val playerEntity = playerRegistry.getPlayer(gameId, playerId)
         val updatedBoard = boardService.hitTile(playerEntity.board, coordinate)
         val player = Player(playerEntity.id, updatedBoard)
+
         playerRegistry.updatePlayer(gameId, player)
         return player
     }

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service
 class GameService(val playerService: PlayerService, val gameRegistry: GameRegistry) {
 
     fun new(difficulty: Difficulty = Difficulty.EASY): Game {
-        val newGame = Game()
+        val newGame = GameEntity()
         val humanPlayer = playerService.initPlayer(newGame.id)
                 .run {
                     playerService.randomlySetShips(newGame.id, this.id)
@@ -22,28 +22,32 @@ class GameService(val playerService: PlayerService, val gameRegistry: GameRegist
                 }
 
         val game = newGame.copy(
-                players = listOf(humanPlayer, computerPlayer),
+                playerIds = listOf(humanPlayer.id, computerPlayer.id),
                 activePlayerId = humanPlayer.id,
                 difficulty = difficulty
         )
         gameRegistry.register(game)
 
-        return game
+        return Game(
+                id = game.id,
+                players = listOf(humanPlayer, computerPlayer),
+                activePlayerId = game.activePlayerId,
+                winnerId = game.winnerId,
+                difficulty = game.difficulty
+        )
     }
 
     fun attack(gameId: Int, attackingPlayerId: Int, coordinate: Coordinate): Board {
-        val defendingPlayer = gameRegistry.getDefendingPlayer(gameId, attackingPlayerId)
-
-        if (gameRegistry.getGame(gameId).winnerId != -1) {
-            return defendingPlayer.board
+        val game = gameRegistry.getGame(gameId)
+        if (game.winnerId != -1) {
+            return playerService.getPlayer(gameId, game.winnerId).board
         }
+
+        val defendingPlayer = gameRegistry.getDefendingPlayer(gameId, attackingPlayerId)
 
         val attackedPlayer = defendingPlayer
                 .run {
-                    playerService.hitBoard(gameId, this.id, coordinate).run {
-                        gameRegistry.updatePlayer(gameId, this)
-                        this
-                    }
+                    playerService.hitBoard(gameId, this, coordinate)
                 }
 
         if (playerService.isDefeated(gameId, attackedPlayer.id)) {
@@ -69,6 +73,7 @@ class GameService(val playerService: PlayerService, val gameRegistry: GameRegist
     }
 
     fun getDefendingBoard(gameId: Int, attackingPlayerId: Int): Board {
-        return gameRegistry.getDefendingPlayer(gameId, attackingPlayerId).board
+        val playerId = gameRegistry.getDefendingPlayer(gameId, attackingPlayerId)
+        return playerService.getPlayer(gameId, playerId).board
     }
 }

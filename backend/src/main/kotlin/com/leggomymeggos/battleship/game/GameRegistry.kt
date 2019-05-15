@@ -1,53 +1,37 @@
 package com.leggomymeggos.battleship.game
 
-import com.leggomymeggos.battleship.agent.Player
 import org.springframework.stereotype.Component
 
 @Component
 class GameRegistry {
-    val games = mutableMapOf<Int, Game>()
+    val games = mutableMapOf<Int, GameEntity>()
 
     fun setWinner(gameId: Int, winnerId: Int) {
         val game = getGame(gameId = gameId)
 
-        if (game.players.map { it.id }.contains(winnerId)) {
+        if (game.playerIds.contains(winnerId)) {
             games[gameId] = game.copy(winnerId = winnerId)
         }
     }
 
-    fun getPlayer(gameId: Int, playerId: Int): Player {
-        val game = getGame(gameId)
-        return game.players.first { it.id == playerId }
-    }
-
-    fun getGame(gameId: Int): Game {
+    fun getGame(gameId: Int): GameEntity {
         return games[gameId] ?: TODO()
     }
 
     fun changeTurn(gameId: Int) {
         val game = getGame(gameId)
-        val nextActivePlayer = getDefendingPlayer(gameId, game.activePlayerId).id
+        val nextActivePlayer = getDefendingPlayer(gameId, game.activePlayerId)
 
         games[gameId] = game.copy(activePlayerId = nextActivePlayer)
     }
 
-    fun updatePlayer(gameId: Int, player: Player) {
+    fun getDefendingPlayer(gameId: Int, attackingPlayerId: Int): Int {
         val game = getGame(gameId)
 
-        val players = game.players.toMutableList()
-        players.removeIf { it.id == player.id }
-        players.add(player)
-
-        games[gameId] = game.copy(players = players)
+        return game.playerIds.filterNot { it == attackingPlayerId }.first()
     }
 
-    fun getDefendingPlayer(gameId: Int, attackingPlayerId: Int): Player {
-        val game = getGame(gameId)
-
-        return game.players.filterNot { it.id == attackingPlayerId }.first()
-    }
-
-    fun register(game: Game) {
+    fun register(game: GameEntity) {
         games[game.id] = game
     }
 }
