@@ -16,7 +16,8 @@ class ComputerAgentService(
                 row.map { Tile(hit = it.hit) }
             })
         }
-        val coordinate = computerAgentBrain.determineFiringCoordinate(defendingBoard)
+        val difficulty = gameService.getDifficulty(gameId)
+        val coordinate = computerAgentBrain.determineFiringCoordinate(defendingBoard, difficulty)
         return gameService.attack(gameId, attackerId, coordinate)
     }
 }

@@ -300,4 +300,22 @@ class GameServiceTest {
         assertThat(board).isEqualTo(Board(gridOf(2)))
     }
     // endregion
+
+    // region getDifficulty
+    @Test
+    fun `getDifficulty gets game`() {
+        gameService.getDifficulty(123)
+
+        verify(gameRegistry).getGame(123)
+    }
+
+    @Test
+    fun `getDifficulty returns game difficulty`() {
+        whenever(gameRegistry.getGame(any())).thenReturn(GameEntity(difficulty = Difficulty.HARD))
+
+        val difficulty = gameService.getDifficulty(0)
+
+        assertThat(difficulty).isEqualTo(Difficulty.HARD)
+    }
+    // endregion
 }

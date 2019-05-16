@@ -76,4 +76,8 @@ class GameService(val playerService: PlayerService, val gameRegistry: GameRegist
         val playerId = gameRegistry.getDefendingPlayer(gameId, attackingPlayerId)
         return playerService.getPlayer(gameId, playerId).board
     }
+
+    fun getDifficulty(gameId: Int): Difficulty {
+        return gameRegistry.getGame(gameId).difficulty
+    }
 }

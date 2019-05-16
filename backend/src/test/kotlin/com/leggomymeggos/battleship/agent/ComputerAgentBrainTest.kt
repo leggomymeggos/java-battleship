@@ -2,60 +2,43 @@ package com.leggomymeggos.battleship.agent
 
 import com.leggomymeggos.battleship.board.Board
 import com.leggomymeggos.battleship.board.Coordinate
-import com.leggomymeggos.battleship.board.Tile
 import com.leggomymeggos.battleship.board.gridOf
+import com.leggomymeggos.battleship.game.Difficulty
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockito_kotlin.whenever
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 
 class ComputerAgentBrainTest {
+    private lateinit var coordinateDecider: CoordinateDecider
     private lateinit var computerAgentBrain: ComputerAgentBrain
 
     @Before
     fun setup() {
-        computerAgentBrain = ComputerAgentBrain()
+        coordinateDecider = mock()
+        computerAgentBrain = ComputerAgentBrain(coordinateDecider)
     }
 
-    // region determineFiringCoordinate
+    // region determineFiringCoordinate - Difficulty.EASY
     @Test
-    fun `determineFiringCoordinate picks a valid coordinate`() {
-        val coordinate = computerAgentBrain.determineFiringCoordinate(Board(gridOf(2)))
+    fun `determineFiringCoordinate - difficulty EASY - gets random valid coordinate`() {
+        val board = Board(gridOf(1))
+        computerAgentBrain.determineFiringCoordinate(board, Difficulty.EASY)
 
-        val validCoordinates = listOf(
-                Coordinate(0, 0),
-                Coordinate(1, 0),
-                Coordinate(0, 1),
-                Coordinate(1, 1)
-        )
-
-        assertThat(validCoordinates).containsAnyOf(coordinate)
+        verify(coordinateDecider).randomValidCoordinate(board)
     }
 
     @Test
-    fun `determineFiringCoordinate does not pick a coordinate that has already been hit`() {
-        val board = Board(listOf(
-                listOf(Tile(hit = true), Tile()),
-                listOf(Tile(), Tile(hit = true)),
-                listOf(Tile(), Tile(hit = true))
-        ))
-        val coordinate = computerAgentBrain.determineFiringCoordinate(board)
+    fun `determineFiringCoordinate -difficulty EASY - returns random valid coordinate`() {
+        val coordinate = Coordinate(10, 20)
+        whenever(coordinateDecider.randomValidCoordinate(any())).thenReturn(coordinate)
 
-        val invalidCoordinates = listOf(
-                Coordinate(0, 0),
-                Coordinate(1, 1),
-                Coordinate(1, 2)
-        )
+        val result = computerAgentBrain.determineFiringCoordinate(Board(), Difficulty.EASY)
 
-        assertThat(invalidCoordinates).doesNotContain(coordinate)
-    }
-
-    @Test
-    fun `determineFiringCoordinate doesn't pick the same coordinate twice in a row`() {
-        val board = Board(gridOf(10))
-        val coordinate1 = computerAgentBrain.determineFiringCoordinate(board)
-        val coordinate2 = computerAgentBrain.determineFiringCoordinate(board)
-
-        assertThat(coordinate1).isNotEqualTo(coordinate2)
+        assertThat(result).isSameAs(coordinate)
     }
     // endregion
 }

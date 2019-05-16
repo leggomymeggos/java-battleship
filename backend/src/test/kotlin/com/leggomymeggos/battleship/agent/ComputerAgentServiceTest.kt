@@ -1,11 +1,9 @@
 package com.leggomymeggos.battleship.agent
 
 import com.leggomymeggos.battleship.board.*
+import com.leggomymeggos.battleship.game.Difficulty
 import com.leggomymeggos.battleship.game.GameService
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockito_kotlin.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -22,6 +20,7 @@ class ComputerAgentServiceTest {
         computerAgentService = ComputerAgentService(gameService, computerAgentBrain)
 
         whenever(gameService.getDefendingBoard(any(), any())).thenReturn(Board())
+        whenever(gameService.getDifficulty(any())).thenReturn(Difficulty.EASY)
     }
 
     // region takeTurn
@@ -33,13 +32,20 @@ class ComputerAgentServiceTest {
     }
 
     @Test
-    fun `takeTurn determines coordinate to hit from defending board`() {
+    fun `takeTurn requests game difficulty`() {
+        computerAgentService.takeTurn(123, 0)
+        verify(gameService).getDifficulty(123)
+    }
+
+    @Test
+    fun `takeTurn determines coordinate to hit from defending board, considering difficulty`() {
         val board = Board(gridOf(2))
         whenever(gameService.getDefendingBoard(any(), any())).thenReturn(board)
+        whenever(gameService.getDifficulty(any())).thenReturn(Difficulty.HARD)
 
         computerAgentService.takeTurn(0, 0)
 
-        verify(computerAgentBrain).determineFiringCoordinate(board)
+        verify(computerAgentBrain).determineFiringCoordinate(board, Difficulty.HARD)
     }
 
     @Test
@@ -53,11 +59,11 @@ class ComputerAgentServiceTest {
 
         computerAgentService.takeTurn(0, 0)
 
-        verify(computerAgentBrain).determineFiringCoordinate(Board(listOf(
+        verify(computerAgentBrain).determineFiringCoordinate(eq(Board(listOf(
                 listOf(Tile(), Tile()),
                 listOf(Tile(), Tile()),
                 listOf(Tile(), Tile())
-        )))
+        ))), any())
     }
 
     @Test
@@ -71,17 +77,17 @@ class ComputerAgentServiceTest {
 
         computerAgentService.takeTurn(0, 0)
 
-        verify(computerAgentBrain).determineFiringCoordinate(Board(listOf(
+        verify(computerAgentBrain).determineFiringCoordinate(eq(Board(listOf(
                 listOf(Tile(hit = true), Tile()),
                 listOf(Tile(), Tile()),
                 listOf(Tile(), Tile(hit = true))
-        )))
+        ))), any())
     }
 
     @Test
     fun `takeTurn attacks with the determined coordinate`() {
         val coordinate = Coordinate(1, 2)
-        whenever(computerAgentBrain.determineFiringCoordinate(any())).thenReturn(coordinate)
+        whenever(computerAgentBrain.determineFiringCoordinate(any(), any())).thenReturn(coordinate)
 
         computerAgentService.takeTurn(123, 456)
 
@@ -90,7 +96,7 @@ class ComputerAgentServiceTest {
 
     @Test
     fun `takeTurn returns the attacked board`() {
-        whenever(computerAgentBrain.determineFiringCoordinate(any())).thenReturn(Coordinate(0, 0))
+        whenever(computerAgentBrain.determineFiringCoordinate(any(), any())).thenReturn(Coordinate(0, 0))
         val board = Board(gridOf(10))
         whenever(gameService.attack(any(), any(), any())).thenReturn(board)
 

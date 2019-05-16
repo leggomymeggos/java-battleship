@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class GameRegistry {
-    val games = mutableMapOf<Int, GameEntity>()
+    private val games = mutableMapOf<Int, GameEntity>()
 
     fun setWinner(gameId: Int, winnerId: Int) {
         val game = getGame(gameId = gameId)
