@@ -20,7 +20,8 @@ module.exports = merge(baseConfig, {
             path: './env/prod.env'
         }),
         new OptimizeCssAssetsPlugin({
-            assetNameRegExp: /\.optimize\.css$/g,
+            assetNameRegExp: /\.*css$/g,
+            cssProcessor: require('cssnano'),
             cssProcessorPluginOptions: {
                 preset: ['default', {discardComments: {removeAll: true}}],
             },
@@ -43,9 +44,6 @@ module.exports = merge(baseConfig, {
                     loader: "style-loader" // creates style nodes from JS strings
                 }, {
                     loader: "css-loader", // translates CSS into CommonJS
-                    options: {
-                        minimize: true
-                    }
                 }, {
                     loader: "sass-loader" // compiles Sass to CSS
                 }],
