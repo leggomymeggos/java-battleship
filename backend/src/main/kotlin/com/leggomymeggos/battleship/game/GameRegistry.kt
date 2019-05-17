@@ -10,7 +10,7 @@ class GameRegistry {
         val game = getGame(gameId = gameId)
 
         if (game.playerIds.contains(winnerId)) {
-            games[gameId] = game.copy(winnerId = winnerId)
+            games[gameId] = game.copy(winnerId = winnerId, activePlayerId = -1)
         }
     }
 

@@ -47,6 +47,14 @@ class GameRegistryTest {
     }
 
     @Test
+    fun `setWinner clears active player`() {
+        gameRegistry.register(GameEntity(id = 123, playerIds = listOf(3, 2), activePlayerId = 3))
+
+        gameRegistry.setWinner(123, 2)
+        assertThat(gameRegistry.getGame(123).activePlayerId).isEqualTo(-1)
+    }
+
+    @Test
     fun `setWinner does not set winner for a player that does not exist in the game`() {
         gameRegistry.register(GameEntity(id = 123, playerIds = listOf(3, 2)))
 
