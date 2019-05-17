@@ -303,7 +303,7 @@ class PlayerServiceTest {
     }
 
     @Test
-    fun `hitBoard returns player with newly hit board`() {
+    fun `hitBoard returns newly hit board`() {
         whenever(playerRegistry.getPlayer(any(), any()))
                 .thenReturn(PlayerEntity(3, -1, Board()))
         val board = Board(gridOf(1))
@@ -311,8 +311,7 @@ class PlayerServiceTest {
 
         val result = playerService.hitBoard(3, 2, Coordinate(0, 0))
 
-        assertThat(result.board).isEqualTo(board)
-        assertThat(result.id).isEqualTo(3)
+        assertThat(result).isEqualTo(board)
     }
     // endregion
 

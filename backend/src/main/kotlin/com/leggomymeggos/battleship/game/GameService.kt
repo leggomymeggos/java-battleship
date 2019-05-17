@@ -43,20 +43,20 @@ class GameService(val playerService: PlayerService, val gameRegistry: GameRegist
             return playerService.getPlayer(gameId, game.winnerId).board
         }
 
-        val defendingPlayer = gameRegistry.getDefendingPlayer(gameId, attackingPlayerId)
+        val defendingPlayerId = gameRegistry.getDefendingPlayer(gameId, attackingPlayerId)
 
-        val attackedPlayer = defendingPlayer
+        val attackedBoard = defendingPlayerId
                 .run {
                     playerService.hitBoard(gameId, this, coordinate)
                 }
 
-        if (playerService.isDefeated(gameId, attackedPlayer.id)) {
+        if (playerService.isDefeated(gameId, defendingPlayerId)) {
             gameRegistry.setWinner(gameId, attackingPlayerId)
         } else {
             gameRegistry.changeTurn(gameId)
         }
 
-        return attackedPlayer.board
+        return attackedBoard
     }
 
     fun getWinner(gameId: Int): Player? {

@@ -24,7 +24,7 @@ class GameServiceTest {
 
         whenever(playerService.initPlayer(any())).thenReturn(Player())
         whenever(playerService.randomlySetShips(any(), any())).thenReturn(Player())
-        whenever(playerService.hitBoard(any(), any(), any())).thenReturn(Player())
+        whenever(playerService.hitBoard(any(), any(), any())).thenReturn(Board())
         whenever(playerService.getPlayer(any(), any())).thenReturn(Player())
 
         whenever(gameRegistry.getDefendingPlayer(any(), any())).thenReturn(-1)
@@ -151,8 +151,7 @@ class GameServiceTest {
 
     @Test
     fun `attack checks winning player`() {
-        val player = Player(board = Board(gridOf(3)), id = 890)
-        whenever(playerService.hitBoard(any(), any(), any())).thenReturn(player)
+        whenever(gameRegistry.getDefendingPlayer(any(), any())).thenReturn(890)
 
         gameService.attack(123, 456, Coordinate(0, 0))
 
@@ -179,12 +178,12 @@ class GameServiceTest {
 
     @Test
     fun `attack returns defending board`() {
-        val expectedPlayer = Player(board = Board(gridOf(4)), id = 789)
-        whenever(playerService.hitBoard(any(), any(), any())).thenReturn(expectedPlayer)
+        val board = Board(gridOf(4))
+        whenever(playerService.hitBoard(any(), any(), any())).thenReturn(board)
 
         val newBoard = gameService.attack(123, 0, Coordinate(1, 1))
 
-        assertThat(newBoard).isEqualTo(expectedPlayer.board)
+        assertThat(newBoard).isEqualTo(board)
     }
 
     @Test
