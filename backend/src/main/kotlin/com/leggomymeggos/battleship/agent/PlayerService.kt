@@ -1,6 +1,6 @@
 package com.leggomymeggos.battleship.agent
 
-import com.leggomymeggos.battleship.board.Board
+import com.leggomymeggos.battleship.board.BoardHitResponse
 import com.leggomymeggos.battleship.board.BoardService
 import com.leggomymeggos.battleship.board.Coordinate
 import com.leggomymeggos.battleship.board.Orientation
@@ -43,13 +43,14 @@ class PlayerService(private val boardService: BoardService,
         return player
     }
 
-    fun hitBoard(gameId: Int, playerId: Int, coordinate: Coordinate): Board {
+    fun hitBoard(gameId: Int, playerId: Int, coordinate: Coordinate): BoardHitResponse {
         val playerEntity = playerRegistry.getPlayer(gameId, playerId)
-        val updatedBoard = boardService.hitTile(playerEntity.board, coordinate)
-        val player = Player(playerEntity.id, updatedBoard)
+        val response = boardService.hitTile(playerEntity.board, coordinate)
 
+        val player = Player(playerEntity.id, response.board)
         playerRegistry.updatePlayer(gameId, player)
-        return updatedBoard
+
+        return response
     }
 
     fun isDefeated(gameId: Int, playerId: Int): Boolean {

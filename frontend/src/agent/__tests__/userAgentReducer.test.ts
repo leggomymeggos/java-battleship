@@ -18,7 +18,10 @@ describe("userAgentReducer", () => {
             type: GameActions.NEW_GAME_CREATED,
             payload: {
                 players: [
-                    {id: 789, board: {grid: [[new Tile()], [new Tile()], [new Tile()]], sunkenShips: ["super ships sunk"]}},
+                    {
+                        id: 789,
+                        board: {grid: [[new Tile()], [new Tile()], [new Tile()]], sunkenShips: ["super ships sunk"]}
+                    },
                     {id: 123, board: {grid: [[new Tile()], [new Tile()]], sunkenShips: ["none yet"]}}
                 ],
             }
@@ -39,7 +42,14 @@ describe("userAgentReducer", () => {
             };
 
             let board = {grid: [[new Tile()]]};
-            const state = userAgentReducer(prevState, {type: BoardActions.USER_BOARD_HIT_SUCCESS, payload: {board}});
+            const state = userAgentReducer(prevState, {
+                type: BoardActions.USER_BOARD_HIT_SUCCESS, payload: {
+                    response: {
+                        result: 'SUNK',
+                        board
+                    }
+                }
+            });
 
             expect(state.grid).toEqual(board.grid);
         });
@@ -52,7 +62,14 @@ describe("userAgentReducer", () => {
             };
 
             let board = {grid: [[new Tile()]], sunkenShips: ["the battleship"]};
-            const state = userAgentReducer(prevState, {type: BoardActions.USER_BOARD_HIT_SUCCESS, payload: {board}});
+            const state = userAgentReducer(prevState, {
+                type: BoardActions.USER_BOARD_HIT_SUCCESS, payload: {
+                    response: {
+                        result: 'HIT',
+                        board
+                    }
+                }
+            });
 
             expect(state.sunkenShips).toEqual(["the battleship"]);
         });
@@ -65,9 +82,17 @@ describe("userAgentReducer", () => {
             };
 
             let board = {id: 456, grid: [[new Tile()]], sunkenShips: ["the battleship"]};
-            const state = userAgentReducer(prevState, {type: BoardActions.USER_BOARD_HIT_SUCCESS, payload: {board}});
+            const state = userAgentReducer(prevState, {
+                type: BoardActions.USER_BOARD_HIT_SUCCESS, payload: {
+                    response: {
+                        result: 'MISS',
+                        board
+                    }
+                }
+            });
 
             expect(state.id).toEqual(1);
         });
     });
-});
+})
+;

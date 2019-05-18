@@ -15,8 +15,8 @@ export function* newGame(): any {
 
 export function* attack(gameId: number, attackingPlayerId: number, coordinate: Coordinate): any {
     try {
-        const newBoard = yield call(GameApi.attack, gameId, attackingPlayerId, coordinate);
-        yield put(opponentBoardHitSuccess(gameId, newBoard));
+        const attackResult = yield call(GameApi.attack, gameId, attackingPlayerId, coordinate);
+        yield put(opponentBoardHitSuccess(gameId, attackResult));
     } catch (e) {
         console.error(e)
     }

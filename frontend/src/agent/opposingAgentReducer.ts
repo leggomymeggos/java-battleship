@@ -22,8 +22,8 @@ const opposingAgentReducer = handleActions({
     [BoardActions.OPPONENT_BOARD_HIT_SUCCESS]: (state: AgentState, action: Action<any>) => {
         return {
             ...state,
-            grid: action.payload.board.grid,
-            sunkenShips: action.payload.board.sunkenShips
+            grid: action.payload.response.board.grid,
+            sunkenShips: action.payload.response.board.sunkenShips
         }
     },
 }, initialState);

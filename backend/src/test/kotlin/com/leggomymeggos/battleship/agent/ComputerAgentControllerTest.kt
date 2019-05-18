@@ -1,6 +1,8 @@
 package com.leggomymeggos.battleship.agent
 
 import com.leggomymeggos.battleship.board.Board
+import com.leggomymeggos.battleship.board.BoardHitResponse
+import com.leggomymeggos.battleship.board.HitResult
 import com.leggomymeggos.battleship.board.gridOf
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
@@ -43,12 +45,12 @@ class ComputerAgentControllerTest {
 
     @Test
     fun `attack returns the new board`() {
-        val board = Board(grid = gridOf(2))
-        whenever(computerAgentService.takeTurn(any(), any())).thenReturn(board)
+        val response = BoardHitResponse(HitResult.HIT, Board(grid = gridOf(2)))
+        whenever(computerAgentService.takeTurn(any(), any())).thenReturn(response)
 
         val result = controller.attack(0, 0)
 
-        assertThat(result).isEqualTo(board)
+        assertThat(result).isEqualTo(response)
     }
     // endregion
 }

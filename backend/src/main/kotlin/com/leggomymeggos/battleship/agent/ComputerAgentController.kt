@@ -1,6 +1,6 @@
 package com.leggomymeggos.battleship.agent
 
-import com.leggomymeggos.battleship.board.Board
+import com.leggomymeggos.battleship.board.BoardHitResponse
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -13,7 +13,7 @@ class ComputerAgentController(val computerAgentService: ComputerAgentService) {
             method = [RequestMethod.GET]
     )
     fun attack(@PathVariable(name = "gameId") gameId: Int,
-               @RequestParam(name = "attackerId") attackingPlayerId: Int): Board {
+               @RequestParam(name = "attackerId") attackingPlayerId: Int): BoardHitResponse {
         return computerAgentService.takeTurn(gameId, attackingPlayerId)
     }
 }

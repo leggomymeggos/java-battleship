@@ -33,7 +33,7 @@ class BoardService {
         return Board(newGrid)
     }
 
-    fun hitTile(board: Board, coordinate: Coordinate): Board {
+    fun hitTile(board: Board, coordinate: Coordinate): BoardHitResponse {
         val hitBoard = board.copy(grid = board.grid.hitCoordinate(coordinate))
 
         val ship = hitBoard.grid[coordinate.y][coordinate.x].ship
@@ -42,7 +42,13 @@ class BoardService {
             hitBoard.sunkenShips.add(ship)
         }
 
-        return hitBoard
+        val result = when {
+            hitBoard.sunkenShips.contains(ship) -> HitResult.SUNK
+            ship !== null -> HitResult.HIT
+            else -> HitResult.MISS
+        }
+
+        return BoardHitResponse(result = result, board = hitBoard)
     }
 
     fun addShipRandomly(board: Board, ship: Ship, orientation: Orientation): Board {

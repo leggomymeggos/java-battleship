@@ -1,6 +1,7 @@
 package com.leggomymeggos.battleship.board
 
-import com.leggomymeggos.battleship.board.Orientation.*
+import com.leggomymeggos.battleship.board.Orientation.HORIZONTAL
+import com.leggomymeggos.battleship.board.Orientation.VERTICAL
 import com.leggomymeggos.battleship.board.Ship.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
@@ -123,7 +124,7 @@ class BoardServiceTest {
     // region hitTile
     @Test
     fun `hitTile updates tile for given coordinate`() {
-        val board = boardService.hitTile(Board(gridOf(5)), Coordinate(2, 3))
+        val board = boardService.hitTile(Board(gridOf(5)), Coordinate(2, 3)).board
 
         assertThat(board.grid[3][2].hit).isTrue()
     }
@@ -133,7 +134,7 @@ class BoardServiceTest {
         val board = Board(gridOf(5))
         val boardWithShip = boardService.addShip(board, SUBMARINE, Coordinate(0, 0), HORIZONTAL)
 
-        val hitBoard = boardService.hitTile(boardWithShip, Coordinate(0, 0))
+        val hitBoard = boardService.hitTile(boardWithShip, Coordinate(0, 0)).board
 
         assertThat(hitBoard.grid[0][0].ship).isEqualTo(SUBMARINE)
     }
@@ -142,12 +143,44 @@ class BoardServiceTest {
     fun `hitTile can update sunken ships`() {
         val boardWithShip = boardService.addShip(Board(gridOf(5)), DESTROYER, Coordinate(0, 0), HORIZONTAL)
 
-        val hitBoard = boardService.hitTile(boardWithShip, Coordinate(0, 0))
+        val hitBoard = boardService.hitTile(boardWithShip, Coordinate(0, 0)).board
 
         assertThat(hitBoard.sunkenShips).isEmpty()
 
-        val sunkBoard = boardService.hitTile(hitBoard, Coordinate(1, 0))
+        val sunkBoard = boardService.hitTile(hitBoard, Coordinate(1, 0)).board
         assertThat(sunkBoard.sunkenShips).containsExactly(DESTROYER)
+    }
+
+    @Test
+    fun `hitTile returns attack result when it's a hit`() {
+        val board = Board(gridOf(5))
+        val boardWithShip = boardService.addShip(board, SUBMARINE, Coordinate(0, 0), HORIZONTAL)
+
+        val result = boardService.hitTile(boardWithShip, Coordinate(0, 0)).result
+
+        assertThat(result).isEqualTo(HitResult.HIT)
+    }
+
+    @Test
+    fun `hitTile returns attack result when it's a miss`() {
+        val board = Board(gridOf(5))
+        val boardWithShip = boardService.addShip(board, SUBMARINE, Coordinate(0, 0), HORIZONTAL)
+
+        val result = boardService.hitTile(boardWithShip, Coordinate(3, 2)).result
+
+        assertThat(result).isEqualTo(HitResult.MISS)
+    }
+
+    @Test
+    fun `hitTile returns attack result when a ship is sunk`() {
+        val board = Board(gridOf(5))
+        val boardWithShip = boardService.addShip(board, DESTROYER, Coordinate(0, 0), HORIZONTAL)
+
+        val result = boardService.hitTile(boardWithShip, Coordinate(0, 0)).run {
+            boardService.hitTile(this.board, Coordinate(1, 0))
+        }.result
+
+        assertThat(result).isEqualTo(HitResult.SUNK)
     }
     // endregion
 

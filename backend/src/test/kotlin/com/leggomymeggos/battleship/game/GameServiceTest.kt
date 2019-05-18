@@ -1,10 +1,8 @@
 package com.leggomymeggos.battleship.game
 
-import com.leggomymeggos.battleship.board.Board
-import com.leggomymeggos.battleship.board.Coordinate
-import com.leggomymeggos.battleship.board.gridOf
 import com.leggomymeggos.battleship.agent.Player
 import com.leggomymeggos.battleship.agent.PlayerService
+import com.leggomymeggos.battleship.board.*
 import com.nhaarman.mockito_kotlin.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
@@ -24,7 +22,7 @@ class GameServiceTest {
 
         whenever(playerService.initPlayer(any())).thenReturn(Player())
         whenever(playerService.randomlySetShips(any(), any())).thenReturn(Player())
-        whenever(playerService.hitBoard(any(), any(), any())).thenReturn(Board())
+        whenever(playerService.hitBoard(any(), any(), any())).thenReturn(BoardHitResponse(HitResult.MISS, Board()))
         whenever(playerService.getPlayer(any(), any())).thenReturn(Player())
 
         whenever(gameRegistry.getDefendingPlayer(any(), any())).thenReturn(-1)
@@ -177,13 +175,14 @@ class GameServiceTest {
     }
 
     @Test
-    fun `attack returns defending board`() {
+    fun `attack returns the board hit result`() {
         val board = Board(gridOf(4))
-        whenever(playerService.hitBoard(any(), any(), any())).thenReturn(board)
+        val boardHitResponse = BoardHitResponse(HitResult.MISS, board)
+        whenever(playerService.hitBoard(any(), any(), any())).thenReturn(boardHitResponse)
 
-        val newBoard = gameService.attack(123, 0, Coordinate(1, 1))
+        val result = gameService.attack(123, 0, Coordinate(1, 1))
 
-        assertThat(newBoard).isEqualTo(board)
+        assertThat(result).isEqualTo(boardHitResponse)
     }
 
     @Test
@@ -215,7 +214,7 @@ class GameServiceTest {
 
         val result = gameService.attack(123, 545, Coordinate(0, 0))
 
-        assertThat(result).isSameAs(board)
+        assertThat(result).isEqualTo(BoardHitResponse(HitResult.GAME_OVER, board))
     }
     // endregion
 

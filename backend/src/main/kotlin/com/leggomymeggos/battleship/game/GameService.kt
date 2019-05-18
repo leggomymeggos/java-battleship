@@ -1,9 +1,11 @@
 package com.leggomymeggos.battleship.game
 
-import com.leggomymeggos.battleship.board.Board
-import com.leggomymeggos.battleship.board.Coordinate
 import com.leggomymeggos.battleship.agent.Player
 import com.leggomymeggos.battleship.agent.PlayerService
+import com.leggomymeggos.battleship.board.Board
+import com.leggomymeggos.battleship.board.BoardHitResponse
+import com.leggomymeggos.battleship.board.Coordinate
+import com.leggomymeggos.battleship.board.HitResult
 import org.springframework.stereotype.Service
 
 @Service
@@ -37,15 +39,16 @@ class GameService(val playerService: PlayerService, val gameRegistry: GameRegist
         )
     }
 
-    fun attack(gameId: Int, attackingPlayerId: Int, coordinate: Coordinate): Board {
+    fun attack(gameId: Int, attackingPlayerId: Int, coordinate: Coordinate): BoardHitResponse {
         val game = gameRegistry.getGame(gameId)
         if (game.winnerId != -1) {
-            return playerService.getPlayer(gameId, game.winnerId).board
+            val board = playerService.getPlayer(gameId, game.winnerId).board
+            return BoardHitResponse(HitResult.GAME_OVER, board)
         }
 
         val defendingPlayerId = gameRegistry.getDefendingPlayer(gameId, attackingPlayerId)
 
-        val attackedBoard = defendingPlayerId
+        val attackResponse = defendingPlayerId
                 .run {
                     playerService.hitBoard(gameId, this, coordinate)
                 }
@@ -56,7 +59,7 @@ class GameService(val playerService: PlayerService, val gameRegistry: GameRegist
             gameRegistry.changeTurn(gameId)
         }
 
-        return attackedBoard
+        return attackResponse
     }
 
     fun getWinner(gameId: Int): Player? {

@@ -1,8 +1,8 @@
 package com.leggomymeggos.battleship.game
 
-import com.leggomymeggos.battleship.board.Board
-import com.leggomymeggos.battleship.board.Coordinate
 import com.leggomymeggos.battleship.agent.Player
+import com.leggomymeggos.battleship.board.BoardHitResponse
+import com.leggomymeggos.battleship.board.Coordinate
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -24,7 +24,7 @@ class GameController(val gameService: GameService) {
     )
     fun attackBoard(@PathVariable(name = "gameId") gameId: Int,
                     @RequestParam(name = "attackerId") attackingPlayerId: Int,
-                    @RequestBody coordinate: Coordinate): Board {
+                    @RequestBody coordinate: Coordinate): BoardHitResponse {
         return gameService.attack(gameId, attackingPlayerId, coordinate)
     }
 

@@ -39,11 +39,11 @@ describe("attack", () => {
 
         generator.next();
 
-        expect(generator.next({grid: [[new Tile()]]}).value).toEqual(put({
+        expect(generator.next({result: 'SUNK', board: {grid: [[new Tile()]]}}).value).toEqual(put({
             type: BoardActions.OPPONENT_BOARD_HIT_SUCCESS,
             payload: {
                 gameId: 123,
-                board: {grid: [[new Tile()]]}
+                response: {result: 'SUNK', board: {grid: [[new Tile()]]}}
             }
         }));
     });

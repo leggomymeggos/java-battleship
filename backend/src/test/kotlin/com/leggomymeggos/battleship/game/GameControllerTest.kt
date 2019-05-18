@@ -1,9 +1,7 @@
 package com.leggomymeggos.battleship.game
 
-import com.leggomymeggos.battleship.board.Board
-import com.leggomymeggos.battleship.board.Coordinate
-import com.leggomymeggos.battleship.board.gridOf
 import com.leggomymeggos.battleship.agent.Player
+import com.leggomymeggos.battleship.board.*
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
@@ -16,7 +14,7 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import org.springframework.test.web.servlet.setup.MockMvcBuilders.*
+import org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup
 
 class GameControllerTest {
 
@@ -75,12 +73,12 @@ class GameControllerTest {
 
     @Test
     fun `attackBoard returns hit game board`() {
-        val board = Board(gridOf(1))
-        whenever(gameService.attack(any(), any(), any())).thenReturn(board)
+        val response = BoardHitResponse(HitResult.SUNK, Board(gridOf(1)))
+        whenever(gameService.attack(any(), any(), any())).thenReturn(response)
 
         val actual = controller.attackBoard(0, 0, Coordinate(123, 456))
 
-        assertThat(actual).isEqualTo(board)
+        assertThat(actual).isEqualTo(response)
     }
     // endregion
 

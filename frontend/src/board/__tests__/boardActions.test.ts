@@ -24,11 +24,12 @@ describe("boardHit", () => {
 
 describe("opponentBoardHitSuccess", () => {
     it("returns OPPONENT_BOARD_HIT_SUCCESS action", () => {
-        expect(opponentBoardHitSuccess(1, {grid: [[new Tile()]], sunkenShips: ["one"]})).toEqual({
+        let response = {result: 'HIT', board: {grid: [[new Tile()]], sunkenShips: ["one"]}};
+        expect(opponentBoardHitSuccess(1, response)).toEqual({
             type: BoardActions.OPPONENT_BOARD_HIT_SUCCESS,
             payload: {
                 gameId: 1,
-                board: {grid: [[new Tile()]], sunkenShips: ["one"]}
+                response
             }
         });
     });

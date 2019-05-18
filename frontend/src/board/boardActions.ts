@@ -26,12 +26,14 @@ export const boardHit = createAction(BoardActions.BOARD_HIT, (
 });
 
 export const opponentBoardHitSuccess =
-    createAction(BoardActions.OPPONENT_BOARD_HIT_SUCCESS, (gameId: number, board: { grid: Tile[][], sunkenShips: string[] }) => {
-        return {gameId, board}
+    createAction(BoardActions.OPPONENT_BOARD_HIT_SUCCESS, (
+        gameId: number, response: { result: string, board: { grid: Tile[][], sunkenShips: string[] } }
+    ) => {
+        return {gameId, response}
     });
 
-export const userBoardHitSuccess = createAction(BoardActions.USER_BOARD_HIT_SUCCESS, (gameId: number, board: { grid: Tile[][], sunkenShips: string[]; }) => {
-    return {gameId, board}
+export const userBoardHitSuccess = createAction(BoardActions.USER_BOARD_HIT_SUCCESS, (gameId: number, response: { result: string, board: { grid: Tile[][], sunkenShips: string[]; } }) => {
+    return {gameId, response}
 });
 
 export default {
