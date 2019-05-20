@@ -43,7 +43,7 @@ class GameService(val playerService: PlayerService, val gameRegistry: GameRegist
         val game = gameRegistry.getGame(gameId)
         if (game.winnerId != -1) {
             val board = playerService.getPlayer(gameId, game.winnerId).board
-            return BoardHitResponse(HitResult.GAME_OVER, board)
+            return BoardHitResponse(HitResult.GameOver, board)
         }
 
         val defendingPlayerId = gameRegistry.getDefendingPlayer(gameId, attackingPlayerId)

@@ -22,7 +22,7 @@ class GameServiceTest {
 
         whenever(playerService.initPlayer(any())).thenReturn(Player())
         whenever(playerService.randomlySetShips(any(), any())).thenReturn(Player())
-        whenever(playerService.hitBoard(any(), any(), any())).thenReturn(BoardHitResponse(HitResult.MISS, Board()))
+        whenever(playerService.hitBoard(any(), any(), any())).thenReturn(BoardHitResponse(HitResult.Miss(), Board()))
         whenever(playerService.getPlayer(any(), any())).thenReturn(Player())
 
         whenever(gameRegistry.getDefendingPlayer(any(), any())).thenReturn(-1)
@@ -177,7 +177,7 @@ class GameServiceTest {
     @Test
     fun `attack returns the board hit result`() {
         val board = Board(gridOf(4))
-        val boardHitResponse = BoardHitResponse(HitResult.MISS, board)
+        val boardHitResponse = BoardHitResponse(HitResult.Miss(), board)
         whenever(playerService.hitBoard(any(), any(), any())).thenReturn(boardHitResponse)
 
         val result = gameService.attack(123, 0, Coordinate(1, 1))
@@ -214,7 +214,7 @@ class GameServiceTest {
 
         val result = gameService.attack(123, 545, Coordinate(0, 0))
 
-        assertThat(result).isEqualTo(BoardHitResponse(HitResult.GAME_OVER, board))
+        assertThat(result).isEqualTo(BoardHitResponse(HitResult.GameOver, board))
     }
     // endregion
 

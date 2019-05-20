@@ -24,7 +24,7 @@ describe("boardHit", () => {
 
 describe("opponentBoardHitSuccess", () => {
     it("returns OPPONENT_BOARD_HIT_SUCCESS action", () => {
-        let response = {result: 'HIT', board: {grid: [[new Tile()]], sunkenShips: ["one"]}};
+        let response = {result: {hitType: 'HIT'}, board: {grid: [[new Tile()]], sunkenShips: ["one"]}};
         expect(opponentBoardHitSuccess(1, response)).toEqual({
             type: BoardActions.OPPONENT_BOARD_HIT_SUCCESS,
             payload: {

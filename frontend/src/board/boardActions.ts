@@ -27,7 +27,7 @@ export const boardHit = createAction(BoardActions.BOARD_HIT, (
 
 export const opponentBoardHitSuccess =
     createAction(BoardActions.OPPONENT_BOARD_HIT_SUCCESS, (
-        gameId: number, response: { result: string, board: { grid: Tile[][], sunkenShips: string[] } }
+        gameId: number, response: { result: { hitType?: string, shipName?: string }, board: { grid: Tile[][], sunkenShips: string[] } }
     ) => {
         return {gameId, response}
     });

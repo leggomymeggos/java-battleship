@@ -45,7 +45,7 @@ class ComputerAgentControllerTest {
 
     @Test
     fun `attack returns the new board`() {
-        val response = BoardHitResponse(HitResult.HIT, Board(grid = gridOf(2)))
+        val response = BoardHitResponse(HitResult.Hit(), Board(grid = gridOf(2)))
         whenever(computerAgentService.takeTurn(any(), any())).thenReturn(response)
 
         val result = controller.attack(0, 0)

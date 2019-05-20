@@ -73,7 +73,7 @@ class GameControllerTest {
 
     @Test
     fun `attackBoard returns hit game board`() {
-        val response = BoardHitResponse(HitResult.SUNK, Board(gridOf(1)))
+        val response = BoardHitResponse(HitResult.Sunk(Ship.SUBMARINE), Board(gridOf(1)))
         whenever(gameService.attack(any(), any(), any())).thenReturn(response)
 
         val actual = controller.attackBoard(0, 0, Coordinate(123, 456))

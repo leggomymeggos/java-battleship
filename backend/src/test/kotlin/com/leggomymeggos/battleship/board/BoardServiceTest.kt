@@ -158,7 +158,7 @@ class BoardServiceTest {
 
         val result = boardService.hitTile(boardWithShip, Coordinate(0, 0)).result
 
-        assertThat(result).isEqualTo(HitResult.HIT)
+        assertThat(result).isEqualToComparingFieldByField(HitResult.Hit())
     }
 
     @Test
@@ -168,7 +168,7 @@ class BoardServiceTest {
 
         val result = boardService.hitTile(boardWithShip, Coordinate(3, 2)).result
 
-        assertThat(result).isEqualTo(HitResult.MISS)
+        assertThat(result).isEqualToComparingFieldByField(HitResult.Miss())
     }
 
     @Test
@@ -180,7 +180,7 @@ class BoardServiceTest {
             boardService.hitTile(this.board, Coordinate(1, 0))
         }.result
 
-        assertThat(result).isEqualTo(HitResult.SUNK)
+        assertThat(result).isEqualTo(HitResult.Sunk(Ship.DESTROYER))
     }
     // endregion
 

@@ -97,7 +97,7 @@ class ComputerAgentServiceTest {
     @Test
     fun `takeTurn returns the attacked board`() {
         whenever(computerAgentBrain.determineFiringCoordinate(any(), any())).thenReturn(Coordinate(0, 0))
-        val response = BoardHitResponse(HitResult.HIT, Board(gridOf(10)))
+        val response = BoardHitResponse(HitResult.Hit(), Board(gridOf(10)))
         whenever(gameService.attack(any(), any(), any())).thenReturn(response)
 
         val result = computerAgentService.takeTurn(0, 0)

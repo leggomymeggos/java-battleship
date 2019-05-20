@@ -43,9 +43,9 @@ class BoardService {
         }
 
         val result = when {
-            hitBoard.sunkenShips.contains(ship) -> HitResult.SUNK
-            ship !== null -> HitResult.HIT
-            else -> HitResult.MISS
+            hitBoard.sunkenShips.contains(ship) -> HitResult.Sunk(ship!!)
+            ship !== null -> HitResult.Hit()
+            else -> HitResult.Miss()
         }
 
         return BoardHitResponse(result = result, board = hitBoard)

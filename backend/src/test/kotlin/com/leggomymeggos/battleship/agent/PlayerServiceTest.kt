@@ -22,7 +22,7 @@ class PlayerServiceTest {
         whenever(boardService.initBoard()).thenReturn(Board())
         whenever(boardService.addShip(any(), any(), any(), any())).thenReturn(Board())
         whenever(boardService.addShipRandomly(any(), any(), any())).thenReturn(Board())
-        whenever(boardService.hitTile(any(), any())).thenReturn(BoardHitResponse(HitResult.MISS, Board()))
+        whenever(boardService.hitTile(any(), any())).thenReturn(BoardHitResponse(HitResult.Miss(), Board()))
 
         whenever(playerRegistry.getPlayer(any(), any())).thenReturn(PlayerEntity(-1, -1, Board()))
     }
@@ -277,7 +277,7 @@ class PlayerServiceTest {
         val board = Board(gridOf(2))
         whenever(playerRegistry.getPlayer(any(), any()))
                 .thenReturn(PlayerEntity(123, -1, board))
-        whenever(boardService.hitTile(any(), any())).thenReturn(BoardHitResponse(HitResult.MISS, Board()))
+        whenever(boardService.hitTile(any(), any())).thenReturn(BoardHitResponse(HitResult.Miss(), Board()))
 
         val coordinate = Coordinate(1, 2)
 
@@ -291,7 +291,7 @@ class PlayerServiceTest {
         whenever(playerRegistry.getPlayer(any(), any()))
                 .thenReturn(PlayerEntity(123, -1, Board()))
         val hitBoard = Board(gridOf(3))
-        whenever(boardService.hitTile(any(), any())).thenReturn(BoardHitResponse(HitResult.MISS, hitBoard))
+        whenever(boardService.hitTile(any(), any())).thenReturn(BoardHitResponse(HitResult.Miss(), hitBoard))
 
         val coordinate = Coordinate(1, 2)
 
@@ -307,7 +307,7 @@ class PlayerServiceTest {
         whenever(playerRegistry.getPlayer(any(), any()))
                 .thenReturn(PlayerEntity(3, -1, Board()))
         val board = Board(gridOf(1))
-        val response = BoardHitResponse(HitResult.SUNK, board)
+        val response = BoardHitResponse(HitResult.Sunk(Ship.BATTLESHIP), board)
         whenever(boardService.hitTile(any(), any())).thenReturn(response)
 
         val result = playerService.hitBoard(3, 2, Coordinate(0, 0))
