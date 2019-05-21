@@ -20,4 +20,8 @@ export type AgentState = {
     id: number;
     grid: Tile[][];
     sunkenShips: string[];
+    recentAttackResult: {
+        hitType?: string;
+        shipName?: string;
+    };
 }

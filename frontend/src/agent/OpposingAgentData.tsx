@@ -6,6 +6,7 @@ import {Agent, AgentState} from "../domain/agent";
 export interface IAgentDataPropsFromStore {
     winner: Agent;
     opposingAgentId: number;
+    attackResult: any;
 }
 
 export type AgentDataProps = IAgentDataPropsFromStore;
@@ -27,7 +28,17 @@ export class OpposingAgentData extends React.Component<AgentDataProps> {
 
     private opposingAgentDialogue(): string {
         if (!this.props.winner) {
-            return "Hi! Ready to play?";
+            switch (this.props.attackResult.hitType) {
+                case 'HIT':
+                    return "Yes! A hit!";
+                case 'SUNK':
+                    let shipName = this.props.attackResult.shipName.toLowerCase();
+                    return `Hahahaha! I sunk your ${shipName[0].toUpperCase()}${shipName.slice(1, shipName.length)}!`;
+                case 'MISS':
+                    return "...";
+                default:
+                    return "Hi! Ready to play?";
+            }
         }
 
         if (this.props.winner.id == this.props.opposingAgentId) {
@@ -44,7 +55,8 @@ export const mapStateToProps = (state: {
 }): IAgentDataPropsFromStore => {
     return {
         winner: state.gameReducer.winner,
-        opposingAgentId: state.opposingAgentReducer.id
+        opposingAgentId: state.opposingAgentReducer.id,
+        attackResult: state.opposingAgentReducer.recentAttackResult,
     }
 };
 

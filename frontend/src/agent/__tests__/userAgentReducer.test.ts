@@ -9,7 +9,8 @@ describe("userAgentReducer", () => {
         expect(initialState).toEqual({
             id: -1,
             grid: [[]],
-            sunkenShips: []
+            sunkenShips: [],
+            recentAttackResult: {}
         });
     });
 
@@ -58,7 +59,8 @@ describe("userAgentReducer", () => {
             const prevState: AgentState = {
                 id: 1,
                 grid: [[]],
-                sunkenShips: []
+                sunkenShips: [],
+                recentAttackResult: {}
             };
 
             let board = {grid: [[new Tile()]], sunkenShips: ["the battleship"]};
@@ -78,7 +80,8 @@ describe("userAgentReducer", () => {
             const prevState: AgentState = {
                 id: 1,
                 grid: [[]],
-                sunkenShips: []
+                sunkenShips: [],
+                recentAttackResult: {}
             };
 
             let board = {id: 456, grid: [[new Tile()]], sunkenShips: ["the battleship"]};

@@ -54,7 +54,7 @@ body, #root {
 
   .agent__opponent--avatar {
     height: 50px;
-    width: 50px;
+    width: 65px;
     background: url("../images/opposing_agent_sprite_sheet.png");
     background-origin: border-box;
 
@@ -85,7 +85,9 @@ body, #root {
   }
 
   .agent__opponent--dialogue {
-
+    font-family: 'VT323', 'sans-serif';
+    font-size: 1.15em;
+    text-align: center;
   }
 }
 

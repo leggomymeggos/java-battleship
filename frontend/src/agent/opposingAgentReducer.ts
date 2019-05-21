@@ -6,7 +6,8 @@ import {AgentState} from "../domain/agent";
 export const initialState: AgentState = {
     id: -1,
     grid: [[]],
-    sunkenShips: []
+    sunkenShips: [],
+    recentAttackResult: {},
 };
 
 
@@ -26,6 +27,12 @@ const opposingAgentReducer = handleActions({
             sunkenShips: action.payload.response.board.sunkenShips
         }
     },
+    [BoardActions.USER_BOARD_HIT_SUCCESS]: (state: AgentState, action: Action<any>) => {
+        return {
+            ...state,
+            recentAttackResult: action.payload.response.result
+        }
+    }
 }, initialState);
 
 export default opposingAgentReducer;

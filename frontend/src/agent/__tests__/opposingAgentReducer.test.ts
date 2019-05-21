@@ -9,7 +9,8 @@ describe("opposingAgentReducer", () => {
         expect(initialState).toEqual({
             id: -1,
             grid: [[]],
-            sunkenShips: []
+            sunkenShips: [],
+            recentAttackResult: {}
         });
     });
 
@@ -59,7 +60,8 @@ describe("opposingAgentReducer", () => {
             const prevState: AgentState = {
                 id: 1,
                 grid: [[]],
-                sunkenShips: []
+                sunkenShips: [],
+                recentAttackResult: {}
             };
 
             let board = {grid: [[new Tile()]], sunkenShips: ["the battleship"]};
@@ -80,7 +82,8 @@ describe("opposingAgentReducer", () => {
             const prevState: AgentState = {
                 id: 1,
                 grid: [[]],
-                sunkenShips: []
+                sunkenShips: [],
+                recentAttackResult: {}
             };
 
             let board = {id: 456, grid: [[new Tile()]], sunkenShips: ["the battleship"]};

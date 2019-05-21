@@ -134,7 +134,8 @@ describe("mapStateToProps", () => {
         userAgentReducer = {
             id: 0,
             grid: [],
-            sunkenShips: []
+            sunkenShips: [],
+            recentAttackResult: {}
         };
         gameReducer = {
             id: 123,
@@ -147,7 +148,8 @@ describe("mapStateToProps", () => {
         userAgentReducer = {
             id: 0,
             grid: [[new Tile()], [new Tile()]],
-            sunkenShips: []
+            sunkenShips: [],
+            recentAttackResult: {}
         };
         const props = mapStateToProps({
             userAgentReducer,

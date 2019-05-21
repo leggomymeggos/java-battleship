@@ -2,7 +2,7 @@ jest.mock("../boardActions");
 
 import {shallow} from "enzyme";
 import * as React from "react";
-import {OpposingAgentBoard, BoardProps, mapStateToProps} from "../OpposingAgentBoard";
+import {BoardProps, mapStateToProps, OpposingAgentBoard} from "../OpposingAgentBoard";
 import BoardTile, {AgentType} from "../tile/BoardTile";
 import {GameState, GameStatus} from "../../game/gameReducer";
 import {Tile} from "../../domain/tile";
@@ -178,12 +178,14 @@ describe("mapStateToProps", () => {
         opposingAgentReducer = {
             id: 0,
             grid: [],
-            sunkenShips: []
+            sunkenShips: [],
+            recentAttackResult: {}
         };
         userAgentReducer = {
             id: 0,
             grid: [],
-            sunkenShips: []
+            sunkenShips: [],
+            recentAttackResult: {}
         };
         gameReducer = {
             id: 123,
@@ -201,7 +203,8 @@ describe("mapStateToProps", () => {
         opposingAgentReducer = {
             id: 0,
             grid: [[new Tile()], [new Tile()]],
-            sunkenShips: []
+            sunkenShips: [],
+            recentAttackResult: {}
         };
         const props = mapStateToProps({
             ...state,

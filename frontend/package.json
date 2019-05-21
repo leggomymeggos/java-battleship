@@ -25,7 +25,9 @@
       "^.+\\.tsx?$": "ts-jest"
     },
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "setupTestFrameworkScriptFile": "./setupTests.ts"
+    "setupFilesAfterEnv": [
+      "./setupTests.ts"
+    ]
   },
   "author": "Megan Gaebler",
   "license": "ISC",

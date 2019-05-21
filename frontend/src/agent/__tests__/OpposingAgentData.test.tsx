@@ -10,7 +10,8 @@ describe("Agent Data", () => {
     beforeEach(() => {
         props = {
             opposingAgentId: 0,
-            winner: null
+            winner: null,
+            attackResult: {}
         }
     });
 
@@ -33,10 +34,29 @@ describe("Agent Data", () => {
         expect(subject.find(".agent__opponent--dialogue").text()).toContain("Oh no! You defeated me!")
     });
 
-    it("taunts the user when the computer win", () => {
+    it("taunts the user when the computer wins", () => {
         const subject = shallow(<OpposingAgentData {...props} winner={new Agent(12)} opposingAgentId={12}/>);
 
         expect(subject.find(".agent__opponent--dialogue").text()).toContain("Hahahaha!!! I have defeated you!!!")
+    });
+
+    it("taunts the user when the computer sinks a ship", () => {
+        const subject = shallow(<OpposingAgentData {...props}
+                                                   attackResult={{hitType: 'SUNK', shipName: 'BATTLESHIP'}}/>);
+
+        expect(subject.find(".agent__opponent--dialogue").text()).toEqual("Hahahaha! I sunk your Battleship!")
+    });
+
+    it("taunts the user when the computer hits a ship", () => {
+        const subject = shallow(<OpposingAgentData {...props} attackResult={{hitType: 'HIT'}}/>);
+
+        expect(subject.find(".agent__opponent--dialogue").text()).toEqual("Yes! A hit!")
+    });
+
+    it("says nothing when the computer misses", () => {
+        const subject = shallow(<OpposingAgentData {...props} attackResult={{hitType: 'MISS'}}/>);
+
+        expect(subject.find(".agent__opponent--dialogue").text()).toEqual("...")
     });
 });
 
@@ -48,7 +68,8 @@ describe("mapStateToProps", () => {
         opposingAgentReducer = {
             id: 0,
             grid: [],
-            sunkenShips: []
+            sunkenShips: [],
+            recentAttackResult: {}
         };
         gameReducer = {
             id: 0,
@@ -56,7 +77,7 @@ describe("mapStateToProps", () => {
             status: GameStatus.NONE
         };
     });
-    
+
     it("maps winner", () => {
         let props = mapStateToProps({
             gameReducer: {
@@ -88,5 +109,23 @@ describe("mapStateToProps", () => {
         });
 
         expect(props.opposingAgentId).toEqual(123);
+    });
+
+    it("maps recentAttackResult", () => {
+        let props = mapStateToProps({
+            gameReducer,
+            opposingAgentReducer: {
+                ...opposingAgentReducer,
+                recentAttackResult: {
+                    shipName: 'BATTLESHIP',
+                    hitType: 'MISS'
+                }
+            }
+        });
+
+        expect(props.attackResult).toEqual({
+            shipName: 'BATTLESHIP',
+            hitType: 'MISS'
+        });
     });
 });
