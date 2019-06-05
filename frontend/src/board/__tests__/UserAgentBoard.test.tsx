@@ -1,8 +1,8 @@
 jest.mock("../boardActions");
 
+import {BoardProps, mapStateToProps, UserAgentBoard} from "../UserAgentBoard";
 import {shallow} from "enzyme";
 import * as React from "react";
-import {BoardProps, mapStateToProps, UserAgentBoard} from "../UserAgentBoard";
 import BoardTile, {AgentType} from "../tile/BoardTile";
 import {GameState, GameStatus} from "../../game/gameReducer";
 import {Tile} from "../../domain/tile";
@@ -103,13 +103,11 @@ describe("UserAgentBoard", () => {
         };
         const subject = shallow(<UserAgentBoard {...props} />);
 
-        const rowLabels = subject.find(".board__label.row").map((item) => {
-            return item.text();
-        });
+        const rowLabels = subject.find({className: 'row'});
 
-        expect(rowLabels).toContain("1");
-        expect(rowLabels).toContain("2");
-        expect(rowLabels).toContain("3");
+        expect(rowLabels.get(0).props.value).toEqual(1);
+        expect(rowLabels.get(1).props.value).toEqual(2);
+        expect(rowLabels.get(2).props.value).toEqual(3);
     });
 
     it("has coordinate column labels", () => {
@@ -119,12 +117,10 @@ describe("UserAgentBoard", () => {
         };
         const subject = shallow(<UserAgentBoard {...props} />);
 
-        const columnLabels = subject.find(".board__label.column").map((item) => {
-            return item.text();
-        });
+        const columnLabels = subject.find({className: 'column'});
 
-        expect(columnLabels).toContain("A");
-        expect(columnLabels).toContain("B");
+        expect(columnLabels.get(0).props.value).toEqual('A');
+        expect(columnLabels.get(1).props.value).toEqual('B');
     });
 });
 

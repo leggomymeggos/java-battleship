@@ -2,6 +2,7 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {Agent} from "../domain/agent";
 import BoardTile, {AgentType} from "./tile/BoardTile";
+import {BoardLabel} from "./BoardLabel";
 
 export interface IBoardPropsFromStore {
     id: number,
@@ -19,47 +20,44 @@ export class UserAgentBoard extends React.Component<BoardProps> {
 
     public render() {
         return <div className="user--board">
+            <div className="board__label"/>
             {this.renderColumnLabels()}
-            <div className="board__grid-and-row-labels-container">
-                {this.renderRowLabels()}
+            {this.renderRowLabels()}
+            <div className="user--board__grid">
                 {this.renderGrid()}
             </div>
         </div>
     }
 
     private renderColumnLabels() {
-        return <div className="board__labels column">
-            <div className="board__label column"/>
-            {this.props.grid[0].map((_, index) => {
-                return <div className="board__label column" key={UserAgentBoard.getKey()}>
-                    {this.alphabet[index].toUpperCase()}
-                </div>
-            })}</div>;
+        return this.props.grid[0].map((_, index) => {
+            return <BoardLabel value={this.alphabet[index].toUpperCase()}
+                               className={"column"}
+                               key={UserAgentBoard.getKey()}/>;
+        });
     }
 
     private renderRowLabels() {
-        return <div key={UserAgentBoard.getKey()} className="board__labels row">{
-            this.props.grid.map((value, rowIndex) => {
-                return <div key={UserAgentBoard.getKey()} className="board__label row">{rowIndex + 1}</div>
-            })
-        }</div>;
+        return this.props.grid.map((value, rowIndex) => {
+            return <BoardLabel value={rowIndex + 1}
+                               className={"row"}
+                               key={UserAgentBoard.getKey()}/>;
+        });
     }
 
     private renderGrid() {
-        return <div className="user--board__grid">{
-            this.props.grid.map((value, rowIndex) => {
-                return value.map((tile, columnIndex) => {
-                    return <BoardTile key={UserAgentBoard.getKey()}
-                                      tile={tile}
-                                      agentType={AgentType.USER}
-                                      gameOver={this.props.winner != null}
-                                      tileClicked={() => {
-                                      }}
-                                      coordinate={{x: columnIndex, y: rowIndex}}
-                    />
-                })
+        return this.props.grid.map((value, rowIndex) => {
+            return value.map((tile, columnIndex) => {
+                return <BoardTile key={UserAgentBoard.getKey()}
+                                  tile={tile}
+                                  agentType={AgentType.USER}
+                                  gameOver={this.props.winner != null}
+                                  tileClicked={() => {
+                                  }}
+                                  coordinate={{x: columnIndex, y: rowIndex}}
+                />
             })
-        }</div>;
+        });
     }
 
     private static getKey() {

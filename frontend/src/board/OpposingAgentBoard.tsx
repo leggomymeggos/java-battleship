@@ -1,9 +1,9 @@
 import * as React from "react";
-import {connect, Dispatch} from "react-redux";
-import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
 import {Agent} from "../domain/agent";
 import BoardTile, {AgentType} from "./tile/BoardTile";
 import boardActions, {Coordinate} from "./boardActions";
+import {bindActionCreators, Dispatch} from "redux";
 
 export interface IBoardPropsFromStore {
     attackerId: number;
@@ -20,63 +20,65 @@ export interface IBoardPropsFromActions {
 
 export type BoardProps = IBoardPropsFromStore & IBoardPropsFromActions;
 
+const BoardLabel = (props: { value: string | number, className: 'row' | 'column' }) => {
+    return <div className={`board__label ${props.className}`}>
+        <div className="board__label--value">{props.value}</div>
+    </div>
+};
+
 export class OpposingAgentBoard extends React.Component<BoardProps> {
     private alphabet = [...Array(26)]
         .map((_, index) => String.fromCharCode(index + 97));
 
     public render() {
         return <div className="target--board">
+            <div className="board__label"/>
             {this.renderColumnLabels()}
-            <div className="board__grid-and-row-labels-container">
-                {this.renderRowLabels()}
+            {this.renderRowLabels()}
+            <div className="target--board__grid">
                 {this.renderGrid()}
             </div>
         </div>
     }
 
     private renderColumnLabels() {
-        return <div className="board__labels column">
-            <div className="board__label column"/>
-            {this.props.grid[0].map((_, index) => {
-                return <div className="board__label column" key={OpposingAgentBoard.getKey()}>
-                    {this.alphabet[index].toUpperCase()}
-                </div>
-            })
-            }</div>;
+        return this.props.grid[0].map((_, index) => {
+            return <BoardLabel value={this.alphabet[index].toUpperCase()}
+                               className={"column"}
+                               key={OpposingAgentBoard.getKey()}/>;
+        });
     }
 
     private renderRowLabels() {
-        return <div key={OpposingAgentBoard.getKey()} className="board__labels row">{
-            this.props.grid.map((value, rowIndex) => {
-                return <div key={OpposingAgentBoard.getKey()} className="board__label row">{rowIndex + 1}</div>
-            })
-        }</div>;
+        return this.props.grid.map((value, rowIndex) => {
+            return <BoardLabel value={rowIndex + 1}
+                               className={"row"}
+                               key={OpposingAgentBoard.getKey()}/>;
+        });
     }
 
     private renderGrid() {
         const gameOver = this.props.winner != null;
-        return <div className="target--board__grid">{
-            this.props.grid.map((value, rowIndex) => {
-                return value.map((tile, columnIndex) => {
-                    const coordinate = {x: columnIndex, y: rowIndex};
-                    return <BoardTile key={OpposingAgentBoard.getKey()}
-                                      tile={tile}
-                                      tileClicked={() => {
-                                          if (!gameOver) {
-                                              this.props.actions.boardHit(
-                                                  this.props.gameId,
-                                                  this.props.attackerId,
-                                                  coordinate
-                                              );
-                                          }
-                                      }}
-                                      agentType={AgentType.OPPONENT}
-                                      gameOver={gameOver}
-                                      coordinate={coordinate}
-                    />
-                })
+        return this.props.grid.map((value, rowIndex) => {
+            return value.map((tile, columnIndex) => {
+                const coordinate = {x: columnIndex, y: rowIndex};
+                return <BoardTile key={OpposingAgentBoard.getKey()}
+                                  tile={tile}
+                                  agentType={AgentType.OPPONENT}
+                                  gameOver={gameOver}
+                                  tileClicked={() => {
+                                      if (!gameOver) {
+                                          this.props.actions.boardHit(
+                                              this.props.gameId,
+                                              this.props.attackerId,
+                                              coordinate
+                                          );
+                                      }
+                                  }}
+                                  coordinate={coordinate}
+                />
             })
-        }</div>;
+        });
     }
 
     private static getKey() {
@@ -92,7 +94,6 @@ export const mapStateToProps = (state: any): IBoardPropsFromStore => {
         attackerId: state.userAgentReducer.id
     }
 };
-
 export const mapDispatchToProps = (dispatch: Dispatch<{}>): IBoardPropsFromActions => {
     return {
         actions: bindActionCreators({
@@ -100,6 +101,5 @@ export const mapDispatchToProps = (dispatch: Dispatch<{}>): IBoardPropsFromActio
         }, dispatch)
     }
 };
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(OpposingAgentBoard);

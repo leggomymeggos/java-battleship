@@ -1,52 +1,70 @@
-//$target-board-dimension: 850px;
-$target-board-dimension: 550px;
-$target-tile-dimension: $target-board-dimension/10;
-
-$player-board-dimension: 500px;
-$player-tile-dimension: $player-board-dimension/10;
-
-.target--board {
-  width: $target-board-dimension + $target-tile-dimension + 12px;
-  height: $target-board-dimension + $target-tile-dimension + 12px;
-}
-
-.board__labels {
-  display: flex;
-  justify-content: space-between;
-
-  &.column {
-    flex-direction: row;
-  }
-
-  &.row {
-    flex-direction: column;
-    height: 91%;
-  }
-
-  .board__label {
-    height: $target-tile-dimension;
-    width: $target-tile-dimension;
-    font-weight: bold;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-}
-
 .board__grid-and-row-labels-container {
   display: flex;
   flex-direction: row;
   height: 100%;
 }
 
+$grid-border: #0a6ea8;
+
 .board__grid {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  border: 1px solid #0a6ea8;
+  border: 1px solid $grid-border;
+}
+
+$target-board-dimension: 550px;
+$player-board-dimension: 550px;
+$board-labels-dimension: 8%;
+
+.board--base {
+  display: grid;
+  grid-template-rows: $board-labels-dimension [grid-row-start] auto auto auto auto auto auto auto auto auto;
+  grid-template-columns: $board-labels-dimension [grid-col-start] auto auto auto auto auto auto auto auto auto;
+  grid-gap: 0;
+
+  .board__label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .board__label--value {
+      color: white;
+      font-family: 'VT323', 'sans-serif';
+      font-size: 1.15em;
+      text-align: center;
+    }
+
+    &.row {
+      .board__label--value {
+        margin: 0 0 10% 30%;
+      }
+
+      background: url("../images/board_row_label_background.svg") 0 0 no-repeat;
+    }
+
+    &.column {
+      .board__label--value {
+        margin: 30% 10% 0 0;
+      }
+
+      background: url("../images/board_column_label_background.svg") 0 0 no-repeat;
+    }
+  }
+}
+
+.board__grid {
+  display: grid;
+  grid-template-rows: 10% 10% 10% 10% 10% 10% 10% 10% 10% 10%;
+  grid-template-columns: 10% 10% 10% 10% 10% 10% 10% 10% 10% 10%;
+  grid-column-start: grid-col-start;
+  grid-column-end: span end;
+  grid-row-start: grid-row-start;
+  grid-row-end: span end;
+  border: 1px solid $grid-border;
 
   .board__tile {
-    border: 0.5px solid #0a6ea8;
+    border: 0.5px solid $grid-border;
     position: relative;
     overflow: hidden;
 
@@ -80,36 +98,14 @@ $player-tile-dimension: $player-board-dimension/10;
   }
 }
 
-.target--board__grid {
-  @extend .board__grid;
-  width: $target-board-dimension + 10px;
-  height: $target-board-dimension + 10px;
-
-  .board__tile {
-    width: $target-tile-dimension;
-    height: $target-tile-dimension;
-
-    &:not(.clicked):hover {
-      background-color: rgba(250, 250, 250, .3);
-      cursor: pointer;
-    }
-  }
-}
-
 .user--board {
-  width: $player-board-dimension + $player-tile-dimension + 17px;
-  height: $player-board-dimension + $player-tile-dimension + 17px;
+  @extend .board--base;
+  width: $player-board-dimension;
+  height: $player-board-dimension;
 }
 
 .user--board__grid {
   @extend .board__grid;
-  width: $player-board-dimension + 10px;
-  height: $player-board-dimension + 10px;
-
-  .board__tile {
-    width: $player-tile-dimension;
-    height: $player-tile-dimension;
-  }
 
   .occupied {
     background: limegreen;
@@ -119,6 +115,25 @@ $player-tile-dimension: $player-board-dimension/10;
   .occupied--hit {
     background: darkgray;
     border-color: gray;
+  }
+}
+
+.target--board {
+  @extend .board--base;
+  width: 600px;
+  height: 600px;
+}
+
+.target--board__grid {
+  @extend .board__grid;
+  width: $target-board-dimension + 10px;
+  height: $target-board-dimension + 10px;
+
+  .board__tile {
+    &:not(.clicked):hover {
+      background-color: rgba(250, 250, 250, .3);
+      cursor: pointer;
+    }
   }
 }
 
