@@ -33,7 +33,7 @@ export class OpposingAgentData extends React.Component<AgentDataProps> {
                     return "Yes! A hit!";
                 case 'SUNK':
                     let shipName = this.props.attackResult.shipName.toLowerCase();
-                    return `Hahahaha! I sunk your ${shipName[0].toUpperCase()}${shipName.slice(1, shipName.length)}!`;
+                    return `Hahahaha! I sunk your ${OpposingAgentData.shipDisplayName(shipName)}!`;
                 case 'MISS':
                     return "...";
                 default:
@@ -46,6 +46,12 @@ export class OpposingAgentData extends React.Component<AgentDataProps> {
         } else {
             return "Oh no! You defeated me!";
         }
+    }
+
+    private static shipDisplayName(shipName: string): string {
+        return shipName.split("_").map((it) =>
+            `${it[0].toUpperCase()}${it.slice(1, it.length)}`
+        ).join(" ");
     }
 }
 

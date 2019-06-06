@@ -58,6 +58,13 @@ describe("Agent Data", () => {
 
         expect(subject.find(".agent__opponent--dialogue").text()).toEqual("...")
     });
+
+    it("does not display underscores in ship names", () => {
+        const subject = shallow(<OpposingAgentData {...props}
+                                                   attackResult={{hitType: 'SUNK', shipName: 'AIRCRAFT_CARRIER'}}/>);
+
+        expect(subject.find(".agent__opponent--dialogue").text()).toEqual("Hahahaha! I sunk your Aircraft Carrier!")
+    });
 });
 
 describe("mapStateToProps", () => {
