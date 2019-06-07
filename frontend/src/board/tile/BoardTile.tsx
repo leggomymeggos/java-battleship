@@ -64,13 +64,9 @@ export default class BoardTile extends React.Component<BoardTileProps> {
 
     private static tileIndicator(tile: Tile) {
         if (tile.hit && tile.ship !== null) {
-            return <span className="aimed--hit">
-                {targetHitIndicator()}
-                </span>
+            return targetHitIndicator();
         } else if (tile.hit) {
-            return <span className="aimed--miss">
-                {targetMissIndicator()}
-                </span>
+            return targetMissIndicator();
         } else {
             return null;
         }

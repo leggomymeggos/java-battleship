@@ -73,7 +73,7 @@ describe("BoardTile", () => {
         });
 
         describe("hit indicator", () => {
-            it("adds 'aimed--miss' if the tile was hit but contained no ship", () => {
+            it("adds 'aimed__miss--image' if the tile was hit but contained no ship", () => {
                 const props = {
                     ...defaultProps,
                     tile: new Tile(null, true)
@@ -81,11 +81,11 @@ describe("BoardTile", () => {
 
                 const subject = shallow(<BoardTile {...props}/>);
 
-                expect(subject.find(".aimed--miss").exists()).toBeTruthy();
-                expect(subject.find(".aimed--hit").exists()).toBeFalsy();
+                expect(subject.find(".aimed__miss--image").exists()).toBeTruthy();
+                expect(subject.find(".aimed__hit--image").exists()).toBeFalsy();
             });
 
-            it("adds 'aimed--hit' if the tile was hit and contained a ship", () => {
+            it("adds 'aimed__hit--image' if the tile was hit and contained a ship", () => {
                 const props = {
                     ...defaultProps,
                     tile: new Tile("123", true)
@@ -93,8 +93,8 @@ describe("BoardTile", () => {
 
                 const subject = shallow(<BoardTile {...props}/>);
 
-                expect(subject.find(".aimed--hit").exists()).toBeTruthy();
-                expect(subject.find(".aimed--miss").exists()).toBeFalsy();
+                expect(subject.find(".aimed__hit--image").exists()).toBeTruthy();
+                expect(subject.find(".aimed__miss--image").exists()).toBeFalsy();
             });
 
             it("does not add anything if the tile was not hit", () => {
@@ -104,8 +104,8 @@ describe("BoardTile", () => {
 
                 const subject = shallow(<BoardTile {...props}/>);
 
-                expect(subject.find(".aimed--hit").exists()).toBeFalsy();
-                expect(subject.find(".aimed--miss").exists()).toBeFalsy();
+                expect(subject.find(".aimed__hit--image").exists()).toBeFalsy();
+                expect(subject.find(".aimed__miss--image").exists()).toBeFalsy();
             });
         });
 

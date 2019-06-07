@@ -13,8 +13,8 @@ $grid-border: #0a6ea8;
   border: 1px solid $grid-border;
 }
 
-$target-board-dimension: 550px;
-$player-board-dimension: 550px;
+$target-board-dimension: 560px;
+$player-board-dimension: 510px;
 $board-labels-dimension: 8%;
 
 .board--base {
@@ -100,12 +100,16 @@ $board-labels-dimension: 8%;
 
 .user--board {
   @extend .board--base;
-  width: $player-board-dimension;
-  height: $player-board-dimension;
+  width: $player-board-dimension + 40px;
+  height: $player-board-dimension + 40px;
 }
 
 .user--board__grid {
   @extend .board__grid;
+  width: $player-board-dimension;
+  height: $player-board-dimension;
+  max-width: $player-board-dimension;
+  max-height: $player-board-dimension;
 
   .occupied {
     background: limegreen;
@@ -120,14 +124,16 @@ $board-labels-dimension: 8%;
 
 .target--board {
   @extend .board--base;
-  width: 600px;
-  height: 600px;
+  width: $target-board-dimension + 40px;
+  height: $target-board-dimension + 40px;
 }
 
 .target--board__grid {
   @extend .board__grid;
-  width: $target-board-dimension + 10px;
-  height: $target-board-dimension + 10px;
+  width: $target-board-dimension;
+  height: $target-board-dimension;
+  max-width: $target-board-dimension;
+  max-height: $target-board-dimension;
 
   .board__tile {
     &:not(.clicked):hover {
@@ -137,10 +143,17 @@ $board-labels-dimension: 8%;
   }
 }
 
+.aimed__indicators {
+  width: 100%;
+  height: 100%;
+}
+
 .aimed__hit--image {
+  @extend .aimed__indicators;
   stroke: $hit-indicator;
 }
 
 .aimed__miss--image {
+  @extend .aimed__indicators;
   stroke: $miss-indicator;
 }
