@@ -39,11 +39,11 @@ class BoardService {
         val ship = hitBoard.grid[coordinate.y][coordinate.x].ship
 
         if (ship?.isSunk(hitBoard.grid) == true) {
-            hitBoard.sunkenShips.add(ship)
+            hitBoard.sunkenShips.add(ship.name)
         }
 
         val result = when {
-            hitBoard.sunkenShips.contains(ship) -> HitResult.Sunk(ship!!)
+            hitBoard.sunkenShips.contains(ship?.name) -> HitResult.Sunk(ship!!)
             ship !== null -> HitResult.Hit()
             else -> HitResult.Miss()
         }
@@ -102,7 +102,7 @@ class BoardService {
     private fun MutableGrid.addShipHorizontally(coordinate: Coordinate, ship: Ship) {
         for (i in coordinate.x until ship.size + coordinate.x) {
             val shipPlacement = this[coordinate.y].toMutableList()
-            shipPlacement[i] = Tile(ship)
+            shipPlacement[i] = Tile(PlacedShip(ship, Orientation.HORIZONTAL))
             this[coordinate.y] = shipPlacement
         }
     }
@@ -110,7 +110,7 @@ class BoardService {
     private fun MutableGrid.addShipVertically(coordinate: Coordinate, ship: Ship) {
         for (i in coordinate.y until ship.size + coordinate.y) {
             val shipPlacement = this[i].toMutableList()
-            shipPlacement[coordinate.x] = Tile(ship)
+            shipPlacement[coordinate.x] = Tile(PlacedShip(ship, Orientation.VERTICAL))
             this[i] = shipPlacement
         }
     }
@@ -161,13 +161,14 @@ class BoardService {
         }
     }
 
-    private fun Ship.isSunk(grid: Grid): Boolean {
-        val hitTilesWithShip = grid.flatten().asSequence()
-                .filter { it.ship == this }
+    private fun PlacedShip.isSunk(grid: Grid): Boolean {
+        val hitTilesWithShip = grid.flatten()
+                .asSequence()
+                .filter { it.ship?.name == this.name }
                 .filter { it.hit }
                 .toList()
 
-        return hitTilesWithShip.size == this.size
+        return hitTilesWithShip.size == this.length
     }
 }
 

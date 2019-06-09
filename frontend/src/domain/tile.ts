@@ -1,9 +1,15 @@
 export class Tile {
-    ship: string;
+    ship: PlacedShip;
     hit: boolean;
 
-    constructor(ship: string = null, hit: boolean = false) {
+    constructor(ship: PlacedShip = null, hit: boolean = false) {
         this.ship = ship;
         this.hit = hit;
     }
+}
+
+export type PlacedShip = {
+    name: string;
+    length: number;
+    orientation: string;
 }

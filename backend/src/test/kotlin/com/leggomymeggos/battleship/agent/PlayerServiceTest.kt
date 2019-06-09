@@ -2,6 +2,7 @@ package com.leggomymeggos.battleship.agent
 
 import com.leggomymeggos.battleship.board.*
 import com.leggomymeggos.battleship.board.Ship.*
+import com.leggomymeggos.battleship.createPlacedShip
 import com.nhaarman.mockito_kotlin.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
@@ -307,7 +308,7 @@ class PlayerServiceTest {
         whenever(playerRegistry.getPlayer(any(), any()))
                 .thenReturn(PlayerEntity(3, -1, Board()))
         val board = Board(gridOf(1))
-        val response = BoardHitResponse(HitResult.Sunk(Ship.BATTLESHIP), board)
+        val response = BoardHitResponse(HitResult.Sunk(createPlacedShip(BATTLESHIP)), board)
         whenever(boardService.hitTile(any(), any())).thenReturn(response)
 
         val result = playerService.hitBoard(3, 2, Coordinate(0, 0))
@@ -329,11 +330,11 @@ class PlayerServiceTest {
         whenever(playerRegistry.getPlayer(any(), any())).thenReturn(
                 PlayerEntity(id = 1, gameId = 1, board = Board(
                         grid = listOf(listOf(
-                                Tile(ship = CRUISER),
-                                Tile(ship = DESTROYER),
-                                Tile(ship = SUBMARINE),
-                                Tile(ship = AIRCRAFT_CARRIER),
-                                Tile(ship = BATTLESHIP)
+                                Tile(ship = createPlacedShip(CRUISER)),
+                                Tile(ship = createPlacedShip(DESTROYER)),
+                                Tile(ship = createPlacedShip(SUBMARINE)),
+                                Tile(ship = createPlacedShip(AIRCRAFT_CARRIER)),
+                                Tile(ship = createPlacedShip(BATTLESHIP))
                         )),
                         sunkenShips = mutableSetOf(
                                 CRUISER,
@@ -353,11 +354,11 @@ class PlayerServiceTest {
         whenever(playerRegistry.getPlayer(any(), any())).thenReturn(
                 PlayerEntity(id = 1, gameId = 1, board = Board(
                         grid = listOf(listOf(
-                                Tile(ship = CRUISER),
-                                Tile(ship = DESTROYER),
-                                Tile(ship = SUBMARINE),
-                                Tile(ship = AIRCRAFT_CARRIER),
-                                Tile(ship = BATTLESHIP)
+                                Tile(ship = createPlacedShip(CRUISER)),
+                                Tile(ship = createPlacedShip(DESTROYER)),
+                                Tile(ship = createPlacedShip(SUBMARINE)),
+                                Tile(ship = createPlacedShip(AIRCRAFT_CARRIER)),
+                                Tile(ship = createPlacedShip(BATTLESHIP))
                         )),
                         sunkenShips = mutableSetOf(
                                 CRUISER,

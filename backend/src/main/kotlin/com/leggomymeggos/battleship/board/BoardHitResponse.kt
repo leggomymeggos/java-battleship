@@ -3,7 +3,7 @@ package com.leggomymeggos.battleship.board
 data class BoardHitResponse(val result: HitResult, val board: Board)
 
 sealed class HitResult {
-    data class Sunk(val shipName: Ship) : HitResult() {
+    data class Sunk(val ship: PlacedShip) : HitResult() {
         val hitType: HitType = HitType.SUNK
     }
 

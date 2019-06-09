@@ -88,7 +88,7 @@ describe("BoardTile", () => {
             it("adds 'aimed__hit--image' if the tile was hit and contained a ship", () => {
                 const props = {
                     ...defaultProps,
-                    tile: new Tile("123", true)
+                    tile: new Tile({name: "ship-name", orientation: "", length: 2}, true)
                 };
 
                 const subject = shallow(<BoardTile {...props}/>);
@@ -121,7 +121,7 @@ describe("BoardTile", () => {
             it("adds 'occupied' and no ocean if the tile has a ship", () => {
                 props = {
                     ...props,
-                    tile: new Tile("totally a ship here", false)
+                    tile: new Tile({name: "totally a ship here", orientation: "", length: 2}, false)
                 };
                 const subject = shallow(<BoardTile {...props}/>);
 

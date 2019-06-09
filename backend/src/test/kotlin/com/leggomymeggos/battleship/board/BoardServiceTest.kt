@@ -3,6 +3,7 @@ package com.leggomymeggos.battleship.board
 import com.leggomymeggos.battleship.board.Orientation.HORIZONTAL
 import com.leggomymeggos.battleship.board.Orientation.VERTICAL
 import com.leggomymeggos.battleship.board.Ship.*
+import com.leggomymeggos.battleship.createPlacedShip
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -42,9 +43,9 @@ class BoardServiceTest {
 
         val boardWithShip = boardService.addShip(board, CRUISER, Coordinate(0, 0), HORIZONTAL)
 
-        assertThat(boardWithShip.grid[0][0].ship).isEqualTo(CRUISER)
-        assertThat(boardWithShip.grid[0][1].ship).isEqualTo(CRUISER)
-        assertThat(boardWithShip.grid[0][2].ship).isEqualTo(CRUISER)
+        assertThat(boardWithShip.grid[0][0].ship).isEqualTo(PlacedShip(CRUISER, HORIZONTAL))
+        assertThat(boardWithShip.grid[0][1].ship).isEqualTo(PlacedShip(CRUISER, HORIZONTAL))
+        assertThat(boardWithShip.grid[0][2].ship).isEqualTo(PlacedShip(CRUISER, HORIZONTAL))
     }
 
     @Test
@@ -54,9 +55,9 @@ class BoardServiceTest {
 
         val boardWithShip = boardService.addShip(board, CRUISER, Coordinate(1, 2), HORIZONTAL)
 
-        assertThat(boardWithShip.grid[2][1].ship).isEqualTo(CRUISER)
-        assertThat(boardWithShip.grid[2][2].ship).isEqualTo(CRUISER)
-        assertThat(boardWithShip.grid[2][3].ship).isEqualTo(CRUISER)
+        assertThat(boardWithShip.grid[2][1].ship).isEqualTo(PlacedShip(CRUISER, HORIZONTAL))
+        assertThat(boardWithShip.grid[2][2].ship).isEqualTo(PlacedShip(CRUISER, HORIZONTAL))
+        assertThat(boardWithShip.grid[2][3].ship).isEqualTo(PlacedShip(CRUISER, HORIZONTAL))
     }
 
     @Test
@@ -66,9 +67,9 @@ class BoardServiceTest {
 
         val boardWithShip = boardService.addShip(board, CRUISER, Coordinate(2, 1), VERTICAL)
 
-        assertThat(boardWithShip.grid[1][2].ship).isEqualTo(CRUISER)
-        assertThat(boardWithShip.grid[2][2].ship).isEqualTo(CRUISER)
-        assertThat(boardWithShip.grid[3][2].ship).isEqualTo(CRUISER)
+        assertThat(boardWithShip.grid[1][2].ship).isEqualTo(PlacedShip(CRUISER, VERTICAL))
+        assertThat(boardWithShip.grid[2][2].ship).isEqualTo(PlacedShip(CRUISER, VERTICAL))
+        assertThat(boardWithShip.grid[3][2].ship).isEqualTo(PlacedShip(CRUISER, VERTICAL))
     }
 
     @Test
@@ -78,9 +79,9 @@ class BoardServiceTest {
 
         val boardWithCruiser = boardService.addShip(board, CRUISER, Coordinate(3, 1), HORIZONTAL)
 
-        assertThat(boardWithCruiser.grid[1][3].ship).isEqualTo(CRUISER)
-        assertThat(boardWithCruiser.grid[1][2].ship).isEqualTo(CRUISER)
-        assertThat(boardWithCruiser.grid[1][1].ship).isEqualTo(CRUISER)
+        assertThat(boardWithCruiser.grid[1][3].ship).isEqualTo(PlacedShip(CRUISER, HORIZONTAL))
+        assertThat(boardWithCruiser.grid[1][2].ship).isEqualTo(PlacedShip(CRUISER, HORIZONTAL))
+        assertThat(boardWithCruiser.grid[1][1].ship).isEqualTo(PlacedShip(CRUISER, HORIZONTAL))
     }
 
     @Test
@@ -90,9 +91,9 @@ class BoardServiceTest {
 
         val boardWithCruiser = boardService.addShip(board, CRUISER, Coordinate(1, 3), VERTICAL)
 
-        assertThat(boardWithCruiser.grid[3][1].ship).isEqualTo(CRUISER)
-        assertThat(boardWithCruiser.grid[2][1].ship).isEqualTo(CRUISER)
-        assertThat(boardWithCruiser.grid[1][1].ship).isEqualTo(CRUISER)
+        assertThat(boardWithCruiser.grid[3][1].ship).isEqualTo(PlacedShip(CRUISER, VERTICAL))
+        assertThat(boardWithCruiser.grid[2][1].ship).isEqualTo(PlacedShip(CRUISER, VERTICAL))
+        assertThat(boardWithCruiser.grid[1][1].ship).isEqualTo(PlacedShip(CRUISER, VERTICAL))
     }
 
     @Test
@@ -104,19 +105,19 @@ class BoardServiceTest {
 
         val boardMaybeWithMoreShips = boardService.addShip(boardWithCruiser, SUBMARINE, Coordinate(0, 1), HORIZONTAL)
         assertThat(boardMaybeWithMoreShips.grid[1][0].ship).isNull()
-        assertThat(boardMaybeWithMoreShips.grid[1][1].ship).isEqualTo(CRUISER)
-        assertThat(boardMaybeWithMoreShips.grid[1][2].ship).isEqualTo(CRUISER)
-        assertThat(boardMaybeWithMoreShips.grid[1][3].ship).isEqualTo(CRUISER)
+        assertThat(boardMaybeWithMoreShips.grid[1][1].ship).isEqualTo(PlacedShip(CRUISER, HORIZONTAL))
+        assertThat(boardMaybeWithMoreShips.grid[1][2].ship).isEqualTo(PlacedShip(CRUISER, HORIZONTAL))
+        assertThat(boardMaybeWithMoreShips.grid[1][3].ship).isEqualTo(PlacedShip(CRUISER, HORIZONTAL))
 
         val boardWithMoreShipsAgain = boardService.addShip(boardWithCruiser, SUBMARINE, Coordinate(2, 1), HORIZONTAL)
-        assertThat(boardWithMoreShipsAgain.grid[1][1].ship).isEqualTo(CRUISER)
-        assertThat(boardWithMoreShipsAgain.grid[1][2].ship).isEqualTo(CRUISER)
-        assertThat(boardWithMoreShipsAgain.grid[1][3].ship).isEqualTo(CRUISER)
+        assertThat(boardWithMoreShipsAgain.grid[1][1].ship).isEqualTo(PlacedShip(CRUISER, HORIZONTAL))
+        assertThat(boardWithMoreShipsAgain.grid[1][2].ship).isEqualTo(PlacedShip(CRUISER, HORIZONTAL))
+        assertThat(boardWithMoreShipsAgain.grid[1][3].ship).isEqualTo(PlacedShip(CRUISER, HORIZONTAL))
         assertThat(boardWithMoreShipsAgain.grid[1][4].ship).isNull()
 
         val boardWithVerticalShip = boardService.addShip(boardWithCruiser, SUBMARINE, Coordinate(2, 0), VERTICAL)
         assertThat(boardWithVerticalShip.grid[0][2].ship).isNull()
-        assertThat(boardWithVerticalShip.grid[1][2].ship).isEqualTo(CRUISER)
+        assertThat(boardWithVerticalShip.grid[1][2].ship).isEqualTo(PlacedShip(CRUISER, HORIZONTAL))
         assertThat(boardWithVerticalShip.grid[0][2].ship).isNull()
     }
     // endregion
@@ -136,7 +137,7 @@ class BoardServiceTest {
 
         val hitBoard = boardService.hitTile(boardWithShip, Coordinate(0, 0)).board
 
-        assertThat(hitBoard.grid[0][0].ship).isEqualTo(SUBMARINE)
+        assertThat(hitBoard.grid[0][0].ship).isEqualTo(PlacedShip(SUBMARINE, HORIZONTAL))
     }
 
     @Test
@@ -180,7 +181,7 @@ class BoardServiceTest {
             boardService.hitTile(this.board, Coordinate(1, 0))
         }.result
 
-        assertThat(result).isEqualTo(HitResult.Sunk(Ship.DESTROYER))
+        assertThat(result).isEqualTo(HitResult.Sunk(createPlacedShip(DESTROYER)))
     }
     // endregion
 
@@ -266,7 +267,7 @@ class BoardServiceTest {
             }
         }
 
-        assertThat(randomBoard.grid.flatten().mapNotNull { it.ship }.toSet()).containsExactlyInAnyOrder(
+        assertThat(randomBoard.grid.flatten().mapNotNull { it.ship?.name }.toSet()).containsExactlyInAnyOrder(
                 DESTROYER, CRUISER, SUBMARINE, BATTLESHIP, AIRCRAFT_CARRIER
         )
     }

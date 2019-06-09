@@ -1,6 +1,7 @@
 package com.leggomymeggos.battleship.agent
 
 import com.leggomymeggos.battleship.board.*
+import com.leggomymeggos.battleship.createPlacedShip
 import com.leggomymeggos.battleship.game.Difficulty
 import com.leggomymeggos.battleship.game.GameService
 import com.nhaarman.mockito_kotlin.*
@@ -51,9 +52,9 @@ class ComputerAgentServiceTest {
     @Test
     fun `takeTurn strips ships from defending board before determining coordinate`() {
         val board = Board(listOf(
-                listOf(Tile(ship = Ship.AIRCRAFT_CARRIER), Tile()),
-                listOf(Tile(), Tile(ship = Ship.DESTROYER)),
-                listOf(Tile(ship = Ship.BATTLESHIP), Tile())
+                listOf(Tile(ship = createPlacedShip(Ship.AIRCRAFT_CARRIER)), Tile()),
+                listOf(Tile(), Tile(ship = createPlacedShip(Ship.DESTROYER))),
+                listOf(Tile(ship = createPlacedShip(Ship.BATTLESHIP)), Tile())
         ))
         whenever(gameService.getDefendingBoard(any(), any())).thenReturn(board)
 
@@ -69,9 +70,9 @@ class ComputerAgentServiceTest {
     @Test
     fun `takeTurn preserves if the tile was hit`() {
         val board = Board(listOf(
-                listOf(Tile(ship = Ship.AIRCRAFT_CARRIER, hit = true), Tile()),
-                listOf(Tile(), Tile(ship = Ship.DESTROYER)),
-                listOf(Tile(ship = Ship.BATTLESHIP), Tile(hit = true))
+                listOf(Tile(ship = createPlacedShip(Ship.AIRCRAFT_CARRIER), hit = true), Tile()),
+                listOf(Tile(), Tile(ship = createPlacedShip(Ship.DESTROYER))),
+                listOf(Tile(ship = createPlacedShip(Ship.BATTLESHIP)), Tile(hit = true))
         ))
         whenever(gameService.getDefendingBoard(any(), any())).thenReturn(board)
 

@@ -2,6 +2,7 @@ package com.leggomymeggos.battleship.game
 
 import com.leggomymeggos.battleship.agent.Player
 import com.leggomymeggos.battleship.board.*
+import com.leggomymeggos.battleship.createPlacedShip
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
@@ -73,7 +74,7 @@ class GameControllerTest {
 
     @Test
     fun `attackBoard returns hit game board`() {
-        val response = BoardHitResponse(HitResult.Sunk(Ship.SUBMARINE), Board(gridOf(1)))
+        val response = BoardHitResponse(HitResult.Sunk(createPlacedShip(Ship.SUBMARINE)), Board(gridOf(1)))
         whenever(gameService.attack(any(), any(), any())).thenReturn(response)
 
         val actual = controller.attackBoard(0, 0, Coordinate(123, 456))
