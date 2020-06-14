@@ -1,17 +1,13 @@
 package com.leggomymeggos.battleship.game
 
-import com.leggomymeggos.battleship.agent.Player
 import com.leggomymeggos.battleship.board.*
-import com.leggomymeggos.battleship.createPlacedShip
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Before
 import org.junit.Test
 import org.springframework.http.MediaType
-import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
@@ -19,16 +15,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetu
 
 class GameControllerTest {
 
-    private lateinit var controller: GameController
-    private lateinit var gameService: GameService
-    private lateinit var mockMvc: MockMvc
-
-    @Before
-    fun setup() {
-        gameService = mock()
-        controller = GameController(gameService)
-        mockMvc = standaloneSetup(controller).build()
-    }
+    private val gameService = mock<GameService>()
+    private val subject = GameController(gameService)
+    private val mockMvc = standaloneSetup(subject).build()
 
     // region newGame
     @Test
@@ -39,17 +28,17 @@ class GameControllerTest {
 
     @Test
     fun `newGame requests a new game`() {
-        controller.newGame()
+        subject.newGame()
 
         verify(gameService).new()
     }
 
     @Test
     fun `newGame returns a new game`() {
-        val game = Game(id = 0, players = listOf(Player(board = Board(gridOf(2)))))
+        val game = Game(id = 0, playerIds = listOf(1, 2), activePlayerId = 1)
         whenever(gameService.new()).thenReturn(game)
 
-        val actual = controller.newGame()
+        val actual = subject.newGame()
 
         assertThat(actual).isEqualTo(game)
     }
@@ -59,7 +48,7 @@ class GameControllerTest {
     @Test
     fun `attackBoard mapping`() {
         mockMvc.perform(put("/games/0/attack?attackerId=98")
-                .content("{\"x\": 123, \"y\": 456}")
+                .content("{\"column\": 123, \"row\": 456}")
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().is2xxSuccessful)
     }
@@ -67,17 +56,17 @@ class GameControllerTest {
     @Test
     fun `attackBoard attempts to hit the game board`() {
         val coordinate = Coordinate(9, 10)
-        controller.attackBoard(123, 456, coordinate)
+        subject.attackBoard(123, 456, coordinate)
 
         verify(gameService).attack(123, 456, coordinate)
     }
 
     @Test
     fun `attackBoard returns hit game board`() {
-        val response = BoardHitResponse(HitResult.Sunk(createPlacedShip(Ship.SUBMARINE)), Board(gridOf(1)))
+        val response = BoardHitResponse(HitResult.Sunk(Ship.SUBMARINE), Board(gridOf(1)))
         whenever(gameService.attack(any(), any(), any())).thenReturn(response)
 
-        val actual = controller.attackBoard(0, 0, Coordinate(123, 456))
+        val actual = subject.attackBoard(0, 0, Coordinate(123, 456))
 
         assertThat(actual).isEqualTo(response)
     }
@@ -92,17 +81,16 @@ class GameControllerTest {
 
     @Test
     fun `fetchWinner requests winner`() {
-        controller.fetchWinner(123)
+        subject.fetchWinner(123)
 
         verify(gameService).getWinner(123)
     }
 
     @Test
     fun `fetchWinner returns fetched winner`() {
-        val player = Player(id = 123)
-        whenever(gameService.getWinner(201)).thenReturn(player)
+        whenever(gameService.getWinner(201)).thenReturn(GameOverStatus.Winner(123))
 
-        assertThat(controller.fetchWinner(201)).isEqualTo(player)
+        assertThat(subject.fetchWinner(201)).isEqualTo(GameOverStatus.Winner(123))
     }
     // endregion
 
@@ -115,7 +103,7 @@ class GameControllerTest {
 
     @Test
     fun `fetchActivePlayer requests active player`() {
-        controller.fetchActivePlayer(10)
+        subject.fetchActivePlayer(10)
 
         verify(gameService).getActivePlayerId(10)
     }
@@ -125,7 +113,7 @@ class GameControllerTest {
 
         whenever(gameService.getActivePlayerId(44)).thenReturn(123)
 
-        assertThat(controller.fetchActivePlayer(44)).isEqualTo(123)
+        assertThat(subject.fetchActivePlayer(44)).isEqualTo(123)
     }
     // endregion
 }

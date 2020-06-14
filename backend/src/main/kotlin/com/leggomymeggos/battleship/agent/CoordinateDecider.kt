@@ -12,7 +12,7 @@ class CoordinateDecider {
                 if (tile.hit) {
                     null
                 } else {
-                    Coordinate(index, colIndex)
+                    Coordinate(row = index, column = colIndex)
                 }
             }
         }.flatten()

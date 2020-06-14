@@ -1,38 +1,40 @@
 package com.leggomymeggos.battleship.game
 
-import com.leggomymeggos.battleship.agent.Player
 import com.leggomymeggos.battleship.agent.PlayerService
-import com.leggomymeggos.battleship.board.Board
-import com.leggomymeggos.battleship.board.BoardHitResponse
-import com.leggomymeggos.battleship.board.Coordinate
-import com.leggomymeggos.battleship.board.HitResult
+import com.leggomymeggos.battleship.board.*
 import org.springframework.stereotype.Service
 
 @Service
-class GameService(val playerService: PlayerService, val gameRegistry: GameRegistry) {
+class GameService(
+        private val playerService: PlayerService,
+        private val boardService: BoardService,
+        private val boardPresenter: BoardPresenter,
+        private val gameRegistry: GameRegistry
+) {
 
     fun new(difficulty: Difficulty = Difficulty.EASY): Game {
         val newGame = GameEntity()
-        val humanPlayer = playerService.initPlayer(newGame.id)
-                .run {
-                    playerService.randomlySetShips(newGame.id, this.id)
-                }
+        val humanPlayerId = playerService.initPlayer()
+        val computerPlayerId = playerService.initPlayer()
 
-        val computerPlayer = playerService.initPlayer(newGame.id)
-                .run {
-                    playerService.randomlySetShips(newGame.id, this.id)
-                }
+        boardService.initBoard(humanPlayerId, newGame.id).let { boardId ->
+            boardService.randomlySetShips(boardId)
+        }
+
+        boardService.initBoard(computerPlayerId, newGame.id).let { boardId ->
+            boardService.randomlySetShips(boardId)
+        }
 
         val game = newGame.copy(
-                playerIds = listOf(humanPlayer.id, computerPlayer.id),
-                activePlayerId = humanPlayer.id,
+                playerIds = listOf(humanPlayerId, computerPlayerId),
+                activePlayerId = humanPlayerId,
                 difficulty = difficulty
         )
         gameRegistry.register(game)
 
         return Game(
                 id = game.id,
-                players = listOf(humanPlayer, computerPlayer),
+                playerIds = listOf(humanPlayerId, computerPlayerId),
                 activePlayerId = game.activePlayerId,
                 winnerId = game.winnerId,
                 difficulty = game.difficulty
@@ -41,34 +43,36 @@ class GameService(val playerService: PlayerService, val gameRegistry: GameRegist
 
     fun attack(gameId: Int, attackingPlayerId: Int, coordinate: Coordinate): BoardHitResponse {
         val game = gameRegistry.getGame(gameId)
+
         if (game.winnerId != -1) {
-            val board = playerService.getPlayer(gameId, game.winnerId).board
-            return BoardHitResponse(HitResult.GameOver, board)
+            return BoardHitResponse(HitResult.GameOver, null)
         }
 
         val defendingPlayerId = gameRegistry.getDefendingPlayer(gameId, attackingPlayerId)
+        val boardId = boardService.getBoardIdForGameAndPlayer(gameId, defendingPlayerId)
 
         val attackResponse = defendingPlayerId
                 .run {
-                    playerService.hitBoard(gameId, this, coordinate)
+                    boardService.hitCoordinate(boardId, coordinate)
                 }
 
-        if (playerService.isDefeated(gameId, defendingPlayerId)) {
+        if (attackResponse is HitResult.GameOver) {
             gameRegistry.setWinner(gameId, attackingPlayerId)
         } else {
             gameRegistry.changeTurn(gameId)
         }
+        val board = boardPresenter.presentBoard(boardId)
 
-        return attackResponse
+        return BoardHitResponse(attackResponse, board)
     }
 
-    fun getWinner(gameId: Int): Player? {
+    fun getWinner(gameId: Int): GameOverStatus {
         val winnerId = gameRegistry.getGame(gameId).winnerId
         if (winnerId == -1) {
-            return null
+            return GameOverStatus.NoWinner
         }
 
-        return playerService.getPlayer(gameId, winnerId)
+        return GameOverStatus.Winner(winnerId)
     }
 
     fun getActivePlayerId(gameId: Int): Int {
@@ -77,7 +81,8 @@ class GameService(val playerService: PlayerService, val gameRegistry: GameRegist
 
     fun getDefendingBoard(gameId: Int, attackingPlayerId: Int): Board {
         val playerId = gameRegistry.getDefendingPlayer(gameId, attackingPlayerId)
-        return playerService.getPlayer(gameId, playerId).board
+        val boardId = boardService.getBoardIdForGameAndPlayer(gameId, playerId)
+        return boardPresenter.presentBoard(boardId)
     }
 
     fun getDifficulty(gameId: Int): Difficulty {

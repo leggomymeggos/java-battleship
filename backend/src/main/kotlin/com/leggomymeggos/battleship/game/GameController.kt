@@ -1,6 +1,5 @@
 package com.leggomymeggos.battleship.game
 
-import com.leggomymeggos.battleship.agent.Player
 import com.leggomymeggos.battleship.board.BoardHitResponse
 import com.leggomymeggos.battleship.board.Coordinate
 import org.springframework.web.bind.annotation.*
@@ -32,7 +31,7 @@ class GameController(val gameService: GameService) {
             value = ["/{gameId}/winner"],
             method = [RequestMethod.GET]
     )
-    fun fetchWinner(@PathVariable(name = "gameId") gameId: Int): Player? {
+    fun fetchWinner(@PathVariable(name = "gameId") gameId: Int): GameOverStatus {
         return gameService.getWinner(gameId)
     }
 

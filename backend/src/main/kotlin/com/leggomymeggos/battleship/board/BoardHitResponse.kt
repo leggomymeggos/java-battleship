@@ -1,21 +1,22 @@
 package com.leggomymeggos.battleship.board
 
-data class BoardHitResponse(val result: HitResult, val board: Board)
+data class BoardHitResponse(val result: HitResult, val board: Board?)
 
 sealed class HitResult {
-    data class Sunk(val ship: PlacedShip) : HitResult() {
+    data class Sunk(val ship: Ship) : HitResult() {
         val hitType: HitType = HitType.SUNK
     }
 
-    class Miss : HitResult() {
+    object Miss : HitResult() {
         val hitType: HitType = HitType.MISS
     }
 
-    class Hit : HitResult() {
+    object Hit : HitResult() {
         val hitType: HitType = HitType.HIT
     }
 
     object GameOver : HitResult()
+    data class Failure(val message: String): HitResult()
 }
 
 enum class HitType {

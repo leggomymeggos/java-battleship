@@ -1,29 +1,19 @@
 package com.leggomymeggos.battleship.agent
 
-import com.leggomymeggos.battleship.board.Board
 import org.springframework.stereotype.Service
 
 @Service
 class PlayerRegistry {
-    val players = mutableMapOf<String, PlayerEntity>()
+    private val _players = mutableSetOf<PlayerEntity>()
 
-    fun register(gameId: Int, player: Player) {
-        players[gameId.toString() + player.id.toString()] = PlayerEntity(player.id, gameId, player.board)
-    }
+    val players: Set<PlayerEntity>
+        get() = _players.toSet()
 
-    fun getPlayer(gameId: Int, playerId: Int): PlayerEntity {
-        val playerEntity = players[gameId.toString() + playerId.toString()]
-        return playerEntity ?: TODO()
-    }
-
-    fun updatePlayer(gameId: Int, player: Player) {
-        players[gameId.toString() + player.id.toString()] =
-                getPlayer(gameId, player.id).copy(board = player.board)
+    fun register(player: PlayerEntity) {
+        _players.add(player)
     }
 }
 
 data class PlayerEntity(
-        val id: Int,
-        val gameId: Int,
-        val board: Board
+        val id: Int
 )

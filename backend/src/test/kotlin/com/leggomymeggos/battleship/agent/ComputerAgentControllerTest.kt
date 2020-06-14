@@ -9,25 +9,15 @@ import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Before
 import org.junit.Test
-import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup
 
 class ComputerAgentControllerTest {
-
-    private lateinit var controller: ComputerAgentController
-    private lateinit var computerAgentService: ComputerAgentService
-    private lateinit var mockMvc: MockMvc
-
-    @Before
-    fun setup() {
-        computerAgentService = mock()
-        controller = ComputerAgentController(computerAgentService)
-        mockMvc = standaloneSetup(controller).build()
-    }
+    private val computerAgentService = mock<ComputerAgentService>()
+    private val controller = ComputerAgentController(computerAgentService)
+    private val mockMvc = standaloneSetup(controller).build()
 
     // region attack
     @Test
@@ -45,7 +35,7 @@ class ComputerAgentControllerTest {
 
     @Test
     fun `attack returns the new board`() {
-        val response = BoardHitResponse(HitResult.Hit(), Board(grid = gridOf(2)))
+        val response = BoardHitResponse(HitResult.Hit, Board(grid = gridOf(2)))
         whenever(computerAgentService.takeTurn(any(), any())).thenReturn(response)
 
         val result = controller.attack(0, 0)
