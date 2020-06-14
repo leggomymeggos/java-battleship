@@ -10,13 +10,13 @@ export enum GameStatus {
 
 export type GameState = {
     id: number;
-    winner: Agent;
+    winnerId: number;
     status: GameStatus
 }
 
 export const initialState: GameState = {
     id: -1,
-    winner: null,
+    winnerId: null,
     status: GameStatus.NONE
 };
 
@@ -31,13 +31,13 @@ const gameReducer = handleActions({
         return {
             ...state,
             id: action.payload.id,
-            winner: null,
+            winnerId: null,
         }
     },
     [GameActions.GAME_WON]: (state: GameState, action: Action<any>) => {
         return {
             ...state,
-            winner: action.payload,
+            winnerId: action.payload,
             status: GameStatus.GAME_OVER
         }
     }

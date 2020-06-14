@@ -1,8 +1,8 @@
 export class Tile {
-    ship: PlacedShip;
+    ship: String;
     hit: boolean;
 
-    constructor(ship: PlacedShip = null, hit: boolean = false) {
+    constructor(ship: String = null, hit: boolean = false) {
         this.ship = ship;
         this.hit = hit;
     }

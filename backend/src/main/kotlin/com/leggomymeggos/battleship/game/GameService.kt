@@ -81,11 +81,15 @@ class GameService(
 
     fun getDefendingBoard(gameId: Int, attackingPlayerId: Int): Board {
         val playerId = gameRegistry.getDefendingPlayer(gameId, attackingPlayerId)
-        val boardId = boardService.getBoardIdForGameAndPlayer(gameId, playerId)
-        return boardPresenter.presentBoard(boardId)
+        return getBoardForGameAndPlayer(gameId, playerId)
     }
 
     fun getDifficulty(gameId: Int): Difficulty {
         return gameRegistry.getGame(gameId).difficulty
+    }
+
+    fun getBoardForGameAndPlayer(gameId: Int, playerId: Int): Board {
+        val boardId = boardService.getBoardIdForGameAndPlayer(gameId, playerId)
+        return boardPresenter.presentBoard(boardId)
     }
 }

@@ -3,14 +3,14 @@ import * as React from "react";
 
 import {AgentDataProps, mapStateToProps, OpposingAgentData} from "../OpposingAgentData";
 import {GameState, GameStatus} from "../../game/gameReducer";
-import {Agent, AgentState} from "../../domain/agent";
+import {AgentState} from "../../domain/agent";
 
 describe("Agent Data", () => {
     let props: AgentDataProps;
     beforeEach(() => {
         props = {
             opposingAgentId: 0,
-            winner: null,
+            winnerId: null,
             attackResult: {}
         }
     });
@@ -29,20 +29,20 @@ describe("Agent Data", () => {
     });
 
     it("tells the user when they win", () => {
-        const subject = shallow(<OpposingAgentData {...props} winner={new Agent(123)} opposingAgentId={456}/>);
+        const subject = shallow(<OpposingAgentData {...props} winnerId={123} opposingAgentId={456}/>);
 
         expect(subject.find(".agent__opponent--dialogue").text()).toContain("Oh no! You defeated me!")
     });
 
     it("taunts the user when the computer wins", () => {
-        const subject = shallow(<OpposingAgentData {...props} winner={new Agent(12)} opposingAgentId={12}/>);
+        const subject = shallow(<OpposingAgentData {...props} winnerId={12} opposingAgentId={12}/>);
 
         expect(subject.find(".agent__opponent--dialogue").text()).toContain("Hahahaha!!! I have defeated you!!!")
     });
 
     it("taunts the user when the computer sinks a ship", () => {
         const subject = shallow(<OpposingAgentData {...props}
-                                                   attackResult={{hitType: 'SUNK', shipName: 'BATTLESHIP'}}/>);
+                                                   attackResult={{hitType: 'SUNK', ship: 'BATTLESHIP'}}/>);
 
         expect(subject.find(".agent__opponent--dialogue").text()).toEqual("Hahahaha! I sunk your Battleship!")
     });
@@ -61,7 +61,7 @@ describe("Agent Data", () => {
 
     it("does not display underscores in ship names", () => {
         const subject = shallow(<OpposingAgentData {...props}
-                                                   attackResult={{hitType: 'SUNK', shipName: 'AIRCRAFT_CARRIER'}}/>);
+                                                   attackResult={{hitType: 'SUNK', ship: 'AIRCRAFT_CARRIER'}}/>);
 
         expect(subject.find(".agent__opponent--dialogue").text()).toEqual("Hahahaha! I sunk your Aircraft Carrier!")
     });
@@ -80,7 +80,7 @@ describe("mapStateToProps", () => {
         };
         gameReducer = {
             id: 0,
-            winner: null,
+            winnerId: null,
             status: GameStatus.NONE
         };
     });
@@ -89,21 +89,20 @@ describe("mapStateToProps", () => {
         let props = mapStateToProps({
             gameReducer: {
                 ...gameReducer,
-                winner: null
+                winnerId: null
             },
             opposingAgentReducer
         });
-        expect(props.winner).toBeNull();
+        expect(props.winnerId).toBeNull();
 
-        let agent = new Agent(2990);
         props = mapStateToProps({
             gameReducer: {
                 ...gameReducer,
-                winner: agent
+                winnerId: 2990
             },
             opposingAgentReducer
         });
-        expect(props.winner).toEqual(agent);
+        expect(props.winnerId).toEqual(2990);
     });
 
     it("maps opposingAgentId", () => {

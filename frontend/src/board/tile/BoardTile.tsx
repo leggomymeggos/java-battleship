@@ -48,9 +48,9 @@ export default class BoardTile extends React.Component<BoardTileProps> {
     }
 
     private addOcean() {
-        let {x, y} = this.props.coordinate;
-        const rowEven = x % 2 == 0;
-        const columnEven = y % 2 == 0;
+        let {column, row} = this.props.coordinate;
+        const rowEven = column % 2 == 0;
+        const columnEven = row % 2 == 0;
 
         let bothEven = columnEven && rowEven;
         let bothOdd = !columnEven && !rowEven;

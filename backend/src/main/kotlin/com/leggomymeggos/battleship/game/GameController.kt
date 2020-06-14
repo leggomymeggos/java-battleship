@@ -1,5 +1,6 @@
 package com.leggomymeggos.battleship.game
 
+import com.leggomymeggos.battleship.board.Board
 import com.leggomymeggos.battleship.board.BoardHitResponse
 import com.leggomymeggos.battleship.board.Coordinate
 import org.springframework.web.bind.annotation.*
@@ -41,5 +42,13 @@ class GameController(val gameService: GameService) {
     )
     fun fetchActivePlayer(@PathVariable(name = "gameId") gameId: Int): Int {
         return gameService.getActivePlayerId(gameId)
+    }
+
+    @RequestMapping(
+            value = ["/{gameId}/players/{playerId}/board"],
+            method = [RequestMethod.GET]
+    )
+    fun fetchBoard(@PathVariable(name = "gameId") gameId: Int, @PathVariable(name = "playerId") playerId: Int): Board {
+        return gameService.getBoardForGameAndPlayer(gameId, playerId)
     }
 }

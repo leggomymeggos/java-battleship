@@ -18,19 +18,11 @@ describe("opposingAgentReducer", () => {
         const state = opposingAgentReducer(initialState, {
             type: GameActions.NEW_GAME_CREATED,
             payload: {
-                players: [
-                    {
-                        id: 789,
-                        board: {grid: [[new Tile()], [new Tile()], [new Tile()]], sunkenShips: ["super ships sunk"]}
-                    },
-                    {id: 123, board: {grid: [[new Tile()], [new Tile()]], sunkenShips: ["none yet"]}}
-                ],
+                playerIds: [ 789, 123 ],
             }
         });
 
         expect(state.id).toEqual(123);
-        expect(state.grid).toEqual([[new Tile()], [new Tile()]]);
-        expect(state.sunkenShips).toEqual(["none yet"]);
     });
 
     describe("OPPONENT_BOARD_HIT_SUCCESS", () => {

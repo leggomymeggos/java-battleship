@@ -8,21 +8,19 @@ describe("game reducer", () => {
         expect(initialState)
             .toEqual({
                 id: -1,
-                winner: null,
+                winnerId: null,
                 status: GameStatus.NONE
             });
     });
 
     it("updates winner when the game is won", () => {
-        let player = new Agent(123);
-        const gameState = gameReducer(initialState, gameWon(player));
+        const gameState = gameReducer(initialState, gameWon(123));
 
-        expect(gameState.winner).toBe(player);
+        expect(gameState.winnerId).toBe(123);
     });
 
     it("updates status when the game is won", () => {
-        let player = new Agent(123);
-        const gameState = gameReducer(initialState, gameWon(player));
+        const gameState = gameReducer(initialState, gameWon(1232));
 
         expect(gameState.status).toBe(GameStatus.GAME_OVER);
     });
@@ -40,8 +38,8 @@ describe("game reducer", () => {
     });
 
     it("clears winner when new game is created", () => {
-        const gameState = gameReducer({id: -1, winner: new Agent()}, newGameCreated(new Game(789)));
+        const gameState = gameReducer({id: -1, winnerId: 123}, newGameCreated(new Game(789)));
 
-        expect(gameState.winner).toBe(null);
+        expect(gameState.winnerId).toBe(null);
     });
 });

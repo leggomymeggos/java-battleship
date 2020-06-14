@@ -21,7 +21,7 @@ export const fetchWinner =
     createAction(GameActions.FETCH_WINNER, (payload: number) => payload);
 
 export const gameWon =
-    createAction(GameActions.GAME_WON, (payload: Agent) => payload);
+    createAction(GameActions.GAME_WON, (payload: number) => payload);
 
 export const fetchActivePlayer =
     createAction(GameActions.FETCH_ACTIVE_PLAYER, (payload: number) => payload);

@@ -17,7 +17,7 @@ describe("UserAgentBoard", () => {
             gameId: 2,
             grid: [[]],
             sunkenShips: [],
-            winner: null
+            winnerId: null
         }
     });
 
@@ -51,10 +51,10 @@ describe("UserAgentBoard", () => {
 
             const tiles = subject.find("BoardTile");
 
-            expect(tiles.get(0).props.coordinate).toEqual({x: 0, y: 0});
-            expect(tiles.get(1).props.coordinate).toEqual({x: 1, y: 0});
-            expect(tiles.get(2).props.coordinate).toEqual({x: 0, y: 1});
-            expect(tiles.get(3).props.coordinate).toEqual({x: 1, y: 1});
+            expect(tiles.get(0).props.coordinate).toEqual({column: 0, row: 0});
+            expect(tiles.get(1).props.coordinate).toEqual({column: 1, row: 0});
+            expect(tiles.get(2).props.coordinate).toEqual({column: 0, row: 1});
+            expect(tiles.get(3).props.coordinate).toEqual({column: 1, row: 1});
         });
 
         it("passes agent type to BoardTile", () => {
@@ -72,7 +72,7 @@ describe("UserAgentBoard", () => {
         it("sets gameOver to true if there is a winner", () => {
             const props = {
                 ...defaultProps,
-                winner: new Agent(),
+                winnerId: 123,
                 grid: [[new Tile()]],
             };
             const subject = shallow(<UserAgentBoard {...props} />);
@@ -82,10 +82,23 @@ describe("UserAgentBoard", () => {
             expect(tiles.get(0).props.gameOver).toBeTruthy();
         });
 
-        it("sets gameOver to false if there is not a winner", () => {
+        it("sets gameOver to false if the winnerId is null", () => {
             const props: BoardProps = {
                 ...defaultProps,
-                winner: null,
+                winnerId: null,
+                grid: [[new Tile()]],
+            };
+            const subject = shallow(<UserAgentBoard {...props} />);
+
+            const tiles = subject.find("BoardTile");
+
+            expect(tiles.get(0).props.gameOver).toBeFalsy();
+        });
+
+        it("sets gameOver to false if the winnerId is -1", () => {
+            const props: BoardProps = {
+                ...defaultProps,
+                winnerId: -1,
                 grid: [[new Tile()]],
             };
             const subject = shallow(<UserAgentBoard {...props} />);
@@ -135,7 +148,7 @@ describe("mapStateToProps", () => {
         };
         gameReducer = {
             id: 123,
-            winner: null,
+            winnerId: null,
             status: GameStatus.NONE
         }
     });
@@ -172,9 +185,9 @@ describe("mapStateToProps", () => {
             userAgentReducer,
             gameReducer: {
                 ...gameReducer,
-                winner: new Agent()
+                    winnerId: 123
             }
         });
-        expect(props.winner).toBeTruthy();
+        expect(props.winnerId).toBeTruthy();
     });
 });

@@ -1,5 +1,3 @@
-import {UserAgentBoard} from "../UserAgentBoard";
-
 jest.mock("../boardActions");
 
 import {shallow} from "enzyme";
@@ -18,7 +16,7 @@ describe("OpposingAgentBoard", () => {
             gameId: 2,
             grid: [[]],
             attackerId: 0,
-            winner: null,
+            winnerId: null,
             actions: {
                 boardHit: jest.fn()
             }
@@ -55,10 +53,10 @@ describe("OpposingAgentBoard", () => {
 
             const tiles = subject.find("BoardTile");
 
-            expect(tiles.get(0).props.coordinate).toEqual({x: 0, y: 0});
-            expect(tiles.get(1).props.coordinate).toEqual({x: 1, y: 0});
-            expect(tiles.get(2).props.coordinate).toEqual({x: 0, y: 1});
-            expect(tiles.get(3).props.coordinate).toEqual({x: 1, y: 1});
+            expect(tiles.get(0).props.coordinate).toEqual({column: 0, row: 0});
+            expect(tiles.get(1).props.coordinate).toEqual({column: 1, row: 0});
+            expect(tiles.get(2).props.coordinate).toEqual({column: 0, row: 1});
+            expect(tiles.get(3).props.coordinate).toEqual({column: 1, row: 1});
         });
 
         it("passes agent type to BoardTile", () => {
@@ -76,7 +74,7 @@ describe("OpposingAgentBoard", () => {
         it("sets gameOver to true if there is a winner", () => {
             const props = {
                 ...defaultProps,
-                winner: new Agent(),
+                winnerId: 123,
                 grid: [[new Tile()]],
             };
             const subject = shallow(<OpposingAgentBoard {...props} />);
@@ -86,10 +84,23 @@ describe("OpposingAgentBoard", () => {
             expect(tiles.get(0).props.gameOver).toBeTruthy();
         });
 
-        it("sets gameOver to false if there is not a winner", () => {
+        it("sets gameOver to false if the winnerId is null", () => {
             const props: BoardProps = {
                 ...defaultProps,
-                winner: null,
+                winnerId: null,
+                grid: [[new Tile()]],
+            };
+            const subject = shallow(<OpposingAgentBoard {...props} />);
+
+            const tiles = subject.find("BoardTile");
+
+            expect(tiles.get(0).props.gameOver).toBeFalsy();
+        });
+
+        it("sets gameOver to false if the winnerId is -1", () => {
+            const props: BoardProps = {
+                ...defaultProps,
+                winnerId: -1,
                 grid: [[new Tile()]],
             };
             const subject = shallow(<OpposingAgentBoard {...props} />);
@@ -112,20 +123,20 @@ describe("OpposingAgentBoard", () => {
             const tiles = subject.find("BoardTile");
 
             tiles.get(0).props.tileClicked();
-            expect(props.actions.boardHit).toBeCalledWith(123, 789, {x: 0, y: 0});
+            expect(props.actions.boardHit).toBeCalledWith(123, 789, {column: 0, row: 0});
             tiles.get(1).props.tileClicked();
-            expect(props.actions.boardHit).toBeCalledWith(123, 789, {x: 1, y: 0});
+            expect(props.actions.boardHit).toBeCalledWith(123, 789, {column: 1, row: 0});
             tiles.get(2).props.tileClicked();
-            expect(props.actions.boardHit).toBeCalledWith(123, 789, {x: 0, y: 1});
+            expect(props.actions.boardHit).toBeCalledWith(123, 789, {column: 0, row: 1});
             tiles.get(3).props.tileClicked();
-            expect(props.actions.boardHit).toBeCalledWith(123, 789, {x: 0, y: 1});
+            expect(props.actions.boardHit).toBeCalledWith(123, 789, {column: 0, row: 1});
         });
 
         it("does not call boardHit action if the game is over", () => {
             const props = {
                 ...defaultProps,
                 gameId: 123,
-                winner: new Agent(),
+                winnerId: 123,
                 attackerId: 456,
                 grid: [[new Tile()]],
             };
@@ -187,7 +198,7 @@ describe("mapStateToProps", () => {
         };
         gameReducer = {
             id: 123,
-            winner: null,
+            winnerId: null,
             status: GameStatus.NONE
         };
         state = {
@@ -228,9 +239,9 @@ describe("mapStateToProps", () => {
             ...state,
             gameReducer: {
                 ...gameReducer,
-                winner: new Agent()
+                winnerId: 123
             }
         });
-        expect(props.winner).toBeTruthy();
+        expect(props.winnerId).toBeTruthy();
     });
 });

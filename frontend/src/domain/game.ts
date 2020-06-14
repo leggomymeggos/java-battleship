@@ -1,22 +1,21 @@
-import {Agent} from "./agent";
 
 export class Game {
     id: number;
-    humanPlayer: Agent;
-    computerPlayer: Agent;
+    playerIds: number[];
     activePlayerId: number;
-    winner: Agent;
+    winnerId: number;
+    difficulty: string;
 
     constructor(id: number = -1,
-                humanPlayer: Agent = new Agent(),
-                computerPlayer: Agent = new Agent(),
+                playerIds: number[] = [],
                 activePlayerId: number = -1,
-                winner: Agent = null
+                winnerId: number = -1,
+                difficulty: string = "EASY"
     ) {
         this.id = id;
-        this.humanPlayer = humanPlayer;
-        this.computerPlayer = computerPlayer;
+        this.playerIds = playerIds;
         this.activePlayerId = activePlayerId;
-        this.winner = winner;
+        this.winnerId = winnerId;
+        this.difficulty = difficulty;
     }
 }

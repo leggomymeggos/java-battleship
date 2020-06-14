@@ -1,6 +1,5 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import {Agent} from "../domain/agent";
 import BoardTile, {AgentType} from "./tile/BoardTile";
 import boardActions, {Coordinate} from "./boardActions";
 import {bindActionCreators, Dispatch} from "redux";
@@ -9,7 +8,7 @@ export interface IBoardPropsFromStore {
     attackerId: number;
     gameId: number,
     grid: any[][];
-    winner: Agent;
+    winnerId: number;
 }
 
 export interface IBoardPropsFromActions {
@@ -58,10 +57,10 @@ export class OpposingAgentBoard extends React.Component<BoardProps> {
     }
 
     private renderGrid() {
-        const gameOver = this.props.winner != null;
+        const gameOver = this.props.winnerId !== null && this.props.winnerId !== -1;
         return this.props.grid.map((value, rowIndex) => {
             return value.map((tile, columnIndex) => {
-                const coordinate = {x: columnIndex, y: rowIndex};
+                const coordinate = {column: columnIndex, row: rowIndex};
                 return <BoardTile key={OpposingAgentBoard.getKey()}
                                   tile={tile}
                                   agentType={AgentType.OPPONENT}
@@ -89,7 +88,7 @@ export class OpposingAgentBoard extends React.Component<BoardProps> {
 export const mapStateToProps = (state: any): IBoardPropsFromStore => {
     return {
         grid: state.opposingAgentReducer.grid,
-        winner: state.gameReducer.winner,
+        winnerId: state.gameReducer.winnerId,
         gameId: state.gameReducer.id,
         attackerId: state.userAgentReducer.id
     }

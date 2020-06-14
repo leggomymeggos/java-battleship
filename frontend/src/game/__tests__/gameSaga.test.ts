@@ -61,9 +61,9 @@ describe("checkWinner", () => {
 
         generator.next();
 
-        expect(generator.next(true).value).toEqual(put({
+        expect(generator.next({winnerId: 123}).value).toEqual(put({
             type: GameActions.GAME_WON,
-            payload: true
+            payload: 123
         }));
     });
 
@@ -72,7 +72,7 @@ describe("checkWinner", () => {
 
         generator.next();
 
-        expect(generator.next(false).value).toBeUndefined();
+        expect(generator.next({}).value).toBeUndefined();
     });
 });
 

@@ -1,13 +1,15 @@
 import {call, put, takeEvery} from "redux-saga/effects";
 import {GameApi} from "./gameApi";
 import {activePlayerUpdated, GameActions, gameWon, newGameCreated} from "./gameActions";
-import {BoardActions, Coordinate, opponentBoardHitSuccess} from "../board/boardActions";
+import {BoardActions, Coordinate, fetchUserAgentBoard, fetchOpposingAgentBoard, opponentBoardHitSuccess} from "../board/boardActions";
 import {Action} from "redux-actions";
 
 export function* newGame(): any {
     try {
         const game = yield call(GameApi.newGame);
         yield put(newGameCreated(game));
+        yield put(fetchUserAgentBoard(game.id, game.playerIds[0]));
+        yield put(fetchOpposingAgentBoard(game.id, game.playerIds[1]));
     } catch (e) {
         console.error(e);
     }
@@ -25,10 +27,10 @@ export function* attack(gameId: number, attackingPlayerId: number, coordinate: C
 export function* checkWinner(gameId: number): any {
     try {
         const winner = yield call(GameApi.fetchWinner, gameId);
-        if (!winner) {
+        if (!winner.winnerId) {
             return;
         }
-        yield put(gameWon(winner));
+        yield put(gameWon(winner.winnerId));
     } catch (e) {
         console.error(e)
     }

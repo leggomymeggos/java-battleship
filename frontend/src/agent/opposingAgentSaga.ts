@@ -21,13 +21,13 @@ export function saveOpposingAgent(id: number) {
 
 export function* saveOpposingAgentIdSaga(): any {
     yield takeEvery(GameActions.NEW_GAME_CREATED, (action: Action<any>) => {
-        return saveOpposingAgent(action.payload.players[1].id);
+        return saveOpposingAgent(action.payload.playerIds[1]);
     });
 }
 
 export function* takeTurnSaga(): any {
     yield takeEvery(GameActions.ACTIVE_PLAYER_UPDATED, (action: Action<any>) => {
-        if (action.payload.activePlayerId == opposingAgentId) {
+        if (action.payload.activePlayerId === opposingAgentId) {
             return takeTurn(action.payload.gameId, opposingAgentId);
         }
     });

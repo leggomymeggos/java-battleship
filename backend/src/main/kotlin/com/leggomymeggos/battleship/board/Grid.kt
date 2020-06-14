@@ -1,7 +1,6 @@
 package com.leggomymeggos.battleship.board
 
 typealias Grid = List<List<Tile>>
-typealias MutableGrid = MutableList<List<Tile>>
 
 fun gridOf(numberOfElements: Int = 0): Grid {
     if(numberOfElements <= 0) {

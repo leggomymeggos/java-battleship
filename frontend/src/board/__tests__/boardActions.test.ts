@@ -6,16 +6,16 @@ describe("boardHit", () => {
         expect(boardHit(123,
             456,
             {
-                x: 1,
-                y: 2
+                column: 1,
+                row: 2
             })).toEqual({
             type: BoardActions.BOARD_HIT,
             payload: {
                 gameId: 123,
                 attackerId: 456,
                 coordinates: {
-                    x: 1,
-                    y: 2
+                    column: 1,
+                    row: 2
                 }
             }
         });

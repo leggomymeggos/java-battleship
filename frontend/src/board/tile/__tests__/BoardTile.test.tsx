@@ -16,7 +16,7 @@ describe("BoardTile", () => {
 
         defaultProps = {
             tile: new Tile(),
-            coordinate: {x: 0, y: 0},
+            coordinate: {column: 0, row: 0},
             agentType: AgentType.NONE,
             gameOver: false,
             tileClicked: () => {
@@ -30,8 +30,8 @@ describe("BoardTile", () => {
                 const props = {
                     ...defaultProps,
                     coordinate: {
-                        x: 421,
-                        y: 153
+                        column: 421,
+                        row: 153
                     }
                 };
 
@@ -45,8 +45,8 @@ describe("BoardTile", () => {
                 const props = {
                     ...defaultProps,
                     coordinate: {
-                        x: 494,
-                        y: 1528
+                        column: 494,
+                        row: 1528
                     }
                 };
 
@@ -60,8 +60,8 @@ describe("BoardTile", () => {
                 const props = {
                     ...defaultProps,
                     coordinate: {
-                        x: 499,
-                        y: 1528
+                        column: 499,
+                        row: 1528
                     }
                 };
 
@@ -88,7 +88,7 @@ describe("BoardTile", () => {
             it("adds 'aimed__hit--image' if the tile was hit and contained a ship", () => {
                 const props = {
                     ...defaultProps,
-                    tile: new Tile({name: "ship-name", orientation: "", length: 2}, true)
+                    tile: new Tile( "ship-name", true)
                 };
 
                 const subject = shallow(<BoardTile {...props}/>);
@@ -121,7 +121,7 @@ describe("BoardTile", () => {
             it("adds 'occupied' and no ocean if the tile has a ship", () => {
                 props = {
                     ...props,
-                    tile: new Tile({name: "totally a ship here", orientation: "", length: 2}, false)
+                    tile: new Tile("totally a ship here", false)
                 };
                 const subject = shallow(<BoardTile {...props}/>);
 

@@ -18,19 +18,11 @@ describe("userAgentReducer", () => {
         const state = userAgentReducer(initialState, {
             type: GameActions.NEW_GAME_CREATED,
             payload: {
-                players: [
-                    {
-                        id: 789,
-                        board: {grid: [[new Tile()], [new Tile()], [new Tile()]], sunkenShips: ["super ships sunk"]}
-                    },
-                    {id: 123, board: {grid: [[new Tile()], [new Tile()]], sunkenShips: ["none yet"]}}
-                ],
+                playerIds: [ 789, 123 ],
             }
         });
 
         expect(state.id).toEqual(789);
-        expect(state.grid).toEqual([[new Tile()], [new Tile()], [new Tile()]]);
-        expect(state.sunkenShips).toEqual(["super ships sunk"]);
     });
 
     describe("USER_BOARD_HIT_SUCCESS", () => {
@@ -97,5 +89,4 @@ describe("userAgentReducer", () => {
             expect(state.id).toEqual(1);
         });
     });
-})
-;
+});

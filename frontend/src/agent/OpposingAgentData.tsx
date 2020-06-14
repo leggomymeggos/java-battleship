@@ -4,7 +4,7 @@ import {GameState} from "../game/gameReducer";
 import {Agent, AgentState} from "../domain/agent";
 
 export interface IAgentDataPropsFromStore {
-    winner: Agent;
+    winnerId: number;
     opposingAgentId: number;
     attackResult: any;
 }
@@ -14,8 +14,8 @@ export type AgentDataProps = IAgentDataPropsFromStore;
 export class OpposingAgentData extends React.Component<AgentDataProps> {
 
     public render() {
-        const gameOver = this.props.winner!!;
-        const opposingAgentWon = gameOver && this.props.winner.id == this.props.opposingAgentId;
+        const gameOver = this.props.winnerId!! && this.props.winnerId !== -1;
+        const opposingAgentWon = gameOver && this.props.winnerId == this.props.opposingAgentId;
 
         return <div className="agent__main-container">
             <div className="agent__opponent--dialogue">{this.opposingAgentDialogue()}</div>
@@ -27,12 +27,12 @@ export class OpposingAgentData extends React.Component<AgentDataProps> {
     }
 
     private opposingAgentDialogue(): string {
-        if (!this.props.winner) {
+        if (!this.props.winnerId || this.props.winnerId === -1) {
             switch (this.props.attackResult.hitType) {
                 case 'HIT':
                     return "Yes! A hit!";
                 case 'SUNK':
-                    let shipName = this.props.attackResult.shipName.toLowerCase();
+                    let shipName = this.props.attackResult.ship.toLowerCase();
                     return `Hahahaha! I sunk your ${OpposingAgentData.shipDisplayName(shipName)}!`;
                 case 'MISS':
                     return "...";
@@ -41,7 +41,7 @@ export class OpposingAgentData extends React.Component<AgentDataProps> {
             }
         }
 
-        if (this.props.winner.id == this.props.opposingAgentId) {
+        if (this.props.winnerId == this.props.opposingAgentId) {
             return "Hahahaha!!! I have defeated you!!!";
         } else {
             return "Oh no! You defeated me!";
@@ -60,7 +60,7 @@ export const mapStateToProps = (state: {
     opposingAgentReducer: AgentState
 }): IAgentDataPropsFromStore => {
     return {
-        winner: state.gameReducer.winner,
+        winnerId: state.gameReducer.winnerId,
         opposingAgentId: state.opposingAgentReducer.id,
         attackResult: state.opposingAgentReducer.recentAttackResult,
     }

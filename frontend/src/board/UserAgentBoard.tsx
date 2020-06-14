@@ -1,6 +1,5 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import {Agent} from "../domain/agent";
 import BoardTile, {AgentType} from "./tile/BoardTile";
 import {BoardLabel} from "./BoardLabel";
 
@@ -9,7 +8,7 @@ export interface IBoardPropsFromStore {
     gameId: number;
     grid: any[][];
     sunkenShips: string[];
-    winner: Agent;
+    winnerId: number;
 }
 
 export type BoardProps = IBoardPropsFromStore;
@@ -51,10 +50,10 @@ export class UserAgentBoard extends React.Component<BoardProps> {
                 return <BoardTile key={UserAgentBoard.getKey()}
                                   tile={tile}
                                   agentType={AgentType.USER}
-                                  gameOver={this.props.winner != null}
+                                  gameOver={this.props.winnerId !== null && this.props.winnerId !== -1}
                                   tileClicked={() => {
                                   }}
-                                  coordinate={{x: columnIndex, y: rowIndex}}
+                                  coordinate={{column: columnIndex, row: rowIndex}}
                 />
             })
         });
@@ -68,7 +67,7 @@ export class UserAgentBoard extends React.Component<BoardProps> {
 export const mapStateToProps = (state: any): IBoardPropsFromStore => {
     return {
         ...state.userAgentReducer,
-        winner: state.gameReducer.winner,
+        winnerId: state.gameReducer.winnerId,
         gameId: state.gameReducer.id,
     }
 };
