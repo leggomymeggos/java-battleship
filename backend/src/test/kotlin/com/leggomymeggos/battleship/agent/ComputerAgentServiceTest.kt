@@ -3,7 +3,7 @@ package com.leggomymeggos.battleship.agent
 import com.leggomymeggos.battleship.board.*
 import com.leggomymeggos.battleship.game.Difficulty
 import com.leggomymeggos.battleship.game.GameService
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockitokotlin2.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
