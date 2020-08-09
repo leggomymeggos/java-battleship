@@ -41,24 +41,7 @@ export default class BoardTile extends React.Component<BoardTileProps> {
         let tile = this.props.tile;
 
         if (this.props.agentType == AgentType.USER && tile.ship != null) {
-            return "occupied"
-        } else {
-            return this.addOcean()
-        }
-    }
-
-    private addOcean() {
-        let {column, row} = this.props.coordinate;
-        const rowEven = column % 2 == 0;
-        const columnEven = row % 2 == 0;
-
-        let bothEven = columnEven && rowEven;
-        let bothOdd = !columnEven && !rowEven;
-
-        if (bothEven || bothOdd) {
-            return "rotated _155-reverse";
-        } else {
-            return "rotated _62";
+            return "ship__" + tile.ship.toLowerCase();
         }
     }
 

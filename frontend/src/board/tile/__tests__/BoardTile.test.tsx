@@ -25,53 +25,6 @@ describe("BoardTile", () => {
     });
 
     describe("tiles styling", () => {
-        describe("ocean", () => {
-            it("rotates by -155 if both coordinates are odd", () => {
-                const props = {
-                    ...defaultProps,
-                    coordinate: {
-                        column: 421,
-                        row: 153
-                    }
-                };
-
-                const subject = shallow(<BoardTile {...props}/>);
-
-                expect(subject.find("._155-reverse").exists()).toBeTruthy();
-                expect(subject.find("._62").exists()).toBeFalsy();
-            });
-
-            it("rotates by -155 if both coordinates are even", () => {
-                const props = {
-                    ...defaultProps,
-                    coordinate: {
-                        column: 494,
-                        row: 1528
-                    }
-                };
-
-                const subject = shallow(<BoardTile {...props}/>);
-
-                expect(subject.find("._155-reverse").exists()).toBeTruthy();
-                expect(subject.find("._62").exists()).toBeFalsy();
-            });
-
-            it("rotates by 62 if one coordinate is even and one is odd", () => {
-                const props = {
-                    ...defaultProps,
-                    coordinate: {
-                        column: 499,
-                        row: 1528
-                    }
-                };
-
-                const subject = shallow(<BoardTile {...props}/>);
-
-                expect(subject.find("._62").exists()).toBeTruthy();
-                expect(subject.find("._155-reverse").exists()).toBeFalsy();
-            });
-        });
-
         describe("hit indicator", () => {
             it("adds 'aimed__miss--image' if the tile was hit but contained no ship", () => {
                 const props = {
@@ -118,26 +71,14 @@ describe("BoardTile", () => {
                 };
             });
 
-            it("adds 'occupied' and no ocean if the tile has a ship", () => {
+            it("adds 'ship__' with the ship name if the tile has a ship", () => {
                 props = {
                     ...props,
-                    tile: new Tile("totally a ship here", false)
+                    tile: new Tile("super_ship", false)
                 };
                 const subject = shallow(<BoardTile {...props}/>);
 
-                expect(subject.find(".occupied").exists()).toBeTruthy();
-                expect(subject.find(".rotated").exists()).toBeFalsy();
-            });
-
-            it("adds ocean if there is not a ship", () => {
-                props = {
-                    ...props,
-                    tile: new Tile(null, false)
-                };
-                const subject = shallow(<BoardTile {...props}/>);
-
-                expect(subject.find(".occupied").exists()).toBeFalsy();
-                expect(subject.find(".rotated").exists()).toBeTruthy();
+                expect(subject.find(".ship__super_ship").exists()).toBeTruthy();
             });
         });
 
