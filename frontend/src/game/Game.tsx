@@ -18,14 +18,18 @@ export class Game extends React.Component<GameProps> {
             return <Redirect to={"/"}/>
         }
 
-        return <div className="game__content">
-            <TargetBoard/>
-            <div className="game__content__metadata">
-                <AgentData/>
-            </div>
-            <div className="game__content--player" style={{borderLeft: "1px solid #aaa"}}>
-                <p>Your ships</p>
-                <PlayerBoard/>
+        return <div className="game__container">
+            <div className="game__content">
+                <div className="boards">
+                    <TargetBoard/>
+                    <div className="divider"/>
+                    <div className="game__content--player">
+                        <PlayerBoard/>
+                    </div>
+                </div>
+                <div className="game__content__metadata">
+                    <AgentData/>
+                </div>
             </div>
         </div>
     }

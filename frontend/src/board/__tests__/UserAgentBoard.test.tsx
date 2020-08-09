@@ -130,7 +130,7 @@ describe("UserAgentBoard", () => {
         };
         const subject = shallow(<UserAgentBoard {...props} />);
 
-        const columnLabels = subject.find({className: 'column'});
+        const columnLabels = subject.find({className: 'column inverse'});
 
         expect(columnLabels.get(0).props.value).toEqual('A');
         expect(columnLabels.get(1).props.value).toEqual('B');

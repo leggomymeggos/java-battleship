@@ -19,19 +19,19 @@ export class UserAgentBoard extends React.Component<BoardProps> {
 
     public render() {
         return <div className="user--board">
-            <div className="board__label"/>
-            {this.renderColumnLabels()}
             {this.renderRowLabels()}
             <div className="user--board__grid">
                 {this.renderGrid()}
             </div>
+            <div className="board__label"/>
+            {this.renderColumnLabels()}
         </div>
     }
 
     private renderColumnLabels() {
         return this.props.grid[0].map((_, index) => {
             return <BoardLabel value={this.alphabet[index].toUpperCase()}
-                               className={"column"}
+                               className={"column inverse"}
                                key={UserAgentBoard.getKey()}/>;
         });
     }

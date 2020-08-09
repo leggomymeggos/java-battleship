@@ -13,8 +13,7 @@ $grid-border: #0a6ea8;
   border: 1px solid $grid-border;
 }
 
-$target-board-dimension: 560px;
-$player-board-dimension: 510px;
+$board-dimension: 510px;
 $board-labels-dimension: 8%;
 
 .board--base {
@@ -49,6 +48,13 @@ $board-labels-dimension: 8%;
       }
 
       background: url("../images/board_column_label_background.svg") 0 0 no-repeat;
+
+      &.inverse {
+        .board__label--value {
+          margin-top: 0;
+        }
+        background: url("../images/board_column_label_inverse_background.svg") 0 0 no-repeat;
+      }
     }
   }
 }
@@ -100,16 +106,19 @@ $board-labels-dimension: 8%;
 
 .user--board {
   @extend .board--base;
-  width: $player-board-dimension + 40px;
-  height: $player-board-dimension + 40px;
+  width: $board-dimension + 40px;
+  height: $board-dimension + 40px;
+  grid-template-rows: auto auto auto auto auto auto auto auto auto [grid-row-end] $board-labels-dimension;
 }
 
 .user--board__grid {
   @extend .board__grid;
-  width: $player-board-dimension;
-  height: $player-board-dimension;
-  max-width: $player-board-dimension;
-  max-height: $player-board-dimension;
+  width: $board-dimension;
+  height: $board-dimension;
+  max-width: $board-dimension;
+  max-height: $board-dimension;
+  grid-row-start: span start;
+  grid-row-end: grid-row-end;
 
   .occupied {
     background: limegreen;
@@ -124,16 +133,16 @@ $board-labels-dimension: 8%;
 
 .target--board {
   @extend .board--base;
-  width: $target-board-dimension + 40px;
-  height: $target-board-dimension + 40px;
+  width: $board-dimension + 40px;
+  height: $board-dimension + 40px;
 }
 
 .target--board__grid {
   @extend .board__grid;
-  width: $target-board-dimension;
-  height: $target-board-dimension;
-  max-width: $target-board-dimension;
-  max-height: $target-board-dimension;
+  width: $board-dimension;
+  height: $board-dimension;
+  max-width: $board-dimension;
+  max-height: $board-dimension;
 
   .board__tile {
     &:not(.clicked):hover {
