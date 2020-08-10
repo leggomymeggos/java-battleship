@@ -69,6 +69,7 @@ $board-labels-dimension: 8%;
   grid-row-start: grid-row-start;
   grid-row-end: span end;
   border: 1px solid $grid-border;
+  background-color: rgba(89, 171, 227, .3);
 
   .board__tile {
     border: 0.5px solid $grid-border;
@@ -93,29 +94,29 @@ $board-labels-dimension: 8%;
   grid-row-start: span start;
   grid-row-end: grid-row-end;
 
-  .ship__battleship {
-    background: limegreen;
-    border-color: green;
-  }
-
   .ship__destroyer {
-    background: mediumpurple;
-    border-color: rebeccapurple;
-  }
-
-  .ship__aircraft_carrier {
-    background: orange;
-    border-color: darkorange;
+    background: $destroyer;
+    border-color: $destroyer-border;
   }
 
   .ship__submarine {
-    background: aqua;
-    border-color: darkturquoise;
+    background: $submarine;
+    border-color: $submarine-border;
   }
 
   .ship__cruiser {
-    background: hotpink;
-    border-color: deeppink;
+    background: $cruiser;
+    border-color: $cruiser-border;
+  }
+
+  .ship__battleship {
+    background: $battleship;
+    border-color: $battleship-border;
+  }
+
+  .ship__aircraft_carrier {
+    background: $aircraft-carrier;
+    border-color: $aircraft-carrier-border;
   }
 
   .occupied--hit {

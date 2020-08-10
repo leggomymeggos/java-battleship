@@ -15,11 +15,11 @@ export type TitlePageProps = ITitlePagePropsFromActions
 export class TitlePage extends React.Component<TitlePageProps> {
     public render() {
         return <div className="title-page">
+
             <div className="title-page__title">Battleship</div>
             <Link to="/game"
                   className="title-page__new-game"
-                  onClick={this.props.actions.createNewGame}
-            >
+                  onClick={this.props.actions.createNewGame}>
                 New Game
             </Link>
         </div>

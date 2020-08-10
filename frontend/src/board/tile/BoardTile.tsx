@@ -42,7 +42,7 @@ export default class BoardTile extends React.Component<BoardTileProps> {
 
         if (this.props.agentType == AgentType.USER && tile.ship != null) {
             return "ship__" + tile.ship.toLowerCase();
-        }
+        } else return ""
     }
 
     private static tileIndicator(tile: Tile) {
