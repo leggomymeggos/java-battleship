@@ -22,7 +22,7 @@ class ComputerAgentControllerTest {
     // region attack
     @Test
     fun `attack mapping`() {
-        mockMvc.perform(get("/games/0/opponent-attack?attackerId=0"))
+        mockMvc.perform(get("/api/games/0/opponent-attack?attackerId=0"))
                 .andExpect(status().isOk)
     }
 

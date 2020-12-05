@@ -2,7 +2,7 @@ jest.mock("../gameApi");
 
 import {Tile} from "../../domain/tile";
 import * as gameSaga from "../gameSaga";
-import {GameApi} from "../gameApi";
+import {attack, fetchActivePlayer, fetchWinner, newGame} from "../gameApi";
 import {GameActions} from "../gameActions";
 import {call, put} from "redux-saga/effects";
 import {BoardActions, Coordinate} from "../../board/boardActions";
@@ -11,7 +11,7 @@ describe("newGame", () => {
     it("calls api to get game", () => {
         const generator = gameSaga.newGame();
 
-        expect(generator.next().value).toEqual(call(GameApi.newGame));
+        expect(generator.next().value).toEqual(call(newGame));
     });
 
     it("triggers action to set board", () => {
@@ -31,7 +31,7 @@ describe("attack", () => {
         let coordinate = new Coordinate(0, 0);
         const generator = gameSaga.attack(123, 2, coordinate);
 
-        expect(generator.next().value).toEqual(call(GameApi.attack, 123, 2, coordinate));
+        expect(generator.next().value).toEqual(call(attack, 123, 2, coordinate));
     });
 
     it("triggers action to update board", () => {
@@ -53,7 +53,7 @@ describe("checkWinner", () => {
     it("calls api to check winner", () => {
         const generator = gameSaga.checkWinner(123);
 
-        expect(generator.next().value).toEqual(call(GameApi.fetchWinner, 123));
+        expect(generator.next().value).toEqual(call(fetchWinner, 123));
     });
 
     it("dispatches winner", () => {
@@ -80,7 +80,7 @@ describe("checkActivePlayer", () => {
     it("calls api to get active player", () => {
         const generator = gameSaga.checkActivePlayer(709);
 
-        expect(generator.next().value).toEqual(call(GameApi.fetchActivePlayer, 709));
+        expect(generator.next().value).toEqual(call(fetchActivePlayer, 709));
     });
 
     it("dispatches active player", () => {

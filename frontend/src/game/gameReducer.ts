@@ -10,7 +10,7 @@ export enum GameStatus {
 
 export type GameState = {
     id: number;
-    winnerId: number;
+    winnerId: number | null;
     status: GameStatus
 }
 

@@ -1,11 +1,14 @@
 import axios from "axios";
+import {Tile} from "../domain/tile";
 
-export class OpposingAgentApi {
-    private static baseUrl = process.env.BASE_URL || "http://example.com";
+const baseURI = "/api/games"
 
-    public static attack(gameId: number, attackerId: number) {
-        return axios.get(`/games/${gameId}/opponent-attack?attackerId=${attackerId}`, {
-            baseURL: OpposingAgentApi.baseUrl
-        }).then((response) => response.data)
-    }
+export const attack = async (gameId: number, attackerId: number): Promise<{ result: string, board: { grid: Tile[][], sunkenShips: string[]; } }> => {
+    return axios.get(`${baseURI}/${gameId}/opponent-attack?attackerId=${attackerId}`, {
+        baseURL: process.env.DOMAIN || 'http://locahost:8080'
+    })
+        .then((response) => response.data)
+        .catch((e) => {
+            throw new Error(e)
+        })
 }

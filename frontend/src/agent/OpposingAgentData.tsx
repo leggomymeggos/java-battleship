@@ -4,7 +4,7 @@ import {GameState} from "../game/gameReducer";
 import {Agent, AgentState} from "../domain/agent";
 
 export interface IAgentDataPropsFromStore {
-    winnerId: number;
+    winnerId: number | null;
     opposingAgentId: number;
     attackResult: any;
 }

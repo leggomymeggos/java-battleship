@@ -22,7 +22,7 @@ class GameControllerTest {
     // region newGame
     @Test
     fun `newGame mapping`() {
-        mockMvc.perform(get("/games/new"))
+        mockMvc.perform(get("/api/games/new"))
                 .andExpect(status().isOk)
     }
 
@@ -47,7 +47,7 @@ class GameControllerTest {
     // region attack
     @Test
     fun `attackBoard mapping`() {
-        mockMvc.perform(put("/games/0/attack?attackerId=98")
+        mockMvc.perform(put("/api/games/0/attack?attackerId=98")
                 .content("{\"column\": 123, \"row\": 456}")
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().is2xxSuccessful)
@@ -75,7 +75,7 @@ class GameControllerTest {
     // region fetchWinner
     @Test
     fun `fetchWinner mapping`() {
-        mockMvc.perform(get("/games/0/winner"))
+        mockMvc.perform(get("/api/games/0/winner"))
                 .andExpect(status().isOk)
     }
 
@@ -97,7 +97,7 @@ class GameControllerTest {
     // region fetchActivePlayer
     @Test
     fun `fetchActivePlayer mapping`() {
-        mockMvc.perform(get("/games/0/players/active"))
+        mockMvc.perform(get("/api/games/0/players/active"))
                 .andExpect(status().isOk)
     }
 

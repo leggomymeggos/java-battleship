@@ -2,13 +2,13 @@ import {call, put, takeEvery} from "redux-saga/effects";
 import {GameActions} from "../game/gameActions";
 import {Action} from "redux-actions";
 import {userBoardHitSuccess} from "../board/boardActions";
-import {OpposingAgentApi} from "./opposingAgentApi";
+import {attack} from "./opposingAgentApi";
 
 let opposingAgentId: number = -1;
 
 export function* takeTurn(gameId: number, attackerId: number): any {
     try {
-        const newBoard = yield call(OpposingAgentApi.attack, gameId, attackerId);
+        const newBoard = yield call(attack, gameId, attackerId);
         yield put(userBoardHitSuccess(gameId, newBoard));
     } catch (e) {
         console.error(e);

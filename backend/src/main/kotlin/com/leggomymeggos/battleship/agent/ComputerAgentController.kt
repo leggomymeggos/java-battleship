@@ -4,7 +4,7 @@ import com.leggomymeggos.battleship.board.BoardHitResponse
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping(value = ["/games"])
+@RequestMapping(value = ["/api/games"])
 @CrossOrigin
 class ComputerAgentController(val computerAgentService: ComputerAgentService) {
 

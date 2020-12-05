@@ -1,9 +1,8 @@
 const webpack = require('webpack');
 const TerserPlugin = require('terser-webpack-plugin');
-const Dotenv = require('dotenv-webpack');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const path = require('path');
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const baseConfig = require('./webpack.common.js');
 
 
@@ -16,8 +15,9 @@ module.exports = merge(baseConfig, {
         port: 8080
     },
     plugins: [
-        new Dotenv({
-            path: './env/prod.env'
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': "\"prod\"",
+            'process.env.DOMAIN': "\"http://battleship-backend.cfapps.io\"",
         }),
         new OptimizeCssAssetsPlugin({
             assetNameRegExp: /\.*css$/g,

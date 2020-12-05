@@ -1,7 +1,6 @@
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const baseConfig = require('./webpack.common.js');
 const webpack = require('webpack');
-const Dotenv = require('dotenv-webpack');
 const path = require('path');
 
 module.exports = merge(baseConfig, {
@@ -17,9 +16,10 @@ module.exports = merge(baseConfig, {
     devtool: "source-map",
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
-        new Dotenv({
-            path: `./env/dev.env`
-        })
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': "\"dev\"",
+            'process.env.DOMAIN': "\"http://battleship-backend-dev.cfapps.io\"",
+        }),
     ],
 
     module: {

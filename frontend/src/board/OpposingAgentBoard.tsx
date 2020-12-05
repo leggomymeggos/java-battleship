@@ -93,7 +93,7 @@ export const mapStateToProps = (state: any): IBoardPropsFromStore => {
         attackerId: state.userAgentReducer.id
     }
 };
-export const mapDispatchToProps = (dispatch: Dispatch<{}>): IBoardPropsFromActions => {
+export const mapDispatchToProps = (dispatch: Dispatch<{type: any}>): IBoardPropsFromActions => {
     return {
         actions: bindActionCreators({
             ...boardActions,

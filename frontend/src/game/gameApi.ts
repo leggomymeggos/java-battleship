@@ -1,30 +1,38 @@
 import axios from "axios";
 import {Coordinate} from "../board/boardActions";
+import {Game} from "../domain/game";
+import {Tile} from "../domain/tile";
 
-export class GameApi {
-    private static baseUrl = process.env.BASE_URL || "http://example.com";
+const baseURI = '/api/games'
 
-    public static newGame() {
-        return axios.get("/games/new", {
-            baseURL: GameApi.baseUrl,
-        }).then((response) => response.data);
-    }
+export const newGame = async (): Promise<Game> => {
+    return await axios.get(`${baseURI}/new`)
+        .then((response) => response.data)
+        .catch((e) => {
+            throw new Error(e)
+        });
+}
 
-    static fetchWinner(gameId: number) {
-        return axios.get(`/games/${gameId}/winner`, {
-            baseURL: GameApi.baseUrl,
-        }).then((response) => response.data);
-    }
+export const attack = async (gameId: number, attackingPlayerId: number, coordinate: Coordinate): Promise<{ result: { hitType?: string, shipName?: string }, board: { grid: Tile[][], sunkenShips: string[] } }> => {
+    return await axios.put(`${baseURI}/${gameId}/attack?attackerId=${attackingPlayerId}`, coordinate)
+        .then((response) => response.data)
+        .catch((e) => {
+            throw new Error(e)
+        });
+}
 
-    static attack(gameId: number, attackingPlayerId: number, coordinate: Coordinate) {
-        return axios.put(`/games/${gameId}/attack?attackerId=${attackingPlayerId}`, coordinate, {
-            baseURL: GameApi.baseUrl,
-        }).then((response) => response.data);
-    }
+export const fetchWinner = async (gameId: number): Promise<{ winnerId: number }> => {
+    return await axios.get(`${baseURI}/${gameId}/winner`)
+        .then((response) => response.data)
+        .catch((e) => {
+            throw new Error(e)
+        })
+}
 
-    static fetchActivePlayer(gameId: number) {
-        return axios.get(`/games/${gameId}/players/active`, {
-            baseURL: GameApi.baseUrl,
-        }).then((response) => response.data);
-    }
+export const fetchActivePlayer = async (gameId: number): Promise<{ gameId: number, activePlayerId: number }> => {
+    return await axios.get(`${baseURI}/${gameId}/players/active`)
+        .then((response) => response.data)
+        .catch((e) => {
+            throw new Error(e)
+        })
 }

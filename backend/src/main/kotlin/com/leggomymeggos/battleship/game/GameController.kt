@@ -6,7 +6,7 @@ import com.leggomymeggos.battleship.board.Coordinate
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping(value = ["/games"])
+@RequestMapping(value = ["/api/games"])
 @CrossOrigin
 class GameController(val gameService: GameService) {
 
