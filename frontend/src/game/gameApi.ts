@@ -19,7 +19,8 @@ export class GameApi {
     static attack(gameId: number, attackingPlayerId: number, coordinate: Coordinate) {
         return axios.put(`/games/${gameId}/attack?attackerId=${attackingPlayerId}`, coordinate, {
             baseURL: GameApi.baseUrl,
-        }).then((response) => response.data);
+        }).then((response) => response.data)
+            .catch((error) => console.error(`Error attacking board: ${error.message}`));
     }
 
     static fetchActivePlayer(gameId: number) {

@@ -13,7 +13,7 @@ describe("gameApi", () => {
     describe("getting a new game", () => {
         it("returns the response data", async () => {
             mock.onGet("http://example.com/games/new")
-                .reply(200,  "game!");
+                .reply(200, "game!");
 
             const response = await GameApi.newGame();
 
@@ -23,12 +23,10 @@ describe("gameApi", () => {
 
     describe("hitting a tile", () => {
         it("returns response data", async () => {
-            let coordinate = new Coordinate(1, 2);
+            mock.onPut("http://example.com/games/11/attack?attackerId=2", {"column": 1, "row": 2})
+                .reply(200, "game!");
 
-            mock.onPut("http://example.com/games/11/attack?attackerId=2", coordinate)
-                .reply(200,  "game!");
-
-            const response = await GameApi.attack(11, 2, coordinate);
+            const response = await GameApi.attack(11, 2, new Coordinate(1, 2));
 
             expect(response).toEqual("game!");
         });
