@@ -6,5 +6,5 @@ applications:
   buildpacks:
   - java_buildpack
   routes:
-  - route: battleship-backend.cfapps.io
+  - route: battleship-backend.mybluemix.net
   path: ../../backend/build/libs/battleship-0.0.1-SNAPSHOT.jar
