@@ -39,7 +39,7 @@
     "@types/react-router-dom": "^4.3.5",
     "@types/redux-actions": "^2.6.1",
     "@types/redux-thunk": "^2.1.0",
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "dotenv-webpack": "^1.8.0",
     "lodash": "^4.17.20",
     "npm": "^7.0.10",
